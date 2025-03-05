@@ -9,15 +9,15 @@ export class GameMap {
 
   /**
    * Game map
-   * @param width Map width
-   * @param heigth Map heigh
+   * @param hexagonsX Number of terrains axis-X
+   * @param hexagonsY Number of terrains axis-Y
    */
   constructor(
-    width: number = TERRAIN_SPRITE_WIDTH * 100,
-    heigth: number = TERRAIN_SPRITE_HEIGTH * 100,
+    hexagonsX: number = 100,
+    hexagonsY: number = 100,
   ) {
-    this._w = width;
-    this._h = heigth;
+    this._w = TERRAIN_SPRITE_WIDTH * hexagonsX;
+    this._h = TERRAIN_SPRITE_WIDTH * hexagonsY;
 
     this._initCanvas();
   }
@@ -257,6 +257,9 @@ export class GameMap {
           TERRAIN_SPRITE_HEIGTH * 8 - TERRAIN_SPRITE_HEIGTH * (0.25 * 8),
         );
       };
+
+      const testDraw2 = () => {
+      }
 
       // TODO IMPROVE - IT LOADS WHEN THE LAST IMAGE IS LOADED (HARDODED RN, -> NOK)
       terrainSprites.wax5.image.onload = testDraw;
