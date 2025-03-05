@@ -1,0 +1,19 @@
+{
+  "name": "js-wars",
+  "version": "1.0.0",
+  "description": "## CHAPTER 1. PREPARATIONS",
+  "main": "index.js",
+  "scripts": {
+    "serve:client": "vite",
+    "format": "prettier --write \"**/*.{ts,html,scss}\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "prettier": "^3.5.3",
+    "sass": "^1.85.1",
+    "ts": "^0.2.2",
+    "vite": "^6.2.0"
+  }
+}

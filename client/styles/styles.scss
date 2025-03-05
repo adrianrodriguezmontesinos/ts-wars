@@ -1,0 +1,35 @@
+$primary-lighter: #fff2e6;
+$primary: #693405;
+
+$white: #fff;
+$light: #ddd;
+
+$m-xs: 0.2rem;
+$m-s: 0.4rem;
+$m-m: 0.8rem;
+$m-l: 1.2rem;
+$m-xl: 1.6rem;
+
+@font-face {
+  font-family: "Berry";
+  src: url("/public/fonts/Berry\ Rotunda.ttf");
+}
+
+html {
+  font-family: "Berry", serif;
+  background-color: $primary-lighter;
+}
+
+body {
+  padding: $m-s;
+}
+
+h1 {
+  text-align: center;
+  margin-top: $m-xl;
+  color: $primary;
+}
+
+#map {
+  overflow: auto;
+}

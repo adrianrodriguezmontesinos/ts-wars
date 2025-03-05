@@ -1,0 +1,6 @@
+# Compilation
+build/
+
+# Configs 
+*.config.js
+*.config.ts
