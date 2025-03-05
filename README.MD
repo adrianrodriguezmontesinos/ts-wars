@@ -433,7 +433,13 @@ drawMap() {
 
 The line `terrainSprites.wax5.image.onload = testDraw;` is needed to start drawing then the last image is loaded, but it's not a good solution, just a temporary one 🥲.  
 
-5. To test it  
+5. To test it at the `main.js`:
+```javascript
+import { GameMap } from "./src/models/map/map";
+
+const gameMap = new GameMap();
+gameMap.drawMap();
+```
 
 ## CHAPTER 5. CREATE A MAP
 
