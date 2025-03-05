@@ -1,10 +1,28 @@
-# TS WARNS
+# TS WARS
 
-A NodeJS, HTML, SCSS, TS & JS strategy game. Using vite as a wrapper. Using also mongoDB for persistence and ExpressJS for APIs development.
+A Client-Server TS and JS real time strategy game. 
 
-> note IDE used VS Code
+Languages Used:
+- TS
+- JS
+- SCSS
+- HTML
+
+Frameworks:
+- NodeJS
+- ExpressJS
+
+Other technologies:
+- Vite
+- Pretttier
+- pnpm
+
+IDE:
+- VS Code
 
 Author: Adrián Rodríguez
+
+> I am using this readme as my learning notes for this kind of game implementations, This is my fisrt videogame using native TS, so feel free to learn from my experience as I'm doing while I develop this game 😃.
 
 ## CHAPTER 1. PREPARATIONS
 
@@ -106,21 +124,36 @@ export default defineConfig({
 11. add some basic styles including the font:
 
 ```scss
-html {
-  font-family: "Berry", serif;
-}
+$primary-lighter: #fff2e6;
+$primary: #693405;
 
-body {
-  padding: 1rem;
-}
+$white: #fff;
+$light: #ddd;
 
-h1 {
-  text-align: center;
-}
+$m-xs: 0.2rem;
+$m-s: 0.4rem;
+$m-m: 0.8rem;
+$m-l: 1.2rem;
+$m-xl: 1.6rem;
 
 @font-face {
   font-family: "Berry";
   src: url("/public/fonts/Berry\ Rotunda.ttf");
+}
+
+html {
+  font-family: "Berry", serif;
+  background-color: $primary-lighter;
+}
+
+body {
+  padding: $m-s;
+}
+
+h1 {
+  text-align: center;
+  margin-top: $m-xl;
+  color: $primary;
 }
 ```
 
@@ -218,6 +251,7 @@ We might need more when the game is scaling, but for now it's OK.
 > note: we'll update the barrels when a file has export members, f.e.: `export * from './sprites';` at `client/src/models/commons` and its corresponding upper level: `export * from './commons/index';` at `client/src/models`.
 
 4. for the first push to git we must set up an `.gitignore` file at root:
+
 ```
 # Build dirs
 build/
@@ -232,9 +266,179 @@ node_modules/
 
 ## CHAPTER 4. TILES, SPRITES & MAP
 
-1.
+### 4.1 SPITES
 
-...
+1. create `sprites.ts` inside `models/commons`.
+2. we are gonna cut the sprites from the tileset so we need to set width and heigth of terrains and buildings which are the same:
+
+```typescript
+export const TERRAIN_SPRITE_WIDTH = 61;
+export const TERRAIN_SPRITE_HEIGTH = 71;
+```
+
+3. we create the class `Sprite` at the same file:
+
+```typescript
+export class Sprite {
+  private _x: number;
+  private _y: number;
+  private _w: number;
+  private _h: number;
+  public image: HTMLImageElement;
+
+  constructor(
+    tilesetUrl: string,
+    indexX: number,
+    indexY: number,
+    width: number,
+    heigth: number,
+  ) {
+    this._w = width;
+    this._h = heigth;
+
+    // Calc the coordenates at the tileset
+    this._x = indexX * width;
+    this._y = indexY * heigth;
+
+    this.image = new Image();
+    this.image.src = tilesetUrl;
+  }
+}
+```
+
+At the constructor we calc the possition where the sprite is located at the tileset depending on the index and the width and heigth, that only will work with tilesets which contains sprites with same dimensions.
+
+4. we add a method to draw the sprite at a `CanvasRenderingContext2D` using the Canvas `drawImage()` method:
+
+```typescript
+draw(ctx: CanvasRenderingContext2D, posX: number, posY: number) {
+  ctx.drawImage(
+    this.image,
+    this._x,
+    this._y,
+    this._w,
+    this._h,
+    posX,
+    posY,
+    this._w,
+    this._h,
+  );
+}
+```
+
+### 4.2 MAP
+
+1. create `map.ts`, `map.buildings.ts` and `map.terrains.ts` inside `models/commons` folder
+
+2. we code the interfaces and objects for buildings and terrains at their corresponding files. The objects will contains a field for each type of terrain/buildin.
+
+3. we create the class `GameMap` at `map.ts` file with default dimmensions (100 times the terrain sprites' size):
+
+```typescript
+export class GameMap {
+  private _w: number;
+  private _h: number;
+  public _canvas: HTMLCanvasElement;
+  private _ctx: CanvasRenderingContext2D | null;
+
+  constructor(
+    width: number = TERRAIN_SPRITE_WIDTH * 100,
+    heigth: number = TERRAIN_SPRITE_HEIGTH * 100,
+  ) {
+    this._w = width;
+    this._h = heigth;
+
+    this._initCanvas();
+  }
+
+  private _initCanvas() {
+    this._canvas = document.createElement("canvas");
+    this._canvas.id = "map";
+    this._canvas.width = this._w;
+    this._canvas.height = this._h;
+    document.body.appendChild(this._canvas);
+    this._ctx = this._canvas.getContext("2d");
+  }
+}
+```
+
+The method `_initCanvas()` will create a canvas and a canvas' context to draw the map on it.
+
+4. Create a method to draw the map with a temp arrow funtion to test all the sprites are correctly painted:
+```typescript
+drawMap() {
+    const ctx: CanvasRenderingContext2D | null = this._ctx;
+
+    if (ctx) {
+      const testDraw = () => {
+        // 1st line
+        buildingSprites.house.draw(ctx, 0, 0);
+        buildingSprites.house2.draw(ctx, TERRAIN_SPRITE_WIDTH, 0);
+        buildingSprites.house3.draw(ctx, TERRAIN_SPRITE_WIDTH * 2, 0);
+        buildingSprites.farm.draw(ctx, TERRAIN_SPRITE_WIDTH * 3, 0);
+
+        // 2nd line
+        buildingSprites.farm2.draw(ctx,
+          TERRAIN_SPRITE_WIDTH * 0.5,
+          TERRAIN_SPRITE_HEIGTH - TERRAIN_SPRITE_HEIGTH * 0.25,
+        );
+        buildingSprites.farm3.draw(ctx,
+          TERRAIN_SPRITE_WIDTH * 1.5,
+          TERRAIN_SPRITE_HEIGTH - TERRAIN_SPRITE_HEIGTH * 0.25,
+        );
+        buildingSprites.castle.draw(ctx,
+          TERRAIN_SPRITE_WIDTH * 2.5,
+          TERRAIN_SPRITE_HEIGTH - TERRAIN_SPRITE_HEIGTH * 0.25,
+        );
+
+        // 3rd line
+        buildingSprites.castle2.draw(ctx, 0,
+          TERRAIN_SPRITE_HEIGTH * 2 - TERRAIN_SPRITE_HEIGTH * (0.25 * 2),
+        );
+        buildingSprites.castle3.draw(ctx,
+          TERRAIN_SPRITE_WIDTH,
+          TERRAIN_SPRITE_HEIGTH * 2 - TERRAIN_SPRITE_HEIGTH * (0.25 * 2),
+        );
+        buildingSprites.mine.draw(ctx,
+          TERRAIN_SPRITE_WIDTH * 2,
+          TERRAIN_SPRITE_HEIGTH * 2 - TERRAIN_SPRITE_HEIGTH * (0.25 * 2),
+        );
+        // ...
+
+        // 4th line
+        buildingSprites.mine3.draw(ctx,
+          TERRAIN_SPRITE_WIDTH * 0.5,
+          TERRAIN_SPRITE_HEIGTH * 3 - TERRAIN_SPRITE_HEIGTH * (0.25 * 3),
+        );
+        buildingSprites.barracs.draw(ctx,
+          TERRAIN_SPRITE_WIDTH * 1.5,
+          TERRAIN_SPRITE_HEIGTH * 3 - TERRAIN_SPRITE_HEIGTH * (0.25 * 3),
+        );
+        buildingSprites.barracs2.draw(ctx,
+          TERRAIN_SPRITE_WIDTH * 2.5,
+          TERRAIN_SPRITE_HEIGTH * 3 - TERRAIN_SPRITE_HEIGTH * (0.25 * 3),
+        );
+        // ...
+
+        // ...
+
+      };
+
+      terrainSprites.wax5.image.onload = testDraw;
+    }
+  }
+```
+
+> Note that the sprites are hexagonal so we have had to make a bit more complex way or drawing them. But this test will give us the guidance 💡 to draw automatically our sprites using the correct succesions.
+
+The line `terrainSprites.wax5.image.onload = testDraw;` is needed to start drawing then the last image is loaded, but it's not a good solution, just a temporary one 🥲.  
+
+5. To test it  
+
+## CHAPTER 5. CREATE A MAP
+
+TODO WHEN ITS GROW MAKE A BOOK (SEPARATED MDs) OF IT 
+
 
 ## CHAPTER N. SERVER
 
