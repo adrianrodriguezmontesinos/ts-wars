@@ -1,5 +1,5 @@
-import { TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
-import { buildingSprites, terrainSprites } from './index';
+import { TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from "../commons";
+import { buildingSprites, terrainSprites } from "./index";
 
 export class GameMap {
   private _w: number;
@@ -26,27 +26,31 @@ export class GameMap {
    * Init the canvas HTML element and its context, to draw the map on it
    */
   private _initCanvas() {
-    this._canvas = document.createElement('canvas');
-    this._canvas.id = 'map';
+    this._canvas = document.createElement("canvas");
+    this._canvas.id = "map";
     this._canvas.width = this._w;
     this._canvas.height = this._h;
     document.body.appendChild(this._canvas);
-    this._ctx = this._canvas.getContext('2d');
+    this._ctx = this._canvas.getContext("2d");
   }
 
+  // FOLLOWING STEPS
   // TODO 1 METHOD TO REDRAW AND SPROTE
   // TODO 2 DRAW RANDOM TERRAIN MAPS (SETTING A LIMITS FOR SPRITE TYPES)
   // TODO 3 OBJECT TERRAIN WITH ITS PROPERTIES - LINK WITH TERRAIN SPRITE
   // (ALSO WILL BE USED AT BUILDINGS)
   // TODO 4 CURSOR HOVER TERRAINS
 
-  public createMap() {
+  /**
+   * Draw a Game Map
+   */
+  drawMap() {
     const ctx: CanvasRenderingContext2D | null = this._ctx;
 
     if (ctx) {
-      // TEMP - WE'LL CREATE A METHOD TO
-      const drawBuildings = () => {
-        // 1st
+      // TODO TEMP - WE'LL CREATE A METHOD TO
+      const testDraw = () => {
+        // 1st line
         buildingSprites.house.draw(ctx, 0, 0);
         buildingSprites.house2.draw(ctx, TERRAIN_SPRITE_WIDTH, 0);
         buildingSprites.house3.draw(ctx, TERRAIN_SPRITE_WIDTH * 2, 0);
@@ -255,7 +259,7 @@ export class GameMap {
       };
 
       // TODO IMPROVE - IT LOADS WHEN THE LAST IMAGE IS LOADED (HARDODED RN, -> NOK)
-      terrainSprites.wax5.image.onload = drawBuildings;
+      terrainSprites.wax5.image.onload = testDraw;
     }
   }
 }

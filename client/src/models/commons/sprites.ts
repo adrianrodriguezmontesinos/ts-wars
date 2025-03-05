@@ -1,3 +1,6 @@
+export const TERRAIN_SPRITE_WIDTH = 61;
+export const TERRAIN_SPRITE_HEIGTH = 71;
+
 export class Sprite {
   private _x: number;
   private _y: number;
@@ -37,14 +40,12 @@ export class Sprite {
       this._x,
       this._y, // Coordinates inside tileset
       this._w,
-      this._h, // Sprite size at the tileset
+      this._h, // Sprite sizes at the tileset
       posX,
-      posY, // Position where to be drawed at canvas
+      posY, // Positions where to be drawed at canvas
       this._w,
-      this._h, // Sprite size at canvas
+      this._h, // Sprite sizes at canvas
     );
   }
 }
 
-export const TERRAIN_SPRITE_WIDTH = 61;
-export const TERRAIN_SPRITE_HEIGTH = 71;
