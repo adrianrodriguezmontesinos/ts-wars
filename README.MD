@@ -28,7 +28,7 @@ Author: Adrián Rodríguez
 
 > I am using this readme as my learning notes for this kind of game implementations, This is my fisrt videogame using native TS, so feel free to learn from my experience as I'm doing while I develop this game 😃.
 
-## CHAPTER 1. PREPARATIONS (branch feat/till-chap4)
+## CHAPTER 1. PREPARATIONS (BRANCH: feat/till-chap4)
 
 1. make a dir for the proyect
 2. create a node app: `npm init -y`
@@ -447,7 +447,7 @@ const gameMap = new GameMap();
 gameMap.drawMap();
 ```
 
-## CHAPTER 5. CREATE A MAP (feat/till-chap7)
+## CHAPTER 5. CREATE A MAP (BRANCH: feat/till-chap7)
 
 1. lets refactor our `drawMap()` method of `GameMap` at `models/map/map.ts`:
    insead of
@@ -473,7 +473,7 @@ drawMap() {
 }
 ```
 
-At this scenario we are not reducing the cyclomatic complexity of this method (main porpouse of the guard clauses) but the code will be cleaner.
+At this scenario we are not reducing the [cyclomatic complexity](https://dev.to/igneel64/easing-into-cyclomatic-complexity-38b1) of this method (main porpouse of the guard clauses) but the code will be cleaner.
 
 2. We are gonna fill the maps with the hexagonal terrain cells (sprites). In order to do that we are also going to refactor the `GameMap`constructor and add 2 new properties:
 
@@ -537,7 +537,6 @@ terrainSprites.grass.image.onload = testDraw2;
 
 5. In order to mantain the same aspect and not to draw the las column cell at odd rows (becase of the offset) we are gonna use a continue statement: `if (j % 2 === 1 && i === this._hexX - 1) continue;`
 
-
 ```typescript
 const testDraw2 = () => {
   for (let i = 0; i < this._hexX; i++) {
@@ -561,6 +560,7 @@ terrainSprites.grass.image.onload = testDraw2;
 ```
 
 6. Let's test the result:
+
 ```javascript
 const gameMap = new GameMap(20, 20);
 gameMap.drawMap();
@@ -569,6 +569,7 @@ gameMap.drawMap();
 We have a map with 20x20 cells all `grass`.
 
 7. Now we have to create the create a terrain type enum `TerrainType` at `models/terrain/terrain.types.ts` and a map for terrain rarity const `map__TerrainRare` at `models/terrain/terrain.maps.ts`. This rarity will be the ratio of appearance.
+
 ```typescript
 // At terrais.types.ts
 export enum TerrainType {
@@ -582,12 +583,13 @@ export const map__TerrainRare: Record<TerrainType, number> = {
   [TerrainType.GRASS]: 100,
   [TerrainType.GRASS2]: 50,
   // ...
-}
+};
 ```
 
-> We are using a typecript `Record` [See docs](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type). `Record` is a TS generic utility which define an object form with `keys` ad `valus`: `Record<K, V>`. `Keys` and `values` can have the Type you want. 
+> We are using a typecript `Record` [See docs](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type). `Record` is a TS generic utility which define an object form with `keys` ad `valus`: `Record<K, V>`. `Keys` and `values` can have the Type you want.
 
 8. Lets use these 2 to set randomly a rarity, so we'll create a new arrow function `testDraw3`:
+
 ```typescript
 const testDraw3 = () => {
   const terrainTypes = this._getTerrainTypes();
@@ -614,34 +616,206 @@ And its corresponding methods: `_getTerrainTypes()`, `_getTotalRarity()`, `_choo
 
 9. If the reload the page, each time we'll see a different mao with different tipe of terrains, it works ✅. The next thing we need is to create a menu interface and a storage for the map.
 
-## CHAPTER 6. TERRAIN CLASS 
+## CHAPTER 6. TERRAIN AND CELL CLASSES
 
-### 6.1 RESOURCES 
+### 6.1 RESOURCES
 
 1. Before we create the menu UI and the storage we are gonna create our terrain object, each terrain will have resources to be mined so we need a resource enum `ResourceType` at `models/resources/recource.types.ts`.
 
 2. And a map for recource conversion (each resource will value x2 than the prev. one). So at `models/resources/recource.maps.ts`:
+
 ```typescript
 export const map__Resources: Record<ResourceType, number> = {
   [ResourceType.COIL]: 1,
   [ResourceType.BRONZE]: 2,
   // ...
-}
+};
 ```
 
 Again we are using a `Record`.
 
-### 6.2 TERRAIN CLASS
+### 6.2 COSTS AND COORDINATES
+
+1. Creare the coordinates interface at `models/map/coordinates.ts` to set the terrain coordinates at map:
+
+```typescript
+export interface Coordinates {
+  x: number;
+  y: number;
+}
+```
+
+2. Create a `Cost` type at `models/costs/costs.ts` to set the terrain avaliable resources and the building, soldiers, weapons, ... Costs:
+
+```typescript
+export type Cost = Record<ResourceType, number>;
+```
+
+### 6.3 TERRAIN CLASS
+
+1. Create a terrain class at `models/terrains/terrain.ts` with its resources, type, sprite and coordinates:
+
+```typescript
+export class Terrain {
+  type: TerrainType;
+  resources: Cost;
+  sprite: Sprite;
+  coords: Coordinates;
+
+  constructor(
+    type: TerrainType,
+    resources: Cost,
+    sprite: Sprite,
+    coords: Coordinates,
+  ) {
+    this.type = type;
+    this.resources = resources;
+    this.sprite = sprite;
+    this.coords = coords;
+  }
+}
+```
+
+2. Create a method to mine the resources
+
+```typescript
+mine(minedResources: Cost): Cost {
+  const minedResult: Cost = {} as Cost;
+
+  Object.values(ResourceType).forEach((resourceType) => {
+    const available = this.resources[resourceType] || 0;
+    const requested = minedResources[resourceType] || 0;
+    // Extradted result
+    const mined = Math.min(available, requested);
+    // Update resource
+    this.resources[resourceType] = available - mined;
+    minedResult[resourceType] = mined;
+  });
+
+  return minedResult;
+}
+```
+Let's explain some code tips we've developed:
+ - `const minedResult: Cost = {} as Cost;` explanation: we initialite an object from a type as an empty object with `= {} as Cost` to trick the TS compilator. Since in execution time is expected that  `minedResult` match all the properties of `Cost` type: `coil, bronze, ...`. ⚠️ Take it easy with this kind of development! We cannot access to a property from an object which is not defined yet! Take this into account!
+ - We access at a record value by its key like at JS Objects `this.resources[resourceType]`.
+ - We use the OR logical operator tu return a default value: `this.resources[resourceType] || 0;`
+
+### 6.4 CELL CLASS
+
+1. At this point we have our terrain 🚀. The problem resides at the reusability of our code (buildings will have a part in our development, in the future), so we are gonna create a father class `Cell` for both `Terrain` and `Building` childrens.
+
+2. Before we create a class we are gonna set some things about the cells at `models/map/cell.types.ts`:
+```typescript
+export enum CellType {
+  BUILDING = "building",
+  TERRAIN = "terrain",
+}
+
+export type CellOwner = string | CellOwnerType.NONE;
+
+export enum CellOwnerType {
+  NONE = "none",
+}
+```
+
+3. Now we are gonna create the father class `Cell` at at `models/map/cells`:
+
+```typescript
+export class Cell {
+  coords: Coordinates;
+  sprite: Sprite;
+  cellType: CellType;
+  private _owner: CellOwner;
+
+  constructor(
+    type: CellType,
+    owner: CellOwner,
+    coords: Coordinates,
+    sprite: Sprite,
+  ) {
+    this.cellType = type;
+    this._owner = owner;
+    this.coords = coords;
+    this.sprite = sprite;
+  }
+}
+```
+
+4. Create some simple methods which will be usefull in the future:
+
+```typescript
+setOwner(newOwner: CellOwner) {
+  this._owner = newOwner;
+}
+
+whoOccupied(): string | null {
+  return this._owner !== CellOwnerType.NONE
+      ? this._owner
+      : null;
+}
+```
+
+5. Applying inheritance (ones of the OOP main features) we can change the `Terrain` class at `models/terrains/terrain.ts`
+
+```typescript
+export class Terrain extends Cell {
+  terrainType: TerrainType;
+  resources: Cost;
+
+  constructor(
+    owner: CellOwner,
+    coords: Coordinates,
+    sprite: Sprite,
+    type: TerrainType,
+    resources: Cost,
+  ) {
+    super(CellType.TERRAIN, owner, coords, sprite);
+    this.terrainType = type;
+    this.resources = resources;
+  }
+
+  // mine method is the same
+}
+```
+
+## CHAPTER 7. TERRAINS WITH RESOURCES
+
+1. We'll need to set the costs and reosurces logic. First the map terrains resources:
+
+| Terrain | Coil | Bronze | Iron | Gold | Turqoise | Zaphire | Emerald | Rubi | Diamond |
+|---------|------|--------|------|------|----------|---------|---------|------|---------|
+| grass   | 1M   | 500k   | 100k | 50k  | 0        | 0       | 0       | 0    | 0       |   
+| grass2  | 10M  | 1M     | 500k | 100k | 0        | 0       | 0       | 0    | 0       |   
+| grass3  | 50M  | 10M    | 1M   | 500k | 0        | 0       | 0       | 0    | 0       |   
+| grass4  | 100M | 50M    | 10M  | 1M   | 0        | 0       | 0       | 0    | 0       |   
+| grass5  | 500M | 100M   | 50M  | 10M  | 0        | 0       | 0       | 0    | 0       | 
+| dessert | 1M   | 500k   | 100k | 1M  | 0        | 0       | 0       | 0    | 0       | 
 
 
+2. Secondly the building costs:
 
-## CHAPTER 7. MENU INTERFACE
 
-TODO CAMBIADO LO DEL CONST POR NUM HEXAGONS
+> Note: its numbers might be adjusted in the future for a better experience. 
+
+3. Now we are going to map the terrain resources at ``
+
+TODO RANDOMIZE RESOURCES WITH A MULTIPLIER
+
+
+## CHAPTER 8. CREATE AND SAVE MAP
+
+```typescript
+
+```
+
+
+```typescript
+
+```
+
+TODO MENU INTERFACE
 
 TODO WHEN ITS GROW MAKE A BOOK (SEPARATED MDs) OF IT
-
-
 
 ## CHAPTER N. SERVER
 
@@ -649,7 +823,7 @@ TODO SERVER DEPENDENCIES
 
 1. install express & cors: `pnpm i express cors`
 
-## FEATURES INDEX (in order of appearance)
+## FEATURES & TERMS INDEX (in order of appearance)
 
 - Pnpm
 - Vite
@@ -660,7 +834,11 @@ TODO SERVER DEPENDENCIES
 - OOP (Object Oriented Programming)
 - Canvas and canvas context
 - Early return / guard clauses
-- Escape from a loop
+- Cyclomatic complexity
+- Escape from a loop (continue/break/return)
 - Functional programming paradigm
-- TS Record
+- TS Record, and access to a propertie
+- Initialite an empty object from a type at TS
+- JS logical operator OR to return a default value
+- OPP Inheritance
 - 
