@@ -1,4 +1,4 @@
-import { ResourceType, QuantityType } from './resources.types';
+import { ResourceType, QuantityType } from './resource.types';
 
 /**
  * Resources mapping values conversions using ResourceType.COIL as a base
@@ -15,6 +15,7 @@ export const map__Resources: Record<ResourceType, number> = {
   [ResourceType.DIAMOND]: 256,
 };
 
+// TODO FUTURE IMPROVEMENT
 /**
  * Quantities mapping values conversions using QuantityType.PIECE as a base
  */

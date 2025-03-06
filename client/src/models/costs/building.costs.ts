@@ -1,4 +1,4 @@
-import { ResourceType } from '../resources';
+import { ResourceType } from '../resources/resource.types';
 import { Cost } from './costs';
 
 export const houseCost: Cost = {

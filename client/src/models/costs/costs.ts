@@ -1,4 +1,4 @@
-import { ResourceType } from '../resources';
+import { ResourceType } from "../resources/resource.types";
 
 /**
  * Type of resources and their quantities costs
