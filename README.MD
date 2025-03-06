@@ -19,9 +19,9 @@ Author: Adrián Rodríguez
 
 ## INDEX
 
-- [Chapters 1 - 4. Branch feat/till-chap4](./docs/chap1-4.md)
-- [Chapters 5 - 7. Branch feat/till-chap7](./docs/chap5-7.md)
-- [Chapters 8 - 10. Branch feat/till-chap10](./docs/chap8-10.md)
+- [Chapters 1 - 4. Branch feat/till-chap4](docs/chap1-4.md)
+- [Chapters 5 - 7. Branch feat/till-chap7](docs/chap5-7.md)
+- [Chapters 8 - 10. Branch feat/till-chap10](docs/chap8-10.md)
 - [Features](docs/features.md)
 
 
