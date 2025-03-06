@@ -1,6 +1,6 @@
-import { Sprite } from "../commons";
-import { CellOwner, CellOwnerType, CellType } from "./cell.types";
-import { Coordinates } from "./coordinates";
+import { Sprite } from '../commons';
+import { CellOwner, CellOwnerType, CellType } from './cell.types';
+import { Coordinates } from './coordinates';
 
 export class Cell {
   coords: Coordinates;
@@ -30,8 +30,6 @@ export class Cell {
    * @returns player name or null
    */
   whoOccupied(): string | null {
-    return this._owner !== CellOwnerType.NONE
-        ? this._owner
-        : null;
+    return this._owner !== CellOwnerType.NONE ? this._owner : null;
   }
 }

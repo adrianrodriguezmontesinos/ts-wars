@@ -1,6 +1,6 @@
-import { TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from "../commons";
-import { map__TerrainRare, Terrain, TerrainType } from "../terrains";
-import { buildingSprites, terrainSprites } from "./index";
+import { TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
+import { map__TerrainRare, Terrain, TerrainType } from '../terrains';
+import { buildingSprites, terrainSprites } from './index';
 
 export class GameMap {
   private _hexX: number;
@@ -28,12 +28,12 @@ export class GameMap {
    * Init the canvas HTML element and its context, to draw the map on it
    */
   private _initCanvas() {
-    this._canvas = document.createElement("canvas");
-    this._canvas.id = "map";
+    this._canvas = document.createElement('canvas');
+    this._canvas.id = 'map';
     this._canvas.width = this._w;
     this._canvas.height = this._h;
     document.body.appendChild(this._canvas);
-    this._ctx = this._canvas.getContext("2d");
+    this._ctx = this._canvas.getContext('2d');
   }
 
   // FOLLOWING STEPS
@@ -62,10 +62,7 @@ export class GameMap {
    * @param terrainTypes TerrainType's Array
    * @param totalRarity Total of rarities (addition of all rarities)
    */
-  private _chooseTerrainType(
-    terrainTypes: TerrainType[],
-    totalRarity: number,
-  ): TerrainType {
+  private _chooseTerrainType(terrainTypes: TerrainType[], totalRarity: number): TerrainType {
     let rnd = Math.floor(Math.random() * totalRarity);
     let chosenType: TerrainType = terrainTypes[0];
     for (const type of terrainTypes) {
@@ -81,10 +78,7 @@ export class GameMap {
   /**
    * Get the canvas coords for a cell at position (i, j)
    */
-  private _calculateCoordinates(
-    i: number,
-    j: number,
-  ): { x: number; y: number } {
+  private _calculateCoordinates(i: number, j: number): { x: number; y: number } {
     // Offset X (horizontally) at odd rows -> 50%
     const offsetX = j % 2 === 1 ? TERRAIN_SPRITE_WIDTH * 0.5 : 0;
     const x = i * TERRAIN_SPRITE_WIDTH + offsetX;
@@ -100,7 +94,7 @@ export class GameMap {
     const ctx: CanvasRenderingContext2D | null = this._ctx;
     if (!ctx) return;
 
-    const testTerrain = new Terrain('player 1', {x: 0, y: 0}, TerrainType.GRASS);
+    const testTerrain = new Terrain('player 1', { x: 0, y: 0 }, TerrainType.GRASS);
     console.log(testTerrain);
     console.log(testTerrain.resources);
 
@@ -124,5 +118,4 @@ export class GameMap {
     // TODO IMPROVE - IT LOADS WHEN THE LAST IMAGE IS LOADED (HARDODED RN, -> NOK)
     terrainSprites.wax5.image.onload = testDraw3;
   }
- 
 }

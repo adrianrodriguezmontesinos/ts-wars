@@ -1,6 +1,6 @@
-import { Cost } from "../costs";
-import { ResourceType } from "../resources";
-import { TerrainType } from "./terrain.types";
+import { Cost } from '../costs';
+import { ResourceType } from '../resources';
+import { TerrainType } from './terrain.types';
 
 /**
  * Terrain rare ratio for each type
