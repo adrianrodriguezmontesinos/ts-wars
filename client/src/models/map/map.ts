@@ -1,7 +1,10 @@
 import { TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from "../commons";
+import { map__TerrainRare, Terrain, TerrainType } from "../terrains";
 import { buildingSprites, terrainSprites } from "./index";
 
 export class GameMap {
+  private _hexX: number;
+  private _hexY: number;
   private _w: number;
   private _h: number;
   public _canvas: HTMLCanvasElement;
@@ -9,15 +12,14 @@ export class GameMap {
 
   /**
    * Game map
-   * @param width Map width
-   * @param heigth Map heigh
+   * @param hexagonsX Number of terrains axis-X
+   * @param hexagonsY Number of terrains axis-Y
    */
-  constructor(
-    width: number = TERRAIN_SPRITE_WIDTH * 100,
-    heigth: number = TERRAIN_SPRITE_HEIGTH * 100,
-  ) {
-    this._w = width;
-    this._h = heigth;
+  constructor(hexagonsX: number = 100, hexagonsY: number = 100) {
+    this._hexX = hexagonsX;
+    this._hexY = hexagonsY;
+    this._w = TERRAIN_SPRITE_WIDTH * hexagonsX;
+    this._h = TERRAIN_SPRITE_WIDTH * hexagonsY;
 
     this._initCanvas();
   }
@@ -35,231 +37,92 @@ export class GameMap {
   }
 
   // FOLLOWING STEPS
-  // TODO 1 METHOD TO REDRAW AND SPROTE
-  // TODO 2 DRAW RANDOM TERRAIN MAPS (SETTING A LIMITS FOR SPRITE TYPES)
-  // TODO 3 OBJECT TERRAIN WITH ITS PROPERTIES - LINK WITH TERRAIN SPRITE
-  // (ALSO WILL BE USED AT BUILDINGS)
-  // TODO 4 CURSOR HOVER TERRAINS
+  // TODO WE ARE GONNA CHANGE THIS MEHTODS USING THE TERRAIN CLASS
+  // TODO SAVE MAPS
+  // TODO CURSOR HOVER TERRAINS
+
+  // TODO MIGHT BE PUBLIC IN THE FUTURE
+  /**
+   * Get an array from the terrain types keys
+   */
+  private _getTerrainTypes(): TerrainType[] {
+    return Object.keys(map__TerrainRare) as TerrainType[];
+  }
 
   /**
-   * Draw a Game Map
+   * Get the total rarities (addition of all rarities)
+   */
+  private _getTotalRarity(terrainTypes: TerrainType[]): number {
+    return terrainTypes.reduce((acc, type) => acc + map__TerrainRare[type], 0);
+  }
+
+  /**
+   * Perform a weighted selection and return a TerrainType
+   * Note: this mehtod was made with chatGPT help mine was failing 😪
+   * @param terrainTypes TerrainType's Array
+   * @param totalRarity Total of rarities (addition of all rarities)
+   */
+  private _chooseTerrainType(
+    terrainTypes: TerrainType[],
+    totalRarity: number,
+  ): TerrainType {
+    let rnd = Math.floor(Math.random() * totalRarity);
+    let chosenType: TerrainType = terrainTypes[0];
+    for (const type of terrainTypes) {
+      rnd -= map__TerrainRare[type];
+      if (rnd < 0) {
+        chosenType = type;
+        break;
+      }
+    }
+    return chosenType;
+  }
+
+  /**
+   * Get the canvas coords for a cell at position (i, j)
+   */
+  private _calculateCoordinates(
+    i: number,
+    j: number,
+  ): { x: number; y: number } {
+    // Offset X (horizontally) at odd rows -> 50%
+    const offsetX = j % 2 === 1 ? TERRAIN_SPRITE_WIDTH * 0.5 : 0;
+    const x = i * TERRAIN_SPRITE_WIDTH + offsetX;
+    // Each row displace 75% vertically
+    const y = j * (TERRAIN_SPRITE_HEIGTH * 0.75);
+    return { x, y };
+  }
+
+  /**
+   * Draw the map with terrains of different types using their rarity ratio
    */
   drawMap() {
     const ctx: CanvasRenderingContext2D | null = this._ctx;
+    if (!ctx) return;
 
-    if (ctx) {
-      // TODO TEMP - WE'LL CREATE A METHOD TO
-      const testDraw = () => {
-        // 1st line
-        buildingSprites.house.draw(ctx, 0, 0);
-        buildingSprites.house2.draw(ctx, TERRAIN_SPRITE_WIDTH, 0);
-        buildingSprites.house3.draw(ctx, TERRAIN_SPRITE_WIDTH * 2, 0);
-        buildingSprites.farm.draw(ctx, TERRAIN_SPRITE_WIDTH * 3, 0);
+    const testTerrain = new Terrain('player 1', {x: 0, y: 0}, TerrainType.GRASS);
+    console.log(testTerrain);
+    console.log(testTerrain.resources);
 
-        // 2nd line
-        buildingSprites.farm2.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 0.5,
-          TERRAIN_SPRITE_HEIGTH - TERRAIN_SPRITE_HEIGTH * 0.25,
-        );
-        buildingSprites.farm3.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 1.5,
-          TERRAIN_SPRITE_HEIGTH - TERRAIN_SPRITE_HEIGTH * 0.25,
-        );
-        buildingSprites.castle.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 2.5,
-          TERRAIN_SPRITE_HEIGTH - TERRAIN_SPRITE_HEIGTH * 0.25,
-        );
+    const testDraw3 = () => {
+      const terrainTypes = this._getTerrainTypes();
+      const totalRarity = this._getTotalRarity(terrainTypes);
 
-        // 3rd line
-        buildingSprites.castle2.draw(
-          ctx,
-          0,
-          TERRAIN_SPRITE_HEIGTH * 2 - TERRAIN_SPRITE_HEIGTH * (0.25 * 2),
-        );
-        buildingSprites.castle3.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH,
-          TERRAIN_SPRITE_HEIGTH * 2 - TERRAIN_SPRITE_HEIGTH * (0.25 * 2),
-        );
-        buildingSprites.mine.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 2,
-          TERRAIN_SPRITE_HEIGTH * 2 - TERRAIN_SPRITE_HEIGTH * (0.25 * 2),
-        );
-        buildingSprites.mine2.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 3,
-          TERRAIN_SPRITE_HEIGTH * 2 - TERRAIN_SPRITE_HEIGTH * (0.25 * 2),
-        );
+      for (let j = 0; j < this._hexY; j++) {
+        for (let i = 0; i < this._hexX; i++) {
+          // At odd rows the last item will not draw
+          if (j % 2 === 1 && i === this._hexX - 1) continue;
 
-        // 4th line
-        buildingSprites.mine3.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 0.5,
-          TERRAIN_SPRITE_HEIGTH * 3 - TERRAIN_SPRITE_HEIGTH * (0.25 * 3),
-        );
-        buildingSprites.barracs.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 1.5,
-          TERRAIN_SPRITE_HEIGTH * 3 - TERRAIN_SPRITE_HEIGTH * (0.25 * 3),
-        );
-        buildingSprites.barracs2.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 2.5,
-          TERRAIN_SPRITE_HEIGTH * 3 - TERRAIN_SPRITE_HEIGTH * (0.25 * 3),
-        );
-        buildingSprites.barracs3.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 3.5,
-          TERRAIN_SPRITE_HEIGTH * 3 - TERRAIN_SPRITE_HEIGTH * (0.25 * 3),
-        );
+          // Pait the chosen terrain type (get from rarity ratios)
+          const chosenType = this._chooseTerrainType(terrainTypes, totalRarity);
+          const { x, y } = this._calculateCoordinates(i, j);
+          terrainSprites[chosenType].draw(ctx, x, y);
+        }
+      }
+    };
 
-        // 5th line
-        buildingSprites.blacksmith.draw(
-          ctx,
-          0,
-          TERRAIN_SPRITE_HEIGTH * 4 - TERRAIN_SPRITE_HEIGTH * (0.25 * 4),
-        );
-        buildingSprites.blacksmith2.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH,
-          TERRAIN_SPRITE_HEIGTH * 4 - TERRAIN_SPRITE_HEIGTH * (0.25 * 4),
-        );
-        buildingSprites.blacksmith3.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 2,
-          TERRAIN_SPRITE_HEIGTH * 4 - TERRAIN_SPRITE_HEIGTH * (0.25 * 4),
-        );
-        buildingSprites.church.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 3,
-          TERRAIN_SPRITE_HEIGTH * 4 - TERRAIN_SPRITE_HEIGTH * (0.25 * 4),
-        );
-
-        // 6th line
-        buildingSprites.church2.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 0.5,
-          TERRAIN_SPRITE_HEIGTH * 5 - TERRAIN_SPRITE_HEIGTH * (0.25 * 5),
-        );
-        buildingSprites.church3.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 1.5,
-          TERRAIN_SPRITE_HEIGTH * 5 - TERRAIN_SPRITE_HEIGTH * (0.25 * 5),
-        );
-        terrainSprites.grass.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 2.5,
-          TERRAIN_SPRITE_HEIGTH * 5 - TERRAIN_SPRITE_HEIGTH * (0.25 * 5),
-        );
-        terrainSprites.grass2.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 3.5,
-          TERRAIN_SPRITE_HEIGTH * 5 - TERRAIN_SPRITE_HEIGTH * (0.25 * 5),
-        );
-        terrainSprites.grass3.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 4.5,
-          TERRAIN_SPRITE_HEIGTH * 5 - TERRAIN_SPRITE_HEIGTH * (0.25 * 5),
-        );
-        terrainSprites.grass4.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 5.5,
-          TERRAIN_SPRITE_HEIGTH * 5 - TERRAIN_SPRITE_HEIGTH * (0.25 * 5),
-        );
-        terrainSprites.grass5.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 6.5,
-          TERRAIN_SPRITE_HEIGTH * 5 - TERRAIN_SPRITE_HEIGTH * (0.25 * 5),
-        );
-
-        // 7th line
-        terrainSprites.desert.draw(
-          ctx,
-          0,
-          TERRAIN_SPRITE_HEIGTH * 6 - TERRAIN_SPRITE_HEIGTH * (0.25 * 6),
-        );
-        terrainSprites.desert2.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH,
-          TERRAIN_SPRITE_HEIGTH * 6 - TERRAIN_SPRITE_HEIGTH * (0.25 * 6),
-        );
-        terrainSprites.desert3.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 2,
-          TERRAIN_SPRITE_HEIGTH * 6 - TERRAIN_SPRITE_HEIGTH * (0.25 * 6),
-        );
-        terrainSprites.desert4.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 3,
-          TERRAIN_SPRITE_HEIGTH * 6 - TERRAIN_SPRITE_HEIGTH * (0.25 * 6),
-        );
-        terrainSprites.desert5.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 4,
-          TERRAIN_SPRITE_HEIGTH * 6 - TERRAIN_SPRITE_HEIGTH * (0.25 * 6),
-        );
-
-        // 8th line
-        terrainSprites.soil.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 0.5,
-          TERRAIN_SPRITE_HEIGTH * 7 - TERRAIN_SPRITE_HEIGTH * (0.25 * 7),
-        );
-        terrainSprites.soil2.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 1.5,
-          TERRAIN_SPRITE_HEIGTH * 7 - TERRAIN_SPRITE_HEIGTH * (0.25 * 7),
-        );
-        terrainSprites.soil3.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 2.5,
-          TERRAIN_SPRITE_HEIGTH * 7 - TERRAIN_SPRITE_HEIGTH * (0.25 * 7),
-        );
-        terrainSprites.soil4.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 3.5,
-          TERRAIN_SPRITE_HEIGTH * 7 - TERRAIN_SPRITE_HEIGTH * (0.25 * 7),
-        );
-        terrainSprites.soil5.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 4.5,
-          TERRAIN_SPRITE_HEIGTH * 7 - TERRAIN_SPRITE_HEIGTH * (0.25 * 7),
-        );
-
-        // 8th line
-        terrainSprites.wax.draw(
-          ctx,
-          0,
-          TERRAIN_SPRITE_HEIGTH * 8 - TERRAIN_SPRITE_HEIGTH * (0.25 * 8),
-        );
-        terrainSprites.wax2.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH,
-          TERRAIN_SPRITE_HEIGTH * 8 - TERRAIN_SPRITE_HEIGTH * (0.25 * 8),
-        );
-        terrainSprites.wax3.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 2,
-          TERRAIN_SPRITE_HEIGTH * 8 - TERRAIN_SPRITE_HEIGTH * (0.25 * 8),
-        );
-        terrainSprites.wax4.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 3,
-          TERRAIN_SPRITE_HEIGTH * 8 - TERRAIN_SPRITE_HEIGTH * (0.25 * 8),
-        );
-        terrainSprites.wax5.draw(
-          ctx,
-          TERRAIN_SPRITE_WIDTH * 4,
-          TERRAIN_SPRITE_HEIGTH * 8 - TERRAIN_SPRITE_HEIGTH * (0.25 * 8),
-        );
-      };
-
-      // TODO IMPROVE - IT LOADS WHEN THE LAST IMAGE IS LOADED (HARDODED RN, -> NOK)
-      terrainSprites.wax5.image.onload = testDraw;
-    }
+    // TODO IMPROVE - IT LOADS WHEN THE LAST IMAGE IS LOADED (HARDODED RN, -> NOK)
+    terrainSprites.wax5.image.onload = testDraw3;
   }
+ 
 }

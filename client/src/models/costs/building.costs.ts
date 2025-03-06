@@ -1,108 +1,250 @@
-import { ResourceType } from '../resources';
-import { Cost } from './costs';
+import { BuildingType } from "../buildings/building.types";
+import { ResourceType } from "../resources/resource.types";
+import { Cost } from "./costs";
 
-export const houseCost: Cost = {
-  [ResourceType.COIL]: 1000,
-  [ResourceType.BRONZE]: 500,
-  [ResourceType.IRON]: 0,
-  [ResourceType.GOLD]: 0,
-  [ResourceType.TURQUOISE]: 0,
-  [ResourceType.ZAPHIRE]: 0,
-  [ResourceType.EMERALD]: 0,
-  [ResourceType.RUBI]: 0,
-  [ResourceType.DIAMOND]: 0,
+export const map__BuildingCosts: Record<BuildingType, Cost> = {
+  // House
+  [BuildingType.HOUSE]: {
+    [ResourceType.COIL]: 100,
+    [ResourceType.BRONZE]: 0,
+    [ResourceType.IRON]: 50,
+    [ResourceType.GOLD]: 0,
+    [ResourceType.TURQUOISE]: 0,
+    [ResourceType.ZAPHIRE]: 0,
+    [ResourceType.EMERALD]: 0,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.HOUSE2]: {
+    [ResourceType.COIL]: 100000,
+    [ResourceType.BRONZE]: 0,
+    [ResourceType.IRON]: 50000,
+    [ResourceType.GOLD]: 0,
+    [ResourceType.TURQUOISE]: 2,
+    [ResourceType.ZAPHIRE]: 0,
+    [ResourceType.EMERALD]: 0,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.HOUSE3]: {
+    [ResourceType.COIL]: 1000000,
+    [ResourceType.BRONZE]: 0,
+    [ResourceType.IRON]: 500000,
+    [ResourceType.GOLD]: 0,
+    [ResourceType.TURQUOISE]: 1000,
+    [ResourceType.ZAPHIRE]: 10,
+    [ResourceType.EMERALD]: 10,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+
+  // Farm
+  [BuildingType.FARM]: {
+    [ResourceType.COIL]: 0,
+    [ResourceType.BRONZE]: 100,
+    [ResourceType.IRON]: 0,
+    [ResourceType.GOLD]: 10,
+    [ResourceType.TURQUOISE]: 0,
+    [ResourceType.ZAPHIRE]: 0,
+    [ResourceType.EMERALD]: 0,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.FARM2]: {
+    [ResourceType.COIL]: 0,
+    [ResourceType.BRONZE]: 100000,
+    [ResourceType.IRON]: 0,
+    [ResourceType.GOLD]: 10000,
+    [ResourceType.TURQUOISE]: 0,
+    [ResourceType.ZAPHIRE]: 3,
+    [ResourceType.EMERALD]: 0,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.FARM3]: {
+    [ResourceType.COIL]: 0,
+    [ResourceType.BRONZE]: 1000000,
+    [ResourceType.IRON]: 0,
+    [ResourceType.GOLD]: 100000,
+    [ResourceType.TURQUOISE]: 0,
+    [ResourceType.ZAPHIRE]: 3000,
+    [ResourceType.EMERALD]: 3,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+
+  // Mine
+  [BuildingType.MINE]: {
+    [ResourceType.COIL]: 100,
+    [ResourceType.BRONZE]: 50,
+    [ResourceType.IRON]: 50,
+    [ResourceType.GOLD]: 10,
+    [ResourceType.TURQUOISE]: 0,
+    [ResourceType.ZAPHIRE]: 0,
+    [ResourceType.EMERALD]: 0,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.MINE2]: {
+    [ResourceType.COIL]: 500000,
+    [ResourceType.BRONZE]: 100000,
+    [ResourceType.IRON]: 50000,
+    [ResourceType.GOLD]: 10000,
+    [ResourceType.TURQUOISE]: 50,
+    [ResourceType.ZAPHIRE]: 30,
+    [ResourceType.EMERALD]: 10,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.MINE3]: {
+    [ResourceType.COIL]: 10000000,
+    [ResourceType.BRONZE]: 5000000,
+    [ResourceType.IRON]: 500000,
+    [ResourceType.GOLD]: 100000,
+    [ResourceType.TURQUOISE]: 50000,
+    [ResourceType.ZAPHIRE]: 30000,
+    [ResourceType.EMERALD]: 10000,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+
+  // Barracks
+  [BuildingType.BARRACKS]: {
+    [ResourceType.COIL]: 200,
+    [ResourceType.BRONZE]: 100,
+    [ResourceType.IRON]: 80,
+    [ResourceType.GOLD]: 50,
+    [ResourceType.TURQUOISE]: 0,
+    [ResourceType.ZAPHIRE]: 0,
+    [ResourceType.EMERALD]: 0,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.BARRACKS2]: {
+    [ResourceType.COIL]: 200000,
+    [ResourceType.BRONZE]: 100000,
+    [ResourceType.IRON]: 100000,
+    [ResourceType.GOLD]: 50000,
+    [ResourceType.TURQUOISE]: 80,
+    [ResourceType.ZAPHIRE]: 60,
+    [ResourceType.EMERALD]: 30,
+    [ResourceType.RUBI]: 1,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.BARRACKS3]: {
+    [ResourceType.COIL]: 20000000,
+    [ResourceType.BRONZE]: 10000000,
+    [ResourceType.IRON]: 8000000,
+    [ResourceType.GOLD]: 500000,
+    [ResourceType.TURQUOISE]: 200,
+    [ResourceType.ZAPHIRE]: 60000,
+    [ResourceType.EMERALD]: 3000,
+    [ResourceType.RUBI]: 5,
+    [ResourceType.DIAMOND]: 0,
+  },
+
+  // Blacksmith
+  [BuildingType.BLACKSMITH]: {
+    [ResourceType.COIL]: 1000,
+    [ResourceType.BRONZE]: 500,
+    [ResourceType.IRON]: 200,
+    [ResourceType.GOLD]: 100,
+    [ResourceType.TURQUOISE]: 2,
+    [ResourceType.ZAPHIRE]: 0,
+    [ResourceType.EMERALD]: 0,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.BLACKSMITH2]: {
+    [ResourceType.COIL]: 200000,
+    [ResourceType.BRONZE]: 100000,
+    [ResourceType.IRON]: 100000,
+    [ResourceType.GOLD]: 50000,
+    [ResourceType.TURQUOISE]: 200,
+    [ResourceType.ZAPHIRE]: 80,
+    [ResourceType.EMERALD]: 100,
+    [ResourceType.RUBI]: 2,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.BLACKSMITH3]: {
+    [ResourceType.COIL]: 20000000,
+    [ResourceType.BRONZE]: 10000000,
+    [ResourceType.IRON]: 8000000,
+    [ResourceType.GOLD]: 500000,
+    [ResourceType.TURQUOISE]: 200000,
+    [ResourceType.ZAPHIRE]: 80000,
+    [ResourceType.EMERALD]: 10000,
+    [ResourceType.RUBI]: 8,
+    [ResourceType.DIAMOND]: 0,
+  },
+
+  // Church
+  [BuildingType.CHURCH]: {
+    [ResourceType.COIL]: 10000,
+    [ResourceType.BRONZE]: 2000,
+    [ResourceType.IRON]: 1000,
+    [ResourceType.GOLD]: 500,
+    [ResourceType.TURQUOISE]: 3,
+    [ResourceType.ZAPHIRE]: 1,
+    [ResourceType.EMERALD]: 0,
+    [ResourceType.RUBI]: 0,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.CHURCH2]: {
+    [ResourceType.COIL]: 2000000,
+    [ResourceType.BRONZE]: 200000,
+    [ResourceType.IRON]: 100000,
+    [ResourceType.GOLD]: 500000,
+    [ResourceType.TURQUOISE]: 300,
+    [ResourceType.ZAPHIRE]: 150,
+    [ResourceType.EMERALD]: 100,
+    [ResourceType.RUBI]: 5,
+    [ResourceType.DIAMOND]: 0,
+  },
+  [BuildingType.CHURCH3]: {
+    [ResourceType.COIL]: 40000000,
+    [ResourceType.BRONZE]: 2000000,
+    [ResourceType.IRON]: 1000000,
+    [ResourceType.GOLD]: 1000000,
+    [ResourceType.TURQUOISE]: 300000,
+    [ResourceType.ZAPHIRE]: 150000,
+    [ResourceType.EMERALD]: 20000,
+    [ResourceType.RUBI]: 10,
+    [ResourceType.DIAMOND]: 0,
+  },
+
+  // Castle
+  [BuildingType.CASTLE]: {
+    [ResourceType.COIL]: 1000,
+    [ResourceType.BRONZE]: 1000,
+    [ResourceType.IRON]: 1000,
+    [ResourceType.GOLD]: 1000,
+    [ResourceType.TURQUOISE]: 1,
+    [ResourceType.ZAPHIRE]: 1,
+    [ResourceType.EMERALD]: 1,
+    [ResourceType.RUBI]: 1,
+    [ResourceType.DIAMOND]: 1,
+  },
+  [BuildingType.CASTLE2]: {
+    [ResourceType.COIL]: 1000000,
+    [ResourceType.BRONZE]: 1000000,
+    [ResourceType.IRON]: 1000000,
+    [ResourceType.GOLD]: 1000000,
+    [ResourceType.TURQUOISE]: 600,
+    [ResourceType.ZAPHIRE]: 400,
+    [ResourceType.EMERALD]: 300,
+    [ResourceType.RUBI]: 12,
+    [ResourceType.DIAMOND]: 4,
+  },
+  [BuildingType.CASTLE3]: {
+    [ResourceType.COIL]: 100000000,
+    [ResourceType.BRONZE]: 100000000,
+    [ResourceType.IRON]: 100000000,
+    [ResourceType.GOLD]: 50000000,
+    [ResourceType.TURQUOISE]: 600000,
+    [ResourceType.ZAPHIRE]: 200000,
+    [ResourceType.EMERALD]: 30000,
+    [ResourceType.RUBI]: 24,
+    [ResourceType.DIAMOND]: 8,
+  },
 };
-
-export const house2Cost: Cost = {
-  [ResourceType.COIL]: 10000,
-  [ResourceType.BRONZE]: 5000,
-  [ResourceType.IRON]: 100,
-  [ResourceType.GOLD]: 50,
-  [ResourceType.TURQUOISE]: 0,
-  [ResourceType.ZAPHIRE]: 0,
-  [ResourceType.EMERALD]: 0,
-  [ResourceType.RUBI]: 0,
-  [ResourceType.DIAMOND]: 0,
-};
-
-export const house3Cost: Cost = {
-  [ResourceType.COIL]: 100000,
-  [ResourceType.BRONZE]: 50000,
-  [ResourceType.IRON]: 1000,
-  [ResourceType.GOLD]: 500,
-  [ResourceType.TURQUOISE]: 1,
-  [ResourceType.ZAPHIRE]: 0,
-  [ResourceType.EMERALD]: 0,
-  [ResourceType.RUBI]: 0,
-  [ResourceType.DIAMOND]: 0,
-};
-
-export const farmCost: Cost = {
-  [ResourceType.COIL]: 2000,
-  [ResourceType.BRONZE]: 2000,
-  [ResourceType.IRON]: 500,
-  [ResourceType.GOLD]: 100,
-  [ResourceType.TURQUOISE]: 0,
-  [ResourceType.ZAPHIRE]: 0,
-  [ResourceType.EMERALD]: 0,
-  [ResourceType.RUBI]: 0,
-  [ResourceType.DIAMOND]: 0,
-};
-
-// TODO 2 Y 3
-
-export const mineCost: Cost = {
-  [ResourceType.COIL]: 5000,
-  [ResourceType.BRONZE]: 1000,
-  [ResourceType.IRON]: 1000,
-  [ResourceType.GOLD]: 200,
-  [ResourceType.TURQUOISE]: 0,
-  [ResourceType.ZAPHIRE]: 0,
-  [ResourceType.EMERALD]: 0,
-  [ResourceType.RUBI]: 0,
-  [ResourceType.DIAMOND]: 0,
-};
-
-// TODO 2 Y 3
-
-export const barracsCost: Cost = {
-  [ResourceType.COIL]: 10000,
-  [ResourceType.BRONZE]: 5000,
-  [ResourceType.IRON]: 2000,
-  [ResourceType.GOLD]: 1000,
-  [ResourceType.TURQUOISE]: 0,
-  [ResourceType.ZAPHIRE]: 0,
-  [ResourceType.EMERALD]: 0,
-  [ResourceType.RUBI]: 0,
-  [ResourceType.DIAMOND]: 0,
-};
-
-// TODO 2 Y 3
-
-export const blacksmithCost: Cost = {
-  [ResourceType.COIL]: 5000,
-  [ResourceType.BRONZE]: 5000,
-  [ResourceType.IRON]: 1000,
-  [ResourceType.GOLD]: 1000,
-  [ResourceType.TURQUOISE]: 100,
-  [ResourceType.ZAPHIRE]: 0,
-  [ResourceType.EMERALD]: 0,
-  [ResourceType.RUBI]: 0,
-  [ResourceType.DIAMOND]: 0,
-};
-
-// TODO 2 Y 3
-
-export const castleCost: Cost = {
-  [ResourceType.COIL]: 10000,
-  [ResourceType.BRONZE]: 10000,
-  [ResourceType.IRON]: 10000,
-  [ResourceType.GOLD]: 500,
-  [ResourceType.TURQUOISE]: 0,
-  [ResourceType.ZAPHIRE]: 0,
-  [ResourceType.EMERALD]: 0,
-  [ResourceType.RUBI]: 0,
-  [ResourceType.DIAMOND]: 1,
-};
-
-// TODO 2 Y 3

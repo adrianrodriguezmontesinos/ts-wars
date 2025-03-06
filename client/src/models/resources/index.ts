@@ -1,3 +1,2 @@
-export * from './resources.maps';
-export * from './resources.types';
-export * from './resources';
+export * from './resource.maps';
+export * from './resource.types';
