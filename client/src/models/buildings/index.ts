@@ -1,2 +1,1 @@
-export * from './buildings';
-export * from './buildings.types';
+export * from './building.types';

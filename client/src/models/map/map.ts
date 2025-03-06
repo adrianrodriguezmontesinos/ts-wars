@@ -1,5 +1,5 @@
 import { TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from "../commons";
-import { map__TerrainRare, TerrainType } from "../terrains";
+import { map__TerrainRare, Terrain, TerrainType } from "../terrains";
 import { buildingSprites, terrainSprites } from "./index";
 
 export class GameMap {
@@ -37,10 +37,9 @@ export class GameMap {
   }
 
   // FOLLOWING STEPS
-  // TODO 1 METHOD TO REDRAW AND SPROTE
-  // TODO 3 OBJECT TERRAIN WITH ITS PROPERTIES - LINK WITH TERRAIN SPRITE
-  // (ALSO WILL BE USED AT BUILDINGS)
-  // TODO 4 CURSOR HOVER TERRAINS
+  // TODO WE ARE GONNA CHANGE THIS MEHTODS USING THE TERRAIN CLASS
+  // TODO SAVE MAPS
+  // TODO CURSOR HOVER TERRAINS
 
   // TODO MIGHT BE PUBLIC IN THE FUTURE
   /**
@@ -100,6 +99,10 @@ export class GameMap {
   drawMap() {
     const ctx: CanvasRenderingContext2D | null = this._ctx;
     if (!ctx) return;
+
+    const testTerrain = new Terrain('player 1', {x: 0, y: 0}, TerrainType.GRASS);
+    console.log(testTerrain);
+    console.log(testTerrain.resources);
 
     const testDraw3 = () => {
       const terrainTypes = this._getTerrainTypes();

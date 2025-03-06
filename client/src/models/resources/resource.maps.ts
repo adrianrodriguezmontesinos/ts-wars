@@ -5,14 +5,14 @@ import { ResourceType, QuantityType } from './resource.types';
  */
 export const map__Resources: Record<ResourceType, number> = {
   [ResourceType.COIL]: 1,
-  [ResourceType.BRONZE]: 2,
-  [ResourceType.IRON]: 4,
-  [ResourceType.GOLD]: 8,
-  [ResourceType.TURQUOISE]: 16,
-  [ResourceType.ZAPHIRE]: 32,
-  [ResourceType.EMERALD]: 64,
-  [ResourceType.RUBI]: 128,
-  [ResourceType.DIAMOND]: 256,
+  [ResourceType.BRONZE]: 4,
+  [ResourceType.IRON]: 16,
+  [ResourceType.GOLD]: 32,
+  [ResourceType.TURQUOISE]: 128,
+  [ResourceType.ZAPHIRE]: 512,
+  [ResourceType.EMERALD]: 2048,
+  [ResourceType.RUBI]: 8192,
+  [ResourceType.DIAMOND]: 32768,
 };
 
 // TODO FUTURE IMPROVEMENT

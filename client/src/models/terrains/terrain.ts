@@ -1,7 +1,9 @@
+import { randomizeCost } from "../../logic/resources/conversions";
 import { Sprite } from "../commons";
 import { Cost } from "../costs";
-import { Cell, CellOwner, CellType, Coordinates } from "../map";
+import { Cell, CellOwner, CellType, Coordinates, terrainSprites } from "../map";
 import { ResourceType } from "../resources";
+import { map__TerrainResource } from "./terrain.maps";
 import { TerrainType } from "./terrain.types";
 
 export class Terrain extends Cell {
@@ -12,20 +14,16 @@ export class Terrain extends Cell {
    * Terrain cell
    * @param owner Player owner of the cell
    * @param coords Coordinates {x, y} at the game map
-   * @param sprite Terrain Sprite
    * @param type Terrain type
-   * @param resources Resources available at the terrain
    */
   constructor(
     owner: CellOwner,
     coords: Coordinates,
-    sprite: Sprite,
     type: TerrainType,
-    resources: Cost,
   ) {
-    super(CellType.TERRAIN, owner, coords, sprite);
+    super(CellType.TERRAIN, owner, coords, terrainSprites[type]);
     this.terrainType = type;
-    this.resources = resources;
+    this.resources = randomizeCost(map__TerrainResource[this.terrainType], .1);
   }
 
   /**
