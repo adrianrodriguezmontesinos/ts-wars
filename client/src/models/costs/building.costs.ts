@@ -1,6 +1,6 @@
-import { BuildingType } from "../buildings/building.types";
-import { ResourceType } from "../resources/resource.types";
-import { Cost } from "./costs";
+import { BuildingType } from '../buildings/building.types';
+import { ResourceType } from '../resources/resource.types';
+import { Cost } from './costs';
 
 export const map__BuildingCosts: Record<BuildingType, Cost> = {
   // House

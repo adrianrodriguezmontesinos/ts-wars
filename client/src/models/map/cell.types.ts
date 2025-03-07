@@ -1,6 +1,6 @@
 export enum CellType {
-  BUILDING = "building",
-  TERRAIN = "terrain",
+  BUILDING = 'building',
+  TERRAIN = 'terrain',
 }
 
 /**
@@ -9,5 +9,5 @@ export enum CellType {
 export type CellOwner = string | CellOwnerType.NONE;
 
 export enum CellOwnerType {
-  NONE = "none",
+  NONE = 'none',
 }

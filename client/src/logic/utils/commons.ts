@@ -3,5 +3,5 @@
  * @returns Random boolean
  */
 export function rndBool(): boolean {
-    return Math.random() < .5;
+  return Math.random() < 0.5;
 }

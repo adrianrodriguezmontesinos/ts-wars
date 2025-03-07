@@ -7,6 +7,7 @@
 - JS Modules
 - Barrels
 - TS Enums an Types
+- Arrow functions
 - OOP (Object Oriented Programming)
 - Canvas and canvas context
 - Early return / guard clauses
@@ -17,4 +18,6 @@
 - Initialite an empty object from a type at TS
 - JS logical operator OR to return a default value
 - OPP Inheritance
-- 
+- Bidimensional Arrays
+- JS async, await and promises
+-
