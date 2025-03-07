@@ -24,4 +24,3 @@ Author: Adrián Rodríguez
 - [Chapters 8 - 10. Branch feat/till-chap10](docs/chap8-10.md)
 - [Features](docs/features.md)
 
-

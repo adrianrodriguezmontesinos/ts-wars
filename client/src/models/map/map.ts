@@ -1,14 +1,24 @@
+import { BuildingType } from '../buildings';
 import { TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
 import { map__TerrainRare, Terrain, TerrainType } from '../terrains';
-import { buildingSprites, terrainSprites } from './index';
+import {
+  buildingSprites,
+  Cell,
+  CellOwnerType,
+  CellType,
+  Coordinates,
+  terrainSprites,
+} from './index';
 
 export class GameMap {
   private _hexX: number;
   private _hexY: number;
   private _w: number;
   private _h: number;
-  public _canvas: HTMLCanvasElement;
+  private _canvas: HTMLCanvasElement;
   private _ctx: CanvasRenderingContext2D | null;
+  private _cells: Cell[][];
+  private _players: string[]; // TODO TEMP USE PLAYER CLASS
 
   /**
    * Game map
@@ -22,6 +32,7 @@ export class GameMap {
     this._h = TERRAIN_SPRITE_WIDTH * hexagonsY;
 
     this._initCanvas();
+    this._cells = [];
   }
 
   /**
@@ -78,7 +89,7 @@ export class GameMap {
   /**
    * Get the canvas coords for a cell at position (i, j)
    */
-  private _calculateCoordinates(i: number, j: number): { x: number; y: number } {
+  private _calculateCoordinates(i: number, j: number): Coordinates {
     // Offset X (horizontally) at odd rows -> 50%
     const offsetX = j % 2 === 1 ? TERRAIN_SPRITE_WIDTH * 0.5 : 0;
     const x = i * TERRAIN_SPRITE_WIDTH + offsetX;
@@ -88,34 +99,95 @@ export class GameMap {
   }
 
   /**
+   * Init the subarray at each first row
+   * @param i Row index (first - level array)
+   */
+  private _initSubArray(i: number) {
+    if (!this._cells[i]) {
+      this._cells[i] = [];
+    }
+  }
+
+  /**
    * Draw the map with terrains of different types using their rarity ratio
    */
-  drawMap() {
-    const ctx: CanvasRenderingContext2D | null = this._ctx;
-    if (!ctx) return;
+  private async _initTerrains() {
+    const terrainTypes = this._getTerrainTypes();
+    const totalRarity = this._getTotalRarity(terrainTypes);
 
-    const testTerrain = new Terrain('player 1', { x: 0, y: 0 }, TerrainType.GRASS);
-    console.log(testTerrain);
-    console.log(testTerrain.resources);
+    for (let j = 0; j < this._hexY; j++) {
+      for (let i = 0; i < this._hexX; i++) {
+        // At odd rows the last item will not draw
+        if (j % 2 === 1 && i === this._hexX - 1) continue;
 
-    const testDraw3 = () => {
-      const terrainTypes = this._getTerrainTypes();
-      const totalRarity = this._getTotalRarity(terrainTypes);
+        // Init each first row
+        this._initSubArray(i);
 
-      for (let j = 0; j < this._hexY; j++) {
-        for (let i = 0; i < this._hexX; i++) {
-          // At odd rows the last item will not draw
-          if (j % 2 === 1 && i === this._hexX - 1) continue;
+        // Get the chosen terrain type (usinf rariry ratios) and the coordinates
+        const chosenType = this._chooseTerrainType(terrainTypes, totalRarity);
+        const coords = this._calculateCoordinates(i, j);
 
-          // Pait the chosen terrain type (get from rarity ratios)
-          const chosenType = this._chooseTerrainType(terrainTypes, totalRarity);
-          const { x, y } = this._calculateCoordinates(i, j);
-          terrainSprites[chosenType].draw(ctx, x, y);
-        }
+        // Save the terrain cell
+        this._cells[i][j] = new Terrain(CellOwnerType.NONE, coords, chosenType);
+
+        // Paint the sprite
+        await this.drawCell(chosenType, i, j);
       }
-    };
-
-    // TODO IMPROVE - IT LOADS WHEN THE LAST IMAGE IS LOADED (HARDODED RN, -> NOK)
-    terrainSprites.wax5.image.onload = testDraw3;
+    }
   }
+
+  // TODO TEMP 
+  // TODO COMENTAR
+  // TODO AQUI SE ASIGNAN LOS CASTILLOS A LOS JUGADORES
+  private async _initCastles() {
+    if(this._players.length === 2) {
+      // Player 1
+      await this.drawCell(BuildingType.CASTLE, 1, 1, CellType.BUILDING);
+
+      // Player 2
+      // At odd files the margin must be 1 more
+      const margin = this._hexY % 2 === 0 ? 2 : 3;
+      await this.drawCell(BuildingType.CASTLE, this._hexX - margin, this._hexY - 2, CellType.BUILDING);
+    }
+  }
+
+  // TODO COMENTAR
+  /**
+   *
+   * @param type
+   * @param i
+   * @param j
+   * @returns
+   */
+  async drawCell(
+    type: BuildingType | TerrainType,
+    i: number,
+    j: number,
+    cellType: CellType = CellType.TERRAIN,
+  ): Promise<void> {
+    if (!this._ctx) return;
+    const coords = this._calculateCoordinates(i, j);
+    const sprite = cellType === CellType.BUILDING ? buildingSprites[type] : terrainSprites[type];
+
+    // If the image is already loaded we draw it
+    if (sprite.image.complete) {
+      sprite.draw(this._ctx, coords.x, coords.y);
+    } else {
+      // If the image is not loaded we wait till it is
+      await new Promise<void>((resolve) => {
+        sprite.image.onload = () => {
+          sprite.draw(this._ctx, coords.x, coords.y);
+          resolve();
+        };
+      });
+    }
+  }
+
+  async createMap(players: string[]) {
+    this._players = players;
+    await this._initTerrains();
+    await this._initCastles();
+  }
+
+  // this._initCastles(); // TODO
 }
