@@ -1,5 +1,5 @@
 export enum ResourceType {
-  COIL = 'coil',
+  COAL = 'coal',
   BRONZE = 'bronze',
   IRON = 'iron',
   GOLD = 'gold',

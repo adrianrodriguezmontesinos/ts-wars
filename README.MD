@@ -17,10 +17,31 @@ Author: Adrián Rodríguez
 
 - IDE: ![VS Code](https://img.shields.io/badge/VS_Code-blue)
 
-## INDEX
+# FEATURES & TERMS INDEX (in order of appearance)
 
-- [Chapters 1 - 4. Branch feat/till-chap4](docs/chap1-4.md)
-- [Chapters 5 - 7. Branch feat/till-chap7](docs/chap5-7.md)
-- [Chapters 8 - 10. Branch feat/till-chap10](docs/chap8-10.md)
-- [Features](docs/features.md)
+- Pnpm
+- Vite
+- Prettier
+- Custom npm scripts
+- JS Modules
+- Barrels
+- TS Enums an Types
+- Arrow functions
+- OOP (Object Oriented Programming)
+- Canvas and canvas context
+- Early return / guard clauses
+- Cyclomatic complexity
+- Escape from a loop (continue/break/return)
+- Functional programming paradigm
+- TS Record, and access to a propertie
+- Initialite an empty object from a type at TS
+- JS logical operator OR to return a default value
+- OPP Inheritance
+- Bidimensional Arrays
+- JS async, await and promises
+- bug: imports circular dependencies (at barrels)
+- DOM access JS
+- generate and delete DOM modals dynamically with JS (various nodes)
+- event listener insides JS generated buttons
+- 
 

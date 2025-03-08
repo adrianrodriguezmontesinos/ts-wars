@@ -1,14 +1,14 @@
-import { BuildingType } from '../buildings';
+import { Building, BuildingType } from '../buildings';
 import { TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
+import { Cost } from '../costs';
+import { ArmourType } from '../items/armour.types';
+import { armourSprites } from '../items/armours.sprites';
 import { map__TerrainRare, Terrain, TerrainType } from '../terrains';
-import {
-  buildingSprites,
-  Cell,
-  CellOwnerType,
-  CellType,
-  Coordinates,
-  terrainSprites,
-} from './index';
+import { Cell } from './cell';
+import { CellOwner, CellType } from './cell.types';
+import { Coordinates } from './coordinates';
+import { buildingSprites } from './map.buildings';
+import { terrainSprites } from './map.terrains';
 
 export class GameMap {
   private _hexX: number;
@@ -128,10 +128,10 @@ export class GameMap {
         const coords = this._calculateCoordinates(i, j);
 
         // Save the terrain cell
-        this._cells[i][j] = new Terrain(CellOwnerType.NONE, coords, chosenType);
+        this._cells[i][j] = new Terrain(coords, chosenType);
 
         // Paint the sprite
-        await this.drawCell(chosenType, i, j);
+        await this.drawCell(chosenType, coords);
       }
     }
   }
@@ -139,16 +139,171 @@ export class GameMap {
   // TODO TEMP 
   // TODO COMENTAR
   // TODO AQUI SE ASIGNAN LOS CASTILLOS A LOS JUGADORES
+  /**
+   * 
+   */
   private async _initCastles() {
     if(this._players.length === 2) {
       // Player 1
-      await this.drawCell(BuildingType.CASTLE, 1, 1, CellType.BUILDING);
+      let coords = this._calculateCoordinates(1, 1);
+      await this.drawCell(BuildingType.CASTLE, coords, CellType.BUILDING);
+      // TODO MD
+      let terrain: Terrain = this._cells[1][1] as Terrain;
+      const cost = Building.getCost(BuildingType.CASTLE, terrain.terrainType)
+      console.log(terrain.terrainType, cost);
+      this._cells[1][1] = new Building('Player 1', coords, BuildingType.CASTLE, terrain.terrainType);
 
       // Player 2
       // At odd files the margin must be 1 more
       const margin = this._hexY % 2 === 0 ? 2 : 3;
-      await this.drawCell(BuildingType.CASTLE, this._hexX - margin, this._hexY - 2, CellType.BUILDING);
+      coords = this._calculateCoordinates(this._hexX - margin, this._hexY - 2);
+      await this.drawCell(BuildingType.CASTLE, coords, CellType.BUILDING);
+      // TODO MD
+      terrain = this._cells[this._hexX - margin][this._hexY - 2] as Terrain;
+      this._cells[1][1] = new Building('Player 1', coords, BuildingType.CASTLE, terrain.terrainType);
     }
+  }
+
+  // TODO MD Y MEJORAR
+  /**
+   * 
+   * @returns 
+   */
+  private _addClickListener() {
+    if (!this._canvas) return;
+    this._canvas.addEventListener('click', (e: MouseEvent) => {
+      const rect = this._canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+      
+      // Calculamos índices aproximados basándonos en la misma lógica de _calculateCoordinates
+      const cellY = Math.floor(clickY / (TERRAIN_SPRITE_HEIGTH * 0.75));
+      const offsetX = cellY % 2 === 1 ? TERRAIN_SPRITE_WIDTH * 0.5 : 0;
+      const cellX = Math.floor((clickX - offsetX) / TERRAIN_SPRITE_WIDTH);
+      
+      if (this._cells[cellX] && this._cells[cellX][cellY]) {
+        const cell = this._cells[cellX][cellY];
+
+        if (cell.cellType === CellType.TERRAIN) {
+          const terrainCell = cell as Terrain;
+          const name = terrainCell.terrainType.toUpperCase();
+          const list = this._getModalResourcesList(terrainCell.resources);
+
+          this._showTerrainModal(name, list);
+        } else if (cell.cellType === CellType.BUILDING) {
+          const buildingCell = cell as Building; 
+          const name = buildingCell.buildingType.toUpperCase();
+
+          this._showBuildingModal(name, buildingCell.owner);
+        }
+      }
+    });
+  }
+
+  /**
+   * 
+   * @param resources 
+   * @returns 
+   */
+  private _getModalResourcesList(resources: Cost): HTMLElement {
+    const list = document.createElement('ul');
+    list.classList.add('modal__list');
+
+    Object.entries(resources).forEach((e: [string, number]) => {
+      const li = document.createElement('li');
+      li.innerText = `${e[0]}: ${e[1]}`;
+      list.appendChild(li);
+    });
+
+    return list;
+  }
+
+  // TODO METODO GENERICO PARA AÑADOR ESTO
+  /**
+   * 
+   * @param message 
+   * @param list 
+   */
+  private _showTerrainModal(message: string, list: HTMLElement) {
+    // Delete the last modal
+    document.querySelector(".modal")?.remove();
+
+    // Modal
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    // Title
+    const title = document.createElement('p');
+    title.innerText = message;
+    title.classList.add('modal__title');
+    modal.appendChild(title);
+
+    // List
+    modal.appendChild(list);
+
+    // Close btn with its close event
+    const closeBtn = document.createElement('button');
+    closeBtn.classList.add('close');
+    closeBtn.addEventListener('click', () => {
+      document.body.removeChild(modal);
+    });
+    modal.appendChild(closeBtn);
+
+    document.body.appendChild(modal);
+  }
+
+  // TODO MD Y MEJORAR
+  /**
+   * 
+   * @param message 
+   */
+  private _showBuildingModal(message: string, owner: string) {
+    // Delete the last modal
+    document.querySelector(".modal")?.remove();
+
+    // Modal
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    // Title
+    const title = document.createElement('p');
+    title.innerText = message;
+    title.classList.add('modal__title');
+    modal.appendChild(title);
+
+    // Player
+    const player = document.createElement('p');
+    player.innerText = owner;
+    modal.appendChild(player);
+
+    // Close btn with its close event
+    const closeBtn = document.createElement('button');
+    closeBtn.classList.add('close');
+    closeBtn.addEventListener('click', () => {
+      document.body.removeChild(modal);
+    });
+    modal.appendChild(closeBtn);
+
+    document.body.appendChild(modal);
+  }
+
+  async testDrawArmour(type: ArmourType, coords: Coordinates): Promise<void> {
+    const sprite = armourSprites[type];
+    if (!this._ctx) return;
+
+    if (sprite.image.complete) {
+      sprite.draw(this._ctx, coords.x, coords.y);
+    } else {
+      await new Promise<void>((resolve) => {
+        sprite.image.onload = () => {
+          // WHY IS IT NEEDED HERE
+          if (!this._ctx) return;
+            sprite.draw(this._ctx, coords.x, coords.y);
+          resolve();
+        };
+      });
+    }
+
   }
 
   // TODO COMENTAR
@@ -161,12 +316,10 @@ export class GameMap {
    */
   async drawCell(
     type: BuildingType | TerrainType,
-    i: number,
-    j: number,
+    coords: Coordinates,
     cellType: CellType = CellType.TERRAIN,
   ): Promise<void> {
     if (!this._ctx) return;
-    const coords = this._calculateCoordinates(i, j);
     const sprite = cellType === CellType.BUILDING ? buildingSprites[type] : terrainSprites[type];
 
     // If the image is already loaded we draw it
@@ -183,11 +336,18 @@ export class GameMap {
     }
   }
 
+  /**
+   * 
+   * @param players 
+   */
   async createMap(players: string[]) {
     this._players = players;
     await this._initTerrains();
-    await this._initCastles();
+    // await this._initCastles();
+    await this.testDrawArmour(ArmourType.EMERALD_ARMOUR, {x: 0, y: 0});
+    await this.testDrawArmour(ArmourType.EMERALD_ARMOUR2, {x: 20, y: 20});
+    await this.testDrawArmour(ArmourType.EMERALD_ARMOUR3, {x: 40, y: 40});
+    // this._addClickListener();
   }
 
-  // this._initCastles(); // TODO
 }

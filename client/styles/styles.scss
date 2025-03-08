@@ -1,14 +1,33 @@
 $primary-lighter: #fff2e6;
 $primary: #693405;
+$primary-dark: #4c2300;
+$primary-trans: #ffe6cfd8;
 
 $white: #fff;
+$black: #000;
 $light: #ddd;
 
-$m-xs: 0.2rem;
-$m-s: 0.4rem;
-$m-m: 0.8rem;
+$m-xs: .2rem;
+$m-s: .4rem;
+$m-m: .8rem;
 $m-l: 1.2rem;
 $m-xl: 1.6rem;
+
+// TODO MD
+$p-m: .6rem 1.2rem;
+
+$f-s: .8rem;
+$f-m: .9rem;
+$f-l: 1rem;
+
+$w-modal-cell: 400px;
+
+$shadow: 0 0 6px #00000040;
+$border: 2px solid $primary;
+$radius: 8px;
+$radius-rnd: 22px 12px 22px 12px;
+
+$z-modal-cell: 1;
 
 @font-face {
   font-family: "Berry";
@@ -16,11 +35,15 @@ $m-xl: 1.6rem;
 }
 
 html {
-  font-family: "Berry", serif;
   background-color: $primary-lighter;
 }
 
+html, button {
+  font-family: "Berry", serif;
+}
+
 body {
+  font-size: $f-m;
   padding: $m-s;
 }
 
@@ -30,6 +53,74 @@ h1 {
   color: $primary;
 }
 
+p, ul {
+  margin: 0;
+}
+
+ul {
+  padding-left: $m-m;
+  line-height: $m-l;
+  list-style-type: square;
+}
+
+
 #map {
   overflow: auto;
+}
+
+// TODO MD
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: $m-m;
+  width: $w-modal-cell;
+  overflow-x: auto;
+  transform: translate(-50%, -50%);
+  background-color: $primary-trans;
+  padding: $m-l;
+  border-radius: $radius-rnd;
+  border: $border;
+  z-index: $z-modal-cell;
+
+  &__title {
+    font-size: $f-l;
+    color: $primary;
+  }
+}
+
+.btn {
+  padding: $p-m;
+  background-color: $primary;
+  color: $white;
+  border: none;
+  border-radius: $radius;
+
+  &:hover {
+    background-color: $primary-dark;
+    cursor: pointer;
+  }
+}
+
+.close {
+  padding: $m-s;
+  position: absolute;
+  top: $m-s;
+  right: $m-s;
+  color: $primary;
+  border: $border;
+  border-radius: $radius;
+  background-color: initial;
+
+  &::before {
+    content: 'X';
+  }
+
+  &:hover {
+    border-color: $primary-dark;
+    background-color: $primary-lighter;
+    cursor: pointer;
+  }
 }

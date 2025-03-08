@@ -5,16 +5,18 @@ import { rndBool } from '../utils/commons';
  * Randomize a Cost using a percent
  * @param cost Normal Cost
  * @param percent Percent at [% / 100] units
+ * @param onlyInc If the percent only affects as an increment. By default false.
  * @returns Randomized Cost
  */
-export function randomizeCost(cost: Cost, percent: number): Cost {
+export function randomizeCost(cost: Cost, percent: number, onlyInc: boolean = false): Cost {
   return Object.fromEntries(
     Object.entries(cost).map(([resource, value]) => {
       // Do not modify zero values
       if (value === 0) return [resource, 0];
 
+      // TODO MD
       // We increase or decreasse the value
-      const factor = rndBool() ? 1 + percent : 1 - percent;
+      const factor = onlyInc || rndBool() ? 1 + percent : 1 - percent;
 
       // Return the adjusted value
       return [resource, Math.ceil(value * factor)];

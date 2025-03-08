@@ -6,7 +6,7 @@ export class Cell {
   coords: Coordinates;
   sprite: Sprite;
   cellType: CellType;
-  private _owner: CellOwner;
+  owner: CellOwner;
 
   /**
    * Map hexagonal cell (where to put )
@@ -16,13 +16,13 @@ export class Cell {
    */
   constructor(type: CellType, owner: CellOwner, coords: Coordinates, sprite: Sprite) {
     this.cellType = type;
-    this._owner = owner;
+    this.owner = owner;
     this.coords = coords;
     this.sprite = sprite;
   }
 
   setOwner(newOwner: CellOwner) {
-    this._owner = newOwner;
+    this.owner = newOwner;
   }
 
   /**
@@ -30,6 +30,6 @@ export class Cell {
    * @returns player name or null
    */
   whoOccupied(): string | null {
-    return this._owner !== CellOwnerType.NONE ? this._owner : null;
+    return this.owner !== CellOwnerType.NONE ? this.owner : null;
   }
 }

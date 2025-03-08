@@ -1,5 +1,6 @@
 export const TERRAIN_SPRITE_WIDTH = 61;
 export const TERRAIN_SPRITE_HEIGTH = 71;
+export const ARMOUR_SPRITE_DIMMENSSION = 16;
 
 export class Sprite {
   private _x: number;
@@ -47,4 +48,7 @@ export class Sprite {
       this._h, // Sprite sizes at canvas
     );
   }
+
+  // TODO MD
+  
 }
