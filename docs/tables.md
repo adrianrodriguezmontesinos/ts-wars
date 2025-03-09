@@ -1,8 +1,10 @@
-# TABLES - GAME CALCS
+# GAME LOGIC
 
-## RESOURCES AVALIABLES
+## RESOURCES AND COSTS
 
-| Terrain | Rare | Coil | Bronze | Iron | Gold | Turqoise | Zaphire | Emerald | Rubi | Diamond |
+### RESOURCES AVALIABLES PER TERRAIN
+
+| Terrain | Rare | Coal | Bronze | Iron | Gold | Turqoise | Zaphire | Emerald | Rubi | Diamond |
 | ------- | ---- | ---- | ------ | ---- | ---- | -------- | ------- | ------- | ---- | ------- |
 | grass   | 100  | 1M   | 500k   | 100k | 50k  | 1        | 0       | 0       | 0    | 0       |
 | grass2  | 50   | 10M  | 1M     | 500k | 100k | 2        | 0       | 0       | 0    | 0       |
@@ -25,9 +27,11 @@
 | wax4    | 5    | 256k | 64k    | 8k   | 4k   | 500k     | 100k    | 30k     | 500  | 8       |
 | wax5    | 2    | 1M   | 256k   | 16k  | 5k   | 1M       | 500k    | 50k     | 1k   | 16      |
 
-## BUILDING COSTS
+- There's a resource variation +-10%.
 
-| Building    | Coil | Bronze | Iron | Gold | Turqoise | Zaphire | Emerald | Rubi | Diamond |
+### BUILDING COSTS
+
+| Building    | Coal | Bronze | Iron | Gold | Turqoise | Zaphire | Emerald | Rubi | Diamond |
 | ----------- | ---- | ------ | ---- | ---- | -------- | ------- | ------- | ---- | ------- |
 | house       | 100  | 0      | 50   | 0    | 0        | 0       | 0       | 0    | 0       |
 | house2      | 100k | 0      | 50k  | 0    | 2        | 0       | 0       | 0    | 0       |
@@ -50,3 +54,79 @@
 | castle      | 1k   | 1k     | 1k   | 1k   | 1        | 1       | 1       | 1    | 1       |
 | castle2     | 1M   | 1M     | 1M   | 1M   | 600      | 400     | 300     | 100  | 4       |
 | castle3     | 100M | 100M   | 100M | 50M  | 600k     | 200k    | 30k     | 600  | 8       |
+
+- There's a building cost variation depending on the terrain.
+
+### BOOK COSTS
+
+| Book                 | Coal | Bronze | Iron | Gold | Turqoise | Zaphire | Emerald | Rubi | Diamond |
+| -------------------- | ---- | ------ | ---- | ---- | -------- | ------- | ------- | ---- | ------- |
+| coal papyrus         | 1k   | 0      | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| coal pergamine       | 50k  | 0      | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| coal manuscript      | 200k | 0      | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| coal tome            | 1M   | 0      | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| coal scripture       | 10M  | 0      | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| coal grimoire        | 50M  | 0      | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| coal bible           | 100M | 0      | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| coal codex           | 500M | 0      | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| bronze papyrus       | 0    | 1k     | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| bronze pergamine     | 0    | 50k    | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| bronze manuscript    | 0    | 200k   | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| bronze tome          | 0    | 1M     | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| bronze scripture     | 0    | 10M    | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| bronze grimoire      | 0    | 50M    | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| bronze bible         | 0    | 100M   | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| bronze codex         | 0    | 500M   | 0    | 0    | 0        | 0       | 0       | 0    | 0       |
+| iron papyrus         | 0    | 0      | 1k   | 0    | 0        | 0       | 0       | 0    | 0       |
+| iron pergamine       | 0    | 0      | 40k  | 0    | 0        | 0       | 0       | 0    | 0       |
+| iron manuscript      | 0    | 0      | 200k | 0    | 0        | 0       | 0       | 0    | 0       |
+| iron tome            | 0    | 0      | 900k | 0    | 0        | 0       | 0       | 0    | 0       |
+| iron scripture       | 0    | 0      | 8M   | 0    | 0        | 0       | 0       | 0    | 0       |
+| iron grimoire        | 0    | 0      | 40M  | 0    | 0        | 0       | 0       | 0    | 0       |
+| iron bible           | 0    | 0      | 90M  | 0    | 0        | 0       | 0       | 0    | 0       |
+| iron codex           | 0    | 0      | 400M | 0    | 0        | 0       | 0       | 0    | 0       |
+| gold papyrus         | 0    | 0      | 0    | 800  | 0        | 0       | 0       | 0    | 0       |
+| gold pergamine       | 0    | 0      | 0    | 30k  | 0        | 0       | 0       | 0    | 0       |
+| gold manuscript      | 0    | 0      | 0    | 100k | 0        | 0       | 0       | 0    | 0       |
+| gold tome            | 0    | 0      | 0    | 700k | 0        | 0       | 0       | 0    | 0       |
+| gold scripture       | 0    | 0      | 0    | 3M   | 0        | 0       | 0       | 0    | 0       |
+| gold grimoire        | 0    | 0      | 0    | 10M  | 0        | 0       | 0       | 0    | 0       |
+| gold bible           | 0    | 0      | 0    | 50M  | 0        | 0       | 0       | 0    | 0       |
+| gold codex           | 0    | 0      | 0    | 100M | 0        | 0       | 0       | 0    | 0       |
+| turqouise papyrus    | 0    | 0      | 0    | 0    | 50       | 0       | 0       | 0    | 0       |
+| turqouise pergamine  | 0    | 0      | 0    | 0    | 100      | 0       | 0       | 0    | 0       |
+| turqouise manuscript | 0    | 0      | 0    | 0    | 500      | 0       | 0       | 0    | 0       |
+| turqouise tome       | 0    | 0      | 0    | 0    | 5k       | 0       | 0       | 0    | 0       |
+| turqouise scripture  | 0    | 0      | 0    | 0    | 40k      | 0       | 0       | 0    | 0       |
+| turqouise grimoire   | 0    | 0      | 0    | 0    | 80k      | 0       | 0       | 0    | 0       |
+| turqouise bible      | 0    | 0      | 0    | 0    | 100k     | 0       | 0       | 0    | 0       |
+| turqouise codex      | 0    | 0      | 0    | 0    | 500k     | 0       | 0       | 0    | 0       |
+| zaphire papyrus      | 0    | 0      | 0    | 0    | 0        | 50      | 0       | 0    | 0       |
+| zaphire pergamine    | 0    | 0      | 0    | 0    | 0        | 100     | 0       | 0    | 0       |
+| zaphire manuscript   | 0    | 0      | 0    | 0    | 0        | 300     | 0       | 0    | 0       |
+| zaphire tome         | 0    | 0      | 0    | 0    | 0        | 3k      | 0       | 0    | 0       |
+| zaphire scripture    | 0    | 0      | 0    | 0    | 0        | 10k     | 0       | 0    | 0       |
+| zaphire grimoire     | 0    | 0      | 0    | 0    | 0        | 40k     | 0       | 0    | 0       |
+| zaphire bible        | 0    | 0      | 0    | 0    | 0        | 80k     | 0       | 0    | 0       |
+| zaphire codex        | 0    | 0      | 0    | 0    | 0        | 250k    | 0       | 0    | 0       |
+| emerald papyrus      | 0    | 0      | 0    | 0    | 0        | 0       | 50      | 0    | 0       |
+| emerald pergamine    | 0    | 0      | 0    | 0    | 0        | 0       | 100     | 0    | 0       |
+| emerald manuscript   | 0    | 0      | 0    | 0    | 0        | 0       | 250     | 0    | 0       |
+| emerald tome         | 0    | 0      | 0    | 0    | 0        | 0       | 100     | 0    | 0       |
+| emerald scripture    | 0    | 0      | 0    | 0    | 0        | 0       | 400     | 0    | 0       |
+| emerald grimoire     | 0    | 0      | 0    | 0    | 0        | 0       | 4k      | 0    | 0       |
+| emerald bible        | 0    | 0      | 0    | 0    | 0        | 0       | 8k      | 0    | 0       |
+| emerald codex        | 0    | 0      | 0    | 0    | 0        | 0       | 25k     | 0    | 0       |
+| rubi papyrus         | 0    | 0      | 0    | 0    | 0        | 0       | 0       | 10   | 0       |
+| rubi pergamine       | 0    | 0      | 0    | 0    | 0        | 0       | 0       | 20   | 0       |
+| rubi manuscript      | 0    | 0      | 0    | 0    | 0        | 0       | 0       | 40   | 0       |
+| rubi tome            | 0    | 0      | 0    | 0    | 0        | 0       | 0       | 80   | 0       |
+| rubi scripture       | 0    | 0      | 0    | 0    | 0        | 0       | 0       | 100  | 0       |
+| rubi grimoire        | 0    | 0      | 0    | 0    | 0        | 0       | 0       | 200  | 0       |
+| rubi bible           | 0    | 0      | 0    | 0    | 0        | 0       | 0       | 300  | 0       |
+| rubi codex           | 0    | 0      | 0    | 0    | 0        | 0       | 0       | 500  | 0       |
+
+## ITEMS
+
+### BOOKS
+

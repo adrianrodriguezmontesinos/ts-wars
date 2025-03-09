@@ -2,9 +2,10 @@
 import { Cell } from '../map/cell'; // AVOID BARREL CIRCULAR DEPENDECY (BARRELS)
 import { buildingSprites, CellOwner, CellType, Coordinates } from "../map";
 import { BuildingType } from "./building.types";
-import { Cost, map__BuildingCosts } from '../costs';
+import { map__BuildingCosts } from '../costs';
 import { map__TerrainCost, TerrainType } from '../terrains';
 import { randomizeCost } from '../../logic';
+import { Cost } from '../commons';
 
 // TODO MD
 export class Building extends Cell {

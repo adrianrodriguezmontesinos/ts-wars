@@ -1,5 +1,6 @@
 import { ResourceType, QuantityType } from './resource.types';
 
+// TODO EXCHANGE FEATURE NOT IMPLEMENTED YET
 /**
  * Resources mapping values conversions using ResourceType.COAL as a base
  */

@@ -1,6 +1,7 @@
 import { Building, BuildingType } from '../buildings';
-import { TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
-import { Cost } from '../costs';
+import { Cost, TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
+import { bookSprites } from '../items/books/book.sprites';
+import { BookType } from '../items/books/book.types';
 import { map__TerrainRare, Terrain, TerrainType } from '../terrains';
 import { Cell } from './cell';
 import { CellOwner, CellType } from './cell.types';
@@ -286,8 +287,8 @@ export class GameMap {
   }
 
   // TODO ESTO LO VAMOS A QUITAR PORQUE EL ARMOUR SE DIBUJA EN LAS TASKS DE UN BUILDING MODAL
-  async testDraw(type: WeaponType, coords: Coordinates): Promise<void> {
-    const sprite = weaponSprites[type];
+  async testDraw(type: BookType, coords: Coordinates): Promise<void> {
+    const sprite = bookSprites[type];
     if (!this._ctx) return;
 
     if (sprite.image.complete) {
@@ -342,11 +343,14 @@ export class GameMap {
     this._players = players;
     // await this._initTerrains();
     // await this._initCastles();
-    await this.testDraw(WeaponType.EMERALD_AXE, {x: 0, y: 0});
-    await this.testDraw(WeaponType.RUBI_BOW, {x: 20, y: 20});
-    await this.testDraw(WeaponType.IRON_SHIELD, {x: 40, y: 40});
-    await this.testDraw(WeaponType.GOLD_AXE, {x: 60, y: 60});
-    await this.testDraw(WeaponType.ZAPHIRE_SHIELD, {x: 80, y: 80});
+    await this.testDraw(BookType.BRONZE_PAPYRUS, {x: 0, y: 0});
+    await this.testDraw(BookType.BRONZE_PERGAMINE, {x: 20, y: 20});
+    await this.testDraw(BookType.BRONZE_MANUSCRIPT, {x: 40, y: 40});
+    await this.testDraw(BookType.BRONZE_TOME, {x: 60, y: 60});
+    await this.testDraw(BookType.BRONZE_SCRIPTURE, {x: 80, y: 80});
+    await this.testDraw(BookType.BRONZE_GRIMOIRE, {x: 100, y: 100});
+    await this.testDraw(BookType.BRONZE_BIBLE, {x: 120, y: 120});
+    await this.testDraw(BookType.BRONZE_CODEX, {x: 140, y: 140});
     // this._addClickListener();
   }
 
