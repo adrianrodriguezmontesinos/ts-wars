@@ -1,11 +1,11 @@
-import { BuildingType } from "../buildings/building.types";
-import { ResourceType } from "../resources/resource.types";
-import { Cost } from "./costs";
+import { BuildingType } from '../buildings/building.types';
+import { ResourceType } from '../resources/resource.types';
+import { Cost } from '../commons';
 
 export const map__BuildingCosts: Record<BuildingType, Cost> = {
   // House
   [BuildingType.HOUSE]: {
-    [ResourceType.COIL]: 100,
+    [ResourceType.COAL]: 100,
     [ResourceType.BRONZE]: 0,
     [ResourceType.IRON]: 50,
     [ResourceType.GOLD]: 0,
@@ -16,7 +16,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.HOUSE2]: {
-    [ResourceType.COIL]: 100000,
+    [ResourceType.COAL]: 100000,
     [ResourceType.BRONZE]: 0,
     [ResourceType.IRON]: 50000,
     [ResourceType.GOLD]: 0,
@@ -27,7 +27,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.HOUSE3]: {
-    [ResourceType.COIL]: 1000000,
+    [ResourceType.COAL]: 1000000,
     [ResourceType.BRONZE]: 0,
     [ResourceType.IRON]: 500000,
     [ResourceType.GOLD]: 0,
@@ -40,7 +40,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
 
   // Farm
   [BuildingType.FARM]: {
-    [ResourceType.COIL]: 0,
+    [ResourceType.COAL]: 0,
     [ResourceType.BRONZE]: 100,
     [ResourceType.IRON]: 0,
     [ResourceType.GOLD]: 10,
@@ -51,7 +51,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.FARM2]: {
-    [ResourceType.COIL]: 0,
+    [ResourceType.COAL]: 0,
     [ResourceType.BRONZE]: 100000,
     [ResourceType.IRON]: 0,
     [ResourceType.GOLD]: 10000,
@@ -62,7 +62,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.FARM3]: {
-    [ResourceType.COIL]: 0,
+    [ResourceType.COAL]: 0,
     [ResourceType.BRONZE]: 1000000,
     [ResourceType.IRON]: 0,
     [ResourceType.GOLD]: 100000,
@@ -75,7 +75,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
 
   // Mine
   [BuildingType.MINE]: {
-    [ResourceType.COIL]: 100,
+    [ResourceType.COAL]: 100,
     [ResourceType.BRONZE]: 50,
     [ResourceType.IRON]: 50,
     [ResourceType.GOLD]: 10,
@@ -86,7 +86,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.MINE2]: {
-    [ResourceType.COIL]: 500000,
+    [ResourceType.COAL]: 500000,
     [ResourceType.BRONZE]: 100000,
     [ResourceType.IRON]: 50000,
     [ResourceType.GOLD]: 10000,
@@ -97,7 +97,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.MINE3]: {
-    [ResourceType.COIL]: 10000000,
+    [ResourceType.COAL]: 10000000,
     [ResourceType.BRONZE]: 5000000,
     [ResourceType.IRON]: 500000,
     [ResourceType.GOLD]: 100000,
@@ -110,7 +110,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
 
   // Barracks
   [BuildingType.BARRACKS]: {
-    [ResourceType.COIL]: 200,
+    [ResourceType.COAL]: 200,
     [ResourceType.BRONZE]: 100,
     [ResourceType.IRON]: 80,
     [ResourceType.GOLD]: 50,
@@ -121,7 +121,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.BARRACKS2]: {
-    [ResourceType.COIL]: 200000,
+    [ResourceType.COAL]: 200000,
     [ResourceType.BRONZE]: 100000,
     [ResourceType.IRON]: 100000,
     [ResourceType.GOLD]: 50000,
@@ -132,7 +132,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.BARRACKS3]: {
-    [ResourceType.COIL]: 20000000,
+    [ResourceType.COAL]: 20000000,
     [ResourceType.BRONZE]: 10000000,
     [ResourceType.IRON]: 8000000,
     [ResourceType.GOLD]: 500000,
@@ -145,7 +145,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
 
   // Blacksmith
   [BuildingType.BLACKSMITH]: {
-    [ResourceType.COIL]: 1000,
+    [ResourceType.COAL]: 1000,
     [ResourceType.BRONZE]: 500,
     [ResourceType.IRON]: 200,
     [ResourceType.GOLD]: 100,
@@ -156,7 +156,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.BLACKSMITH2]: {
-    [ResourceType.COIL]: 200000,
+    [ResourceType.COAL]: 200000,
     [ResourceType.BRONZE]: 100000,
     [ResourceType.IRON]: 100000,
     [ResourceType.GOLD]: 50000,
@@ -167,7 +167,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.BLACKSMITH3]: {
-    [ResourceType.COIL]: 20000000,
+    [ResourceType.COAL]: 20000000,
     [ResourceType.BRONZE]: 10000000,
     [ResourceType.IRON]: 8000000,
     [ResourceType.GOLD]: 500000,
@@ -180,7 +180,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
 
   // Church
   [BuildingType.CHURCH]: {
-    [ResourceType.COIL]: 10000,
+    [ResourceType.COAL]: 10000,
     [ResourceType.BRONZE]: 2000,
     [ResourceType.IRON]: 1000,
     [ResourceType.GOLD]: 500,
@@ -191,7 +191,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.CHURCH2]: {
-    [ResourceType.COIL]: 2000000,
+    [ResourceType.COAL]: 2000000,
     [ResourceType.BRONZE]: 200000,
     [ResourceType.IRON]: 100000,
     [ResourceType.GOLD]: 500000,
@@ -202,7 +202,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [BuildingType.CHURCH3]: {
-    [ResourceType.COIL]: 40000000,
+    [ResourceType.COAL]: 40000000,
     [ResourceType.BRONZE]: 2000000,
     [ResourceType.IRON]: 1000000,
     [ResourceType.GOLD]: 1000000,
@@ -215,7 +215,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
 
   // Castle
   [BuildingType.CASTLE]: {
-    [ResourceType.COIL]: 1000,
+    [ResourceType.COAL]: 1000,
     [ResourceType.BRONZE]: 1000,
     [ResourceType.IRON]: 1000,
     [ResourceType.GOLD]: 1000,
@@ -226,7 +226,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 1,
   },
   [BuildingType.CASTLE2]: {
-    [ResourceType.COIL]: 1000000,
+    [ResourceType.COAL]: 1000000,
     [ResourceType.BRONZE]: 1000000,
     [ResourceType.IRON]: 1000000,
     [ResourceType.GOLD]: 1000000,
@@ -237,7 +237,7 @@ export const map__BuildingCosts: Record<BuildingType, Cost> = {
     [ResourceType.DIAMOND]: 4,
   },
   [BuildingType.CASTLE3]: {
-    [ResourceType.COIL]: 100000000,
+    [ResourceType.COAL]: 100000000,
     [ResourceType.BRONZE]: 100000000,
     [ResourceType.IRON]: 100000000,
     [ResourceType.GOLD]: 50000000,

@@ -1,0 +1,78 @@
+import { Sprite, SPRITE_16 } from "../../commons";
+import { BookType } from "./book.types";
+
+const potionTileset = '/public/items/books.png';
+
+export const bookSprites: Record<BookType, Sprite> = {
+  [BookType.COAL_PAPYRUS]: new Sprite(potionTileset, 1, 0, SPRITE_16, SPRITE_16),
+  [BookType.COAL_PERGAMINE]: new Sprite(potionTileset, 1, 2, SPRITE_16, SPRITE_16),
+  [BookType.COAL_MANUSCRIPT]: new Sprite(potionTileset, 1, 4, SPRITE_16, SPRITE_16),
+  [BookType.COAL_TOME]: new Sprite(potionTileset, 1, 5, SPRITE_16, SPRITE_16),
+  [BookType.COAL_SCRIPTURE]: new Sprite(potionTileset, 1, 7, SPRITE_16, SPRITE_16),
+  [BookType.COAL_GRIMOIRE]: new Sprite(potionTileset, 1, 8, SPRITE_16, SPRITE_16),
+  [BookType.COAL_BIBLE]: new Sprite(potionTileset, 1, 10, SPRITE_16, SPRITE_16),
+  [BookType.COAL_CODEX]: new Sprite(potionTileset, 1, 11, SPRITE_16, SPRITE_16),
+
+  [BookType.BRONZE_PAPYRUS]: new Sprite(potionTileset, 5, 0, SPRITE_16, SPRITE_16),
+  [BookType.BRONZE_PERGAMINE]: new Sprite(potionTileset, 5, 2, SPRITE_16, SPRITE_16),
+  [BookType.BRONZE_MANUSCRIPT]: new Sprite(potionTileset, 5, 4, SPRITE_16, SPRITE_16),
+  [BookType.BRONZE_TOME]: new Sprite(potionTileset, 5, 5, SPRITE_16, SPRITE_16),
+  [BookType.BRONZE_SCRIPTURE]: new Sprite(potionTileset, 5, 7, SPRITE_16, SPRITE_16),
+  [BookType.BRONZE_GRIMOIRE]: new Sprite(potionTileset, 5, 8, SPRITE_16, SPRITE_16),
+  [BookType.BRONZE_BIBLE]: new Sprite(potionTileset, 5, 10, SPRITE_16, SPRITE_16),
+  [BookType.BRONZE_CODEX]: new Sprite(potionTileset, 5, 11, SPRITE_16, SPRITE_16),
+
+  [BookType.IRON_PAPYRUS]: new Sprite(potionTileset, 0, 0, SPRITE_16, SPRITE_16),
+  [BookType.IRON_PERGAMINE]: new Sprite(potionTileset, 0, 2, SPRITE_16, SPRITE_16),
+  [BookType.IRON_MANUSCRIPT]: new Sprite(potionTileset, 0, 4, SPRITE_16, SPRITE_16),
+  [BookType.IRON_TOME]: new Sprite(potionTileset, 0, 5, SPRITE_16, SPRITE_16),
+  [BookType.IRON_SCRIPTURE]: new Sprite(potionTileset, 0, 7, SPRITE_16, SPRITE_16),
+  [BookType.IRON_GRIMOIRE]: new Sprite(potionTileset, 0, 8, SPRITE_16, SPRITE_16),
+  [BookType.IRON_BIBLE]: new Sprite(potionTileset, 0, 10, SPRITE_16, SPRITE_16),
+  [BookType.IRON_CODEX]: new Sprite(potionTileset, 0, 11, SPRITE_16, SPRITE_16),
+
+  [BookType.GOLD_PAPYRUS]: new Sprite(potionTileset, 6, 0, SPRITE_16, SPRITE_16),
+  [BookType.GOLD_PERGAMINE]: new Sprite(potionTileset, 6, 2, SPRITE_16, SPRITE_16),
+  [BookType.GOLD_MANUSCRIPT]: new Sprite(potionTileset, 6, 4, SPRITE_16, SPRITE_16),
+  [BookType.GOLD_TOME]: new Sprite(potionTileset, 6, 5, SPRITE_16, SPRITE_16),
+  [BookType.GOLD_SCRIPTURE]: new Sprite(potionTileset, 6, 7, SPRITE_16, SPRITE_16),
+  [BookType.GOLD_GRIMOIRE]: new Sprite(potionTileset, 6, 8, SPRITE_16, SPRITE_16),
+  [BookType.GOLD_BIBLE]: new Sprite(potionTileset, 6, 10, SPRITE_16, SPRITE_16),
+  [BookType.GOLD_CODEX]: new Sprite(potionTileset, 6, 11, SPRITE_16, SPRITE_16),  
+  
+  [BookType.TURQUOISE_PAPYRUS]: new Sprite(potionTileset, 10, 0, SPRITE_16, SPRITE_16),
+  [BookType.TURQUOISE_PERGAMINE]: new Sprite(potionTileset, 10, 2, SPRITE_16, SPRITE_16),
+  [BookType.TURQUOISE_MANUSCRIPT]: new Sprite(potionTileset, 10, 4, SPRITE_16, SPRITE_16),
+  [BookType.TURQUOISE_TOME]: new Sprite(potionTileset, 10, 5, SPRITE_16, SPRITE_16),
+  [BookType.TURQUOISE_SCRIPTURE]: new Sprite(potionTileset, 10, 7, SPRITE_16, SPRITE_16),
+  [BookType.TURQUOISE_GRIMOIRE]: new Sprite(potionTileset, 10, 8, SPRITE_16, SPRITE_16),
+  [BookType.TURQUOISE_BIBLE]: new Sprite(potionTileset, 10, 10, SPRITE_16, SPRITE_16),
+  [BookType.TURQUOISE_CODEX]: new Sprite(potionTileset, 10, 11, SPRITE_16, SPRITE_16),
+
+  [BookType.ZAPHIRE_PAPYRUS]: new Sprite(potionTileset, 11, 0, SPRITE_16, SPRITE_16),
+  [BookType.ZAPHIRE_PERGAMINE]: new Sprite(potionTileset, 11, 2, SPRITE_16, SPRITE_16),
+  [BookType.ZAPHIRE_MANUSCRIPT]: new Sprite(potionTileset, 11, 4, SPRITE_16, SPRITE_16),
+  [BookType.ZAPHIRE_TOME]: new Sprite(potionTileset, 11, 5, SPRITE_16, SPRITE_16),
+  [BookType.ZAPHIRE_SCRIPTURE]: new Sprite(potionTileset, 11, 7, SPRITE_16, SPRITE_16),
+  [BookType.ZAPHIRE_GRIMOIRE]: new Sprite(potionTileset, 11, 8, SPRITE_16, SPRITE_16),
+  [BookType.ZAPHIRE_BIBLE]: new Sprite(potionTileset, 11, 10, SPRITE_16, SPRITE_16),
+  [BookType.ZAPHIRE_CODEX]: new Sprite(potionTileset, 11, 11, SPRITE_16, SPRITE_16),
+
+  [BookType.EMERALD_PAPYRUS]: new Sprite(potionTileset, 8, 0, SPRITE_16, SPRITE_16),
+  [BookType.EMERALD_PERGAMINE]: new Sprite(potionTileset, 8, 2, SPRITE_16, SPRITE_16),
+  [BookType.EMERALD_MANUSCRIPT]: new Sprite(potionTileset, 8, 4, SPRITE_16, SPRITE_16),
+  [BookType.EMERALD_TOME]: new Sprite(potionTileset, 8, 5, SPRITE_16, SPRITE_16),
+  [BookType.EMERALD_SCRIPTURE]: new Sprite(potionTileset, 8, 7, SPRITE_16, SPRITE_16),
+  [BookType.EMERALD_GRIMOIRE]: new Sprite(potionTileset, 8, 8, SPRITE_16, SPRITE_16),
+  [BookType.EMERALD_BIBLE]: new Sprite(potionTileset, 8, 10, SPRITE_16, SPRITE_16),
+  [BookType.EMERALD_CODEX]: new Sprite(potionTileset, 8, 11, SPRITE_16, SPRITE_16),
+
+  [BookType.RUBI_PAPYRUS]: new Sprite(potionTileset, 3, 0, SPRITE_16, SPRITE_16),
+  [BookType.RUBI_PERGAMINE]: new Sprite(potionTileset, 3, 2, SPRITE_16, SPRITE_16),
+  [BookType.RUBI_MANUSCRIPT]: new Sprite(potionTileset, 3, 4, SPRITE_16, SPRITE_16),
+  [BookType.RUBI_TOME]: new Sprite(potionTileset, 3, 5, SPRITE_16, SPRITE_16),
+  [BookType.RUBI_SCRIPTURE]: new Sprite(potionTileset, 3, 7, SPRITE_16, SPRITE_16),
+  [BookType.RUBI_GRIMOIRE]: new Sprite(potionTileset, 3, 8, SPRITE_16, SPRITE_16),
+  [BookType.RUBI_BIBLE]: new Sprite(potionTileset, 3, 10, SPRITE_16, SPRITE_16),
+  [BookType.RUBI_CODEX]: new Sprite(potionTileset, 3, 11, SPRITE_16, SPRITE_16),
+}

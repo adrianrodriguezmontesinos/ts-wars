@@ -4,8 +4,6 @@ A Client-Server TS and JS real time strategy game.
 
 Author: Adrián Rodríguez
 
-> I am using this readme as my learning notes for this kind of game implementations. This is my fisrt videogame using native TS (tons of experience into JS ones tho). So feel free to learn from my experience as I do while I develop this game 😃.
-
 ## TECHNOLOGIES
 
 - Languages: ![TS](https://img.shields.io/badge/TS-blue), ![JS](https://img.shields.io/badge/JS-yellow),
@@ -17,11 +15,45 @@ Author: Adrián Rodríguez
 
 - IDE: ![VS Code](https://img.shields.io/badge/VS_Code-blue)
 
-## INDEX
+## FEATURES & TERMS INDEX (in order of appearance)
 
-- [Chapters 1 - 4. Branch feat/till-chap4](docs/chap1-4.md)
-- [Chapters 5 - 7. Branch feat/till-chap7](docs/chap5-7.md)
-- [Chapters 8 - 10. Branch feat/till-chap10](docs/chap8-10.md)
-- [Features](docs/features.md)
+- Pnpm
+- Vite
+- Prettier
+- Custom npm scripts
+- JS Modules
+- Barrels
+- TS Enums an Types
+- Arrow functions
+- OOP (Object Oriented Programming)
+- Canvas and canvas context
+- Early return / guard clauses
+- Cyclomatic complexity
+- Escape from a loop (continue/break/return)
+- Functional programming paradigm
+- TS Record, and access to a propertie
+- Initialite an empty object from a type at TS
+- JS logical operator OR to return a default value
+- OPP Inheritance
+- Bidimensional Arrays
+- JS async, await and promises
+- (Bug) imports circular dependencies (at barrels)
+- DOM access JS
+- Generate and delete DOM modals dynamically with JS (various nodes)
+- Event listener insides JS generated buttons
+- 
 
+## TODOs
 
+- Modify resources & costs from tables, only rubis
+
+- costs los movemos a comons
+- building costs los movemos a buildings too y lo mismo con terrains
+- change name map.buildings y terrains.building por building.sprite y terrain,sprite y mover a terrains y buildings (OJO A DEPENDENCIAS CIRCULARES CON BARRELS)
+- cells -> building y terrains OJO A LAS DEPENDENCIAS CIRCULARES!! IR PASANDO POCO A POCO 
+
+- item.ts
+- effects apply effect -> temporal
+- modificar books para que queden mejor ???
+- Consumables
+-

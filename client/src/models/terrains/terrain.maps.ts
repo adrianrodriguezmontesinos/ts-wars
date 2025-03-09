@@ -1,6 +1,6 @@
-import { Cost } from "../costs";
-import { ResourceType } from "../resources";
-import { TerrainType } from "./terrain.types";
+import { Cost } from '../costs';
+import { ResourceType } from '../resources';
+import { TerrainType } from './terrain.types';
 
 /**
  * Terrain rare ratio for each type
@@ -35,13 +35,47 @@ export const map__TerrainRare: Record<TerrainType, number> = {
   [TerrainType.WAX5]: 2,
 };
 
+// TODO MD
+/**
+ * Building build cost discount or amount
+ */
+export const map__TerrainCost: Record<TerrainType, number> = {
+  // Grass
+  [TerrainType.GRASS]: .8,
+  [TerrainType.GRASS2]: .6,
+  [TerrainType.GRASS3]: .3,
+  [TerrainType.GRASS4]: .1,
+  [TerrainType.GRASS5]: 0,
+
+  // Desert
+  [TerrainType.DESERT]: .6,
+  [TerrainType.DESERT2]: .4,
+  [TerrainType.DESERT3]: .2,
+  [TerrainType.DESERT4]: .1,
+  [TerrainType.DESERT5]: 0,
+
+  // Soil
+  [TerrainType.SOIL]: 0,
+  [TerrainType.SOIL2]: -.1,
+  [TerrainType.SOIL3]: -.2,
+  [TerrainType.SOIL4]: -.4,
+  [TerrainType.SOIL5]: -.6,
+
+  // Wax
+  [TerrainType.WAX]: 0,
+  [TerrainType.WAX2]: -.1,
+  [TerrainType.WAX3]: -.3,
+  [TerrainType.WAX4]: -.6,
+  [TerrainType.WAX5]: -.8,
+};
+
 /**
  * Initial terrain
  */
 export const map__TerrainResource: Record<TerrainType, Cost> = {
   // Grass
   [TerrainType.GRASS]: {
-    [ResourceType.COIL]: 1000000,
+    [ResourceType.COAL]: 1000000,
     [ResourceType.BRONZE]: 500000,
     [ResourceType.IRON]: 100000,
     [ResourceType.GOLD]: 50000,
@@ -52,7 +86,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.GRASS2]: {
-    [ResourceType.COIL]: 10000000,
+    [ResourceType.COAL]: 10000000,
     [ResourceType.BRONZE]: 1000000,
     [ResourceType.IRON]: 500000,
     [ResourceType.GOLD]: 100000,
@@ -63,7 +97,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.GRASS3]: {
-    [ResourceType.COIL]: 50000000,
+    [ResourceType.COAL]: 50000000,
     [ResourceType.BRONZE]: 10000000,
     [ResourceType.IRON]: 1000000,
     [ResourceType.GOLD]: 500000,
@@ -74,7 +108,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.GRASS4]: {
-    [ResourceType.COIL]: 100000000,
+    [ResourceType.COAL]: 100000000,
     [ResourceType.BRONZE]: 100000000,
     [ResourceType.IRON]: 10000000,
     [ResourceType.GOLD]: 1000000,
@@ -85,7 +119,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.GRASS5]: {
-    [ResourceType.COIL]: 500000000,
+    [ResourceType.COAL]: 500000000,
     [ResourceType.BRONZE]: 900000000,
     [ResourceType.IRON]: 50000000,
     [ResourceType.GOLD]: 10000000,
@@ -98,7 +132,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
 
   // Desert (en la tabla aparece como "dessert")
   [TerrainType.DESERT]: {
-    [ResourceType.COIL]: 100000,
+    [ResourceType.COAL]: 100000,
     [ResourceType.BRONZE]: 50000,
     [ResourceType.IRON]: 5000000,
     [ResourceType.GOLD]: 100000,
@@ -109,7 +143,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.DESERT2]: {
-    [ResourceType.COIL]: 100000,
+    [ResourceType.COAL]: 100000,
     [ResourceType.BRONZE]: 100000,
     [ResourceType.IRON]: 50000000,
     [ResourceType.GOLD]: 500000,
@@ -120,7 +154,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.DESERT3]: {
-    [ResourceType.COIL]: 100000,
+    [ResourceType.COAL]: 100000,
     [ResourceType.BRONZE]: 500000,
     [ResourceType.IRON]: 100000000,
     [ResourceType.GOLD]: 1000000,
@@ -131,7 +165,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.DESERT4]: {
-    [ResourceType.COIL]: 100000,
+    [ResourceType.COAL]: 100000,
     [ResourceType.BRONZE]: 1000000,
     [ResourceType.IRON]: 500000000,
     [ResourceType.GOLD]: 10000000,
@@ -142,7 +176,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.DESERT5]: {
-    [ResourceType.COIL]: 100000,
+    [ResourceType.COAL]: 100000,
     [ResourceType.BRONZE]: 10000000,
     [ResourceType.IRON]: 800000000,
     [ResourceType.GOLD]: 20000000,
@@ -155,7 +189,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
 
   // Soil
   [TerrainType.SOIL]: {
-    [ResourceType.COIL]: 500000,
+    [ResourceType.COAL]: 500000,
     [ResourceType.BRONZE]: 1000000,
     [ResourceType.IRON]: 1000000,
     [ResourceType.GOLD]: 100000,
@@ -166,7 +200,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.SOIL2]: {
-    [ResourceType.COIL]: 5000000,
+    [ResourceType.COAL]: 5000000,
     [ResourceType.BRONZE]: 10000000,
     [ResourceType.IRON]: 10000000,
     [ResourceType.GOLD]: 500000,
@@ -177,7 +211,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.SOIL3]: {
-    [ResourceType.COIL]: 50000000,
+    [ResourceType.COAL]: 50000000,
     [ResourceType.BRONZE]: 80000000,
     [ResourceType.IRON]: 50000000,
     [ResourceType.GOLD]: 2000000,
@@ -188,7 +222,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.SOIL4]: {
-    [ResourceType.COIL]: 300000000,
+    [ResourceType.COAL]: 300000000,
     [ResourceType.BRONZE]: 300000000,
     [ResourceType.IRON]: 500000000,
     [ResourceType.GOLD]: 100000000,
@@ -199,7 +233,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 0,
   },
   [TerrainType.SOIL5]: {
-    [ResourceType.COIL]: 900000000,
+    [ResourceType.COAL]: 900000000,
     [ResourceType.BRONZE]: 600000000,
     [ResourceType.IRON]: 800000000,
     [ResourceType.GOLD]: 200000000,
@@ -212,7 +246,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
 
   // Wax
   [TerrainType.WAX]: {
-    [ResourceType.COIL]: 1000,
+    [ResourceType.COAL]: 1000,
     [ResourceType.BRONZE]: 1000,
     [ResourceType.IRON]: 1000,
     [ResourceType.GOLD]: 1000,
@@ -223,7 +257,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 1,
   },
   [TerrainType.WAX2]: {
-    [ResourceType.COIL]: 8000,
+    [ResourceType.COAL]: 8000,
     [ResourceType.BRONZE]: 4000,
     [ResourceType.IRON]: 2000,
     [ResourceType.GOLD]: 2000,
@@ -234,7 +268,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 2,
   },
   [TerrainType.WAX3]: {
-    [ResourceType.COIL]: 32000,
+    [ResourceType.COAL]: 32000,
     [ResourceType.BRONZE]: 16000,
     [ResourceType.IRON]: 4000,
     [ResourceType.GOLD]: 3000,
@@ -245,7 +279,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 4,
   },
   [TerrainType.WAX4]: {
-    [ResourceType.COIL]: 256000,
+    [ResourceType.COAL]: 256000,
     [ResourceType.BRONZE]: 64000,
     [ResourceType.IRON]: 8000,
     [ResourceType.GOLD]: 4000,
@@ -256,7 +290,7 @@ export const map__TerrainResource: Record<TerrainType, Cost> = {
     [ResourceType.DIAMOND]: 8,
   },
   [TerrainType.WAX5]: {
-    [ResourceType.COIL]: 1000000,
+    [ResourceType.COAL]: 1000000,
     [ResourceType.BRONZE]: 256000,
     [ResourceType.IRON]: 16000,
     [ResourceType.GOLD]: 5000,

@@ -1,10 +1,11 @@
 import { ResourceType, QuantityType } from './resource.types';
 
+// TODO EXCHANGE FEATURE NOT IMPLEMENTED YET
 /**
- * Resources mapping values conversions using ResourceType.COIL as a base
+ * Resources mapping values conversions using ResourceType.COAL as a base
  */
 export const map__Resources: Record<ResourceType, number> = {
-  [ResourceType.COIL]: 1,
+  [ResourceType.COAL]: 1,
   [ResourceType.BRONZE]: 4,
   [ResourceType.IRON]: 16,
   [ResourceType.GOLD]: 32,
