@@ -1,4 +1,4 @@
-import { BuildingType } from '../buildings/building.types';
+import { BuildingType } from './building.types';
 import { ResourceType } from '../resources/resource.types';
 import { Cost } from '../commons';
 

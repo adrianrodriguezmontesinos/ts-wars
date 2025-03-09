@@ -1,13 +1,9 @@
-import { Building, BuildingType } from '../buildings';
+import { Building, buildingSprites, BuildingType } from '../buildings';
+import { map__TerrainRare, Terrain, terrainSprites, TerrainType } from './terrains';
 import { Cost, TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
-import { bookSprites } from '../items/books/book.sprites';
-import { BookType } from '../items/books/book.types';
-import { map__TerrainRare, Terrain, TerrainType } from '../terrains';
-import { Cell } from './cell';
-import { CellOwner, CellType } from './cell.types';
+import { Cell, CellType } from './cells';
 import { Coordinates } from './coordinates';
-import { buildingSprites } from './map.buildings';
-import { terrainSprites } from './map.terrains';
+import { bookSprites, BookType } from '../items';
 
 export class GameMap {
   private _hexX: number;
@@ -351,8 +347,8 @@ export class GameMap {
    */
   async createMap(players: string[]) {
     this._players = players;
-    // await this._initTerrains();
-    // await this._initCastles();
+    await this._initTerrains();
+    await this._initCastles();
     await this.testDraw(BookType.BRONZE_PAPYRUS, { x: 0, y: 0 });
     await this.testDraw(BookType.BRONZE_PERGAMINE, { x: 20, y: 20 });
     await this.testDraw(BookType.BRONZE_MANUSCRIPT, { x: 40, y: 40 });
@@ -361,6 +357,6 @@ export class GameMap {
     await this.testDraw(BookType.BRONZE_GRIMOIRE, { x: 100, y: 100 });
     await this.testDraw(BookType.BRONZE_BIBLE, { x: 120, y: 120 });
     await this.testDraw(BookType.BRONZE_CODEX, { x: 140, y: 140 });
-    // this._addClickListener();
+    this._addClickListener();
   }
 }

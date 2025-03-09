@@ -1,5 +1,5 @@
-import { Cost } from '../costs';
-import { ResourceType } from '../resources';
+import { Cost } from '../../commons';
+import { ResourceType } from '../../resources';
 import { TerrainType } from './terrain.types';
 
 /**
