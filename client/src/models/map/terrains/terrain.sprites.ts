@@ -1,5 +1,5 @@
-import { Sprite, TERRAIN_SPRITE_WIDTH, TERRAIN_SPRITE_HEIGTH } from '../commons';
-import { TerrainType } from '../terrains';
+import { Sprite, TERRAIN_SPRITE_WIDTH, TERRAIN_SPRITE_HEIGTH } from '../../commons';
+import { TerrainType } from '.';
 
 const buildingsTile = '/public/buildings/terrains.png';
 

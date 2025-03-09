@@ -1,6 +1,6 @@
-import { Sprite } from '../commons';
+import { Sprite } from '../../commons';
 import { CellOwner, CellOwnerType, CellType } from './cell.types';
-import { Coordinates } from './coordinates';
+import { Coordinates } from '../coordinates';
 
 export class Cell {
   coords: Coordinates;

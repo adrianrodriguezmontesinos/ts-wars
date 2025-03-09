@@ -7,17 +7,17 @@ $white: #fff;
 $black: #000;
 $light: #ddd;
 
-$m-xs: .2rem;
-$m-s: .4rem;
-$m-m: .8rem;
+$m-xs: 0.2rem;
+$m-s: 0.4rem;
+$m-m: 0.8rem;
 $m-l: 1.2rem;
 $m-xl: 1.6rem;
 
 // TODO MD
-$p-m: .6rem 1.2rem;
+$p-m: 0.6rem 1.2rem;
 
-$f-s: .8rem;
-$f-m: .9rem;
+$f-s: 0.8rem;
+$f-m: 0.9rem;
 $f-l: 1rem;
 
 $w-modal-cell: 400px;
@@ -38,7 +38,8 @@ html {
   background-color: $primary-lighter;
 }
 
-html, button {
+html,
+button {
   font-family: "Berry", serif;
 }
 
@@ -53,7 +54,8 @@ h1 {
   color: $primary;
 }
 
-p, ul {
+p,
+ul {
   margin: 0;
 }
 
@@ -62,7 +64,6 @@ ul {
   line-height: $m-l;
   list-style-type: square;
 }
-
 
 #map {
   overflow: auto;
@@ -115,7 +116,7 @@ ul {
   background-color: initial;
 
   &::before {
-    content: 'X';
+    content: "X";
   }
 
   &:hover {

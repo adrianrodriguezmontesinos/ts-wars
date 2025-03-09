@@ -1,7 +1,7 @@
-import { randomizeCost } from '../../logic';
-import { Cost } from '../costs';
-import { Cell, CellOwnerType, CellType, Coordinates, terrainSprites } from '../map';
-import { ResourceType } from '../resources';
+import { randomizeCost } from '../../../logic';
+import { Cost } from '../../costs';
+import { Cell, CellOwnerType, CellType, Coordinates, terrainSprites } from '..';
+import { ResourceType } from '../../resources';
 import { map__TerrainResource } from './terrain.maps';
 import { TerrainType } from './terrain.types';
 

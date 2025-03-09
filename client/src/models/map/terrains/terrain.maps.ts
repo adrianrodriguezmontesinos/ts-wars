@@ -1,5 +1,5 @@
-import { Cost } from '../costs';
-import { ResourceType } from '../resources';
+import { Cost } from '../../commons';
+import { ResourceType } from '../../resources';
 import { TerrainType } from './terrain.types';
 
 /**
@@ -41,32 +41,32 @@ export const map__TerrainRare: Record<TerrainType, number> = {
  */
 export const map__TerrainCost: Record<TerrainType, number> = {
   // Grass
-  [TerrainType.GRASS]: .8,
-  [TerrainType.GRASS2]: .6,
-  [TerrainType.GRASS3]: .3,
-  [TerrainType.GRASS4]: .1,
+  [TerrainType.GRASS]: 0.8,
+  [TerrainType.GRASS2]: 0.6,
+  [TerrainType.GRASS3]: 0.3,
+  [TerrainType.GRASS4]: 0.1,
   [TerrainType.GRASS5]: 0,
 
   // Desert
-  [TerrainType.DESERT]: .6,
-  [TerrainType.DESERT2]: .4,
-  [TerrainType.DESERT3]: .2,
-  [TerrainType.DESERT4]: .1,
+  [TerrainType.DESERT]: 0.6,
+  [TerrainType.DESERT2]: 0.4,
+  [TerrainType.DESERT3]: 0.2,
+  [TerrainType.DESERT4]: 0.1,
   [TerrainType.DESERT5]: 0,
 
   // Soil
   [TerrainType.SOIL]: 0,
-  [TerrainType.SOIL2]: -.1,
-  [TerrainType.SOIL3]: -.2,
-  [TerrainType.SOIL4]: -.4,
-  [TerrainType.SOIL5]: -.6,
+  [TerrainType.SOIL2]: -0.1,
+  [TerrainType.SOIL3]: -0.2,
+  [TerrainType.SOIL4]: -0.4,
+  [TerrainType.SOIL5]: -0.6,
 
   // Wax
   [TerrainType.WAX]: 0,
-  [TerrainType.WAX2]: -.1,
-  [TerrainType.WAX3]: -.3,
-  [TerrainType.WAX4]: -.6,
-  [TerrainType.WAX5]: -.8,
+  [TerrainType.WAX2]: -0.1,
+  [TerrainType.WAX3]: -0.3,
+  [TerrainType.WAX4]: -0.6,
+  [TerrainType.WAX5]: -0.8,
 };
 
 /**

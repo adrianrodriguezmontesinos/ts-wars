@@ -1,5 +1,5 @@
-import { Sprite, SPRITE_16 } from "../../commons";
-import { BookType } from "./book.types";
+import { Sprite, SPRITE_16 } from '../../commons';
+import { BookType } from './book.types';
 
 const potionTileset = '/public/items/books.png';
 
@@ -38,8 +38,8 @@ export const bookSprites: Record<BookType, Sprite> = {
   [BookType.GOLD_SCRIPTURE]: new Sprite(potionTileset, 6, 7, SPRITE_16, SPRITE_16),
   [BookType.GOLD_GRIMOIRE]: new Sprite(potionTileset, 6, 8, SPRITE_16, SPRITE_16),
   [BookType.GOLD_BIBLE]: new Sprite(potionTileset, 6, 10, SPRITE_16, SPRITE_16),
-  [BookType.GOLD_CODEX]: new Sprite(potionTileset, 6, 11, SPRITE_16, SPRITE_16),  
-  
+  [BookType.GOLD_CODEX]: new Sprite(potionTileset, 6, 11, SPRITE_16, SPRITE_16),
+
   [BookType.TURQUOISE_PAPYRUS]: new Sprite(potionTileset, 10, 0, SPRITE_16, SPRITE_16),
   [BookType.TURQUOISE_PERGAMINE]: new Sprite(potionTileset, 10, 2, SPRITE_16, SPRITE_16),
   [BookType.TURQUOISE_MANUSCRIPT]: new Sprite(potionTileset, 10, 4, SPRITE_16, SPRITE_16),
@@ -75,4 +75,4 @@ export const bookSprites: Record<BookType, Sprite> = {
   [BookType.RUBI_GRIMOIRE]: new Sprite(potionTileset, 3, 8, SPRITE_16, SPRITE_16),
   [BookType.RUBI_BIBLE]: new Sprite(potionTileset, 3, 10, SPRITE_16, SPRITE_16),
   [BookType.RUBI_CODEX]: new Sprite(potionTileset, 3, 11, SPRITE_16, SPRITE_16),
-}
+};

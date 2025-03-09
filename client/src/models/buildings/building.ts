@@ -1,11 +1,9 @@
-
-import { Cell } from '../map/cell'; // AVOID BARREL CIRCULAR DEPENDECY (BARRELS)
-import { buildingSprites, CellOwner, CellType, Coordinates } from "../map";
-import { BuildingType } from "./building.types";
-import { map__BuildingCosts } from '../costs';
-import { map__TerrainCost, TerrainType } from '../terrains';
+import { Cell, CellOwner, CellType, Coordinates, map__TerrainCost, TerrainType } from '../map';
 import { randomizeCost } from '../../logic';
 import { Cost } from '../commons';
+import { BuildingType } from './building.types';
+import { buildingSprites } from './building.sprites';
+import { map__BuildingCosts } from './building.costs';
 
 // TODO MD
 export class Building extends Cell {
@@ -26,7 +24,5 @@ export class Building extends Cell {
 
   static getCost(building: BuildingType, terrain: TerrainType): Cost {
     return randomizeCost(map__BuildingCosts[building], map__TerrainCost[terrain], true);
-  } 
-
+  }
 }
-
