@@ -135,22 +135,27 @@ export class GameMap {
     }
   }
 
-  // TODO TEMP 
+  // TODO TEMP
   // TODO COMENTAR
   // TODO AQUI SE ASIGNAN LOS CASTILLOS A LOS JUGADORES
   /**
-   * 
+   *
    */
   private async _initCastles() {
-    if(this._players.length === 2) {
+    if (this._players.length === 2) {
       // Player 1
       let coords = this._calculateCoordinates(1, 1);
       await this.drawCell(BuildingType.CASTLE, coords, CellType.BUILDING);
       // TODO MD
       let terrain: Terrain = this._cells[1][1] as Terrain;
-      const cost = Building.getCost(BuildingType.CASTLE, terrain.terrainType)
+      const cost = Building.getCost(BuildingType.CASTLE, terrain.terrainType);
       console.log(terrain.terrainType, cost);
-      this._cells[1][1] = new Building('Player 1', coords, BuildingType.CASTLE, terrain.terrainType);
+      this._cells[1][1] = new Building(
+        'Player 1',
+        coords,
+        BuildingType.CASTLE,
+        terrain.terrainType,
+      );
 
       // Player 2
       // At odd files the margin must be 1 more
@@ -159,14 +164,19 @@ export class GameMap {
       await this.drawCell(BuildingType.CASTLE, coords, CellType.BUILDING);
       // TODO MD
       terrain = this._cells[this._hexX - margin][this._hexY - 2] as Terrain;
-      this._cells[1][1] = new Building('Player 1', coords, BuildingType.CASTLE, terrain.terrainType);
+      this._cells[1][1] = new Building(
+        'Player 1',
+        coords,
+        BuildingType.CASTLE,
+        terrain.terrainType,
+      );
     }
   }
 
   // TODO MD Y MEJORAR
   /**
-   * 
-   * @returns 
+   *
+   * @returns
    */
   private _addClickListener() {
     if (!this._canvas) return;
@@ -174,12 +184,12 @@ export class GameMap {
       const rect = this._canvas.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const clickY = e.clientY - rect.top;
-      
+
       // Calculamos índices aproximados basándonos en la misma lógica de _calculateCoordinates
       const cellY = Math.floor(clickY / (TERRAIN_SPRITE_HEIGTH * 0.75));
       const offsetX = cellY % 2 === 1 ? TERRAIN_SPRITE_WIDTH * 0.5 : 0;
       const cellX = Math.floor((clickX - offsetX) / TERRAIN_SPRITE_WIDTH);
-      
+
       if (this._cells[cellX] && this._cells[cellX][cellY]) {
         const cell = this._cells[cellX][cellY];
 
@@ -190,7 +200,7 @@ export class GameMap {
 
           this._showTerrainModal(name, list);
         } else if (cell.cellType === CellType.BUILDING) {
-          const buildingCell = cell as Building; 
+          const buildingCell = cell as Building;
           const name = buildingCell.buildingType.toUpperCase();
 
           this._showBuildingModal(name, buildingCell.owner);
@@ -200,9 +210,9 @@ export class GameMap {
   }
 
   /**
-   * 
-   * @param resources 
-   * @returns 
+   *
+   * @param resources
+   * @returns
    */
   private _getModalResourcesList(resources: Cost): HTMLElement {
     const list = document.createElement('ul');
@@ -219,13 +229,13 @@ export class GameMap {
 
   // TODO METODO GENERICO PARA AÑADOR ESTO
   /**
-   * 
-   * @param message 
-   * @param list 
+   *
+   * @param message
+   * @param list
    */
   private _showTerrainModal(message: string, list: HTMLElement) {
     // Delete the last modal
-    document.querySelector(".modal")?.remove();
+    document.querySelector('.modal')?.remove();
 
     // Modal
     const modal = document.createElement('div');
@@ -253,12 +263,12 @@ export class GameMap {
 
   // TODO MD Y MEJORAR
   /**
-   * 
-   * @param message 
+   *
+   * @param message
    */
   private _showBuildingModal(message: string, owner: string) {
     // Delete the last modal
-    document.querySelector(".modal")?.remove();
+    document.querySelector('.modal')?.remove();
 
     // Modal
     const modal = document.createElement('div');
@@ -298,7 +308,7 @@ export class GameMap {
         sprite.image.onload = () => {
           // WHY IS IT NEEDED HERE
           if (!this._ctx) return;
-            sprite.draw(this._ctx, coords.x, coords.y);
+          sprite.draw(this._ctx, coords.x, coords.y);
           resolve();
         };
       });
@@ -336,22 +346,21 @@ export class GameMap {
   }
 
   /**
-   * 
-   * @param players 
+   *
+   * @param players
    */
   async createMap(players: string[]) {
     this._players = players;
     // await this._initTerrains();
     // await this._initCastles();
-    await this.testDraw(BookType.BRONZE_PAPYRUS, {x: 0, y: 0});
-    await this.testDraw(BookType.BRONZE_PERGAMINE, {x: 20, y: 20});
-    await this.testDraw(BookType.BRONZE_MANUSCRIPT, {x: 40, y: 40});
-    await this.testDraw(BookType.BRONZE_TOME, {x: 60, y: 60});
-    await this.testDraw(BookType.BRONZE_SCRIPTURE, {x: 80, y: 80});
-    await this.testDraw(BookType.BRONZE_GRIMOIRE, {x: 100, y: 100});
-    await this.testDraw(BookType.BRONZE_BIBLE, {x: 120, y: 120});
-    await this.testDraw(BookType.BRONZE_CODEX, {x: 140, y: 140});
+    await this.testDraw(BookType.BRONZE_PAPYRUS, { x: 0, y: 0 });
+    await this.testDraw(BookType.BRONZE_PERGAMINE, { x: 20, y: 20 });
+    await this.testDraw(BookType.BRONZE_MANUSCRIPT, { x: 40, y: 40 });
+    await this.testDraw(BookType.BRONZE_TOME, { x: 60, y: 60 });
+    await this.testDraw(BookType.BRONZE_SCRIPTURE, { x: 80, y: 80 });
+    await this.testDraw(BookType.BRONZE_GRIMOIRE, { x: 100, y: 100 });
+    await this.testDraw(BookType.BRONZE_BIBLE, { x: 120, y: 120 });
+    await this.testDraw(BookType.BRONZE_CODEX, { x: 140, y: 140 });
     // this._addClickListener();
   }
-
 }
