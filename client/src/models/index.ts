@@ -3,3 +3,4 @@ export * from './buildings/index';
 export * from './costs/index';
 export * from './commons/index';
 export * from './terrains/index';
+export * from './items/index';

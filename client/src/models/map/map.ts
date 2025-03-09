@@ -1,8 +1,6 @@
 import { Building, BuildingType } from '../buildings';
 import { TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
 import { Cost } from '../costs';
-import { ArmourType } from '../items/armour.types';
-import { armourSprites } from '../items/armours.sprites';
 import { map__TerrainRare, Terrain, TerrainType } from '../terrains';
 import { Cell } from './cell';
 import { CellOwner, CellType } from './cell.types';
@@ -287,8 +285,9 @@ export class GameMap {
     document.body.appendChild(modal);
   }
 
-  async testDrawArmour(type: ArmourType, coords: Coordinates): Promise<void> {
-    const sprite = armourSprites[type];
+  // TODO ESTO LO VAMOS A QUITAR PORQUE EL ARMOUR SE DIBUJA EN LAS TASKS DE UN BUILDING MODAL
+  async testDraw(type: WeaponType, coords: Coordinates): Promise<void> {
+    const sprite = weaponSprites[type];
     if (!this._ctx) return;
 
     if (sprite.image.complete) {
@@ -303,7 +302,6 @@ export class GameMap {
         };
       });
     }
-
   }
 
   // TODO COMENTAR
@@ -342,11 +340,13 @@ export class GameMap {
    */
   async createMap(players: string[]) {
     this._players = players;
-    await this._initTerrains();
+    // await this._initTerrains();
     // await this._initCastles();
-    await this.testDrawArmour(ArmourType.EMERALD_ARMOUR, {x: 0, y: 0});
-    await this.testDrawArmour(ArmourType.EMERALD_ARMOUR2, {x: 20, y: 20});
-    await this.testDrawArmour(ArmourType.EMERALD_ARMOUR3, {x: 40, y: 40});
+    await this.testDraw(WeaponType.EMERALD_AXE, {x: 0, y: 0});
+    await this.testDraw(WeaponType.RUBI_BOW, {x: 20, y: 20});
+    await this.testDraw(WeaponType.IRON_SHIELD, {x: 40, y: 40});
+    await this.testDraw(WeaponType.GOLD_AXE, {x: 60, y: 60});
+    await this.testDraw(WeaponType.ZAPHIRE_SHIELD, {x: 80, y: 80});
     // this._addClickListener();
   }
 
