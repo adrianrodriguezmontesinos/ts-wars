@@ -1,5 +1,6 @@
-import { Building, BuildingType, map__BuildingCosts } from '../buildings';
+import { Building, BuildingType } from '../buildings';
 import { Cost } from '../commons';
+import { TerrainType } from '../map';
 import { ResourceType } from '../resources';
 
 export class Player {
@@ -7,20 +8,21 @@ export class Player {
   resources: Cost;
   buildings: Building[];
 
-  constructor(name: string, buildings: Building[]) {
+  constructor(name: string) {
     this.name = name;
-    this.buildings = buildings;
+    this.buildings = [];
     this.resources = this._getInitialResources();
   }
 
   // TODO
   /**
-   * 
-   * @param buildingType 
-   * @returns 
+   *
+   * @param buildingType
+   * @param terrainType
+   * @returns
    */
-  canIPay(buildingType: BuildingType): boolean {
-    const cost = map__BuildingCosts[buildingType];
+  canIPay(buildingType: BuildingType, terrainType: TerrainType): boolean {
+    const cost = Building.getCost(buildingType, terrainType);
     const res = true;
 
     for (const resource of Object.values(ResourceType)) {
@@ -34,44 +36,24 @@ export class Player {
 
     return res;
   }
-  
-  // TODO
-  /**
-   * 
-   * @param cost 
-   * @returns 
-   */
-  payCost(cost: Cost): Cost | null {
-    const auxCost: Cost = {
-      [ResourceType.COAL]: 0,
-      [ResourceType.BRONZE]: 0,
-      [ResourceType.IRON]: 0,
-      [ResourceType.GOLD]: 0,
-      [ResourceType.TURQUOISE]: 0,
-      [ResourceType.ZAPHIRE]: 0,
-      [ResourceType.EMERALD]: 0,
-      [ResourceType.RUBI]: 0,
-      [ResourceType.DIAMOND]: 0,
-    };
 
+  /**
+   * Pay the Cost of somethinfg
+   * @param cost Resources' Cost to be paid
+   */
+  payCost(cost: Cost) {
     for (const resource of Object.values(ResourceType)) {
       const available = this.resources[resource];
       const required = cost[resource];
 
-      if (available < required) {
-        return null;
-      }
-
-      auxCost[resource] = available - required;
+      this.resources[resource] -= required;
     }
-
-    return auxCost;
   }
 
   // TODO
   /**
-   * 
-   * @returns 
+   *
+   * @returns
    */
   private _getInitialResources(): Cost {
     return {

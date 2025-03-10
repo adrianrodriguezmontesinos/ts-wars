@@ -48,5 +48,4 @@ export class Sprite {
       this.h, // Sprite sizes at canvas
     );
   }
-
 }

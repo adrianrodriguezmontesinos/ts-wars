@@ -7,7 +7,6 @@ import { map__BuildingCosts } from './building.costs';
 
 export class Building extends Cell {
   buildingType: BuildingType;
-  terrain: TerrainType; // Terrain type where the build is made
 
   /**
    * Building cell
@@ -16,10 +15,9 @@ export class Building extends Cell {
    * @param pos Positions index {x, y} at the game map bidimensional Array
    * @param type Terrain type
    */
-  constructor(owner: CellOwner, coords: Coordinates, pos: Coordinates, type: BuildingType, terrain: TerrainType) {
+  constructor(owner: CellOwner, coords: Coordinates, pos: Coordinates, type: BuildingType) {
     super(CellType.BUILDING, owner, coords, pos, buildingSprites[type]);
     this.buildingType = type;
-    this.terrain = terrain;
   }
 
   /**
@@ -28,16 +26,6 @@ export class Building extends Cell {
    */
   static getBuildingTypes(): BuildingType[] {
     return Object.values(BuildingType) as BuildingType[];
-  }
-
-  // TODO IF NOT USED!! DELETE
-  /**
-   * Get the BuildingType key from its value
-   * @param value BuildingType value
-   * @returns BuildingType key
-   */
-  static getBuildingTypeByValue(value: string): string {
-    return Object.keys(BuildingType).find((key: string) => BuildingType[key] === value) ?? '';
   }
 
   /**

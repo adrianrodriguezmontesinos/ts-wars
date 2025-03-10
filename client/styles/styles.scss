@@ -26,7 +26,8 @@ $f-xl: 1.4rem;
 $border: 8px solid $primary-light;
 $border-slim: 1px solid $primary-dark;
 
-$z-modal-cell: 1;
+$z-modal-cell: 2;
+$z-modal-resources: 1;
 
 @font-face {
   font-family: "Berry";
@@ -82,11 +83,21 @@ ul {
   min-width: 300px;
   max-height: 80%;
   overflow: auto;
-  transform: translate(-50%, -50%);
+  transform: translate(-90%, -50%);
   background-color: $primary-trans;
   padding: $m-l;
   border: $border;
   z-index: $z-modal-cell;
+
+  &--player {
+    top: 10px;
+    right: 10px;
+    left: auto;
+    min-width: 180px;
+    max-width: 180px;
+    transform: none;
+    z-index: $z-modal-resources;
+  }
 
   &__title {
     font-size: $f-l;
@@ -114,10 +125,11 @@ ul {
     }
 
     &--not-allowed {
+      opacity: 0.5;
       background-color: $grey;
 
       &:hover {
-        cursor: crosshair;
+        cursor: not-allowed;
         background-color: $grey;
       }
     }
