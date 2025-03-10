@@ -15,7 +15,13 @@ export class Cell {
    * @param owner Player owner of the cell
    * @param sprite Terrain Sprite
    */
-  constructor(type: CellType, owner: CellOwner, coords: Coordinates, pos: Coordinates, sprite: Sprite) {
+  constructor(
+    type: CellType,
+    owner: CellOwner,
+    coords: Coordinates,
+    pos: Coordinates,
+    sprite: Sprite,
+  ) {
     this.cellType = type;
     this.owner = owner;
     this.coords = coords;

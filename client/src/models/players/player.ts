@@ -16,10 +16,10 @@ export class Player {
 
   // TODO
   /**
-   * 
-   * @param buildingType 
-   * @param terrainType 
-   * @returns 
+   *
+   * @param buildingType
+   * @param terrainType
+   * @returns
    */
   canIPay(buildingType: BuildingType, terrainType: TerrainType): boolean {
     const cost = Building.getCost(buildingType, terrainType);
@@ -36,7 +36,7 @@ export class Player {
 
     return res;
   }
-  
+
   /**
    * Pay the Cost of somethinfg
    * @param cost Resources' Cost to be paid
@@ -52,8 +52,8 @@ export class Player {
 
   // TODO
   /**
-   * 
-   * @returns 
+   *
+   * @returns
    */
   private _getInitialResources(): Cost {
     return {

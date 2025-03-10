@@ -256,9 +256,11 @@ export class GameMap {
           // Pay and build
           this._player.payCost(cost);
           this._build(this._player.name, building, positions);
-          
+
           // Update resources event (to player modal) after the payment
-          document.dispatchEvent(new CustomEvent('updateResources', { detail: this._player.resources }));
+          document.dispatchEvent(
+            new CustomEvent('updateResources', { detail: this._player.resources }),
+          );
         });
       } else {
         card.classList.add('modal__card--not-allowed');
