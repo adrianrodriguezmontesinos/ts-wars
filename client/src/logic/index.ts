@@ -1,2 +1,3 @@
-export * from './utils/index';
-export * from './resources/index';
+export * from './utils';
+export * from './resources';
+export * from './map';

@@ -40,17 +40,30 @@ Author: Adrián Rodríguez
 - (Bug) imports circular dependencies (at barrels)
 - DOM access JS
 - Generate and delete DOM modals dynamically with JS (various nodes)
+- SCSS modals positions & z-index (center a modal with transform)
 - Event listener insides JS generated buttons
+- Regions to mantain clean code structure
+- Set elements attribtes and classes by JS
 - 
 
 ## TODOs
 
-- Modify resources & costs from tables, only rubis
+- avaliable terrain draw hexagons color
+- clicked terrain/building draw hexagon color
+- modal hover over a building card/item card
 
-- costs los movemos a comons
-- building costs los movemos a buildings too y lo mismo con terrains
-- change name map.buildings y terrains.building por building.sprite y terrain,sprite y mover a terrains y buildings (OJO A DEPENDENCIAS CIRCULARES CON BARRELS)
-- cells -> building y terrains OJO A LAS DEPENDENCIAS CIRCULARES!! IR PASANDO POCO A POCO 
+- Icon and message build at terrainbuilding modals
+- cursor hover terrains
+
+- todo en el castillo va a poner los recursos que tiene el jugador
+- player logic
+- testear paycost logic
+- RANDOMIZE COSTS LOGIC !!! DODNE ESTÁ
+
+- build test
+- move show modals functions to logic
+- tasks logic
+- delete test draw cuando ya estén dibujados los tasks
 
 - item.ts
 - effects apply effect -> temporal

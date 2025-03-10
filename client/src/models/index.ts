@@ -3,3 +3,4 @@ export * from './buildings';
 export * from './commons';
 export * from './map';
 export * from './items';
+export * from './players';

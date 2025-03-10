@@ -14,7 +14,6 @@ export function randomizeCost(cost: Cost, percent: number, onlyInc: boolean = fa
       // Do not modify zero values
       if (value === 0) return [resource, 0];
 
-      // TODO MD
       // We increase or decreasse the value
       const factor = onlyInc || rndBool() ? 1 + percent : 1 - percent;
 
