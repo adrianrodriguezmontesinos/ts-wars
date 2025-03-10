@@ -35,7 +35,6 @@ export const map__TerrainRare: Record<TerrainType, number> = {
   [TerrainType.WAX5]: 2,
 };
 
-// TODO MD
 /**
  * Building build cost discount or amount
  */

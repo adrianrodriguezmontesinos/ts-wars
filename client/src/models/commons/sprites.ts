@@ -3,11 +3,11 @@ export const TERRAIN_SPRITE_HEIGTH = 71;
 export const SPRITE_16 = 16;
 
 export class Sprite {
-  private _x: number;
-  private _y: number;
-  private _w: number;
-  private _h: number;
-  public image: HTMLImageElement;
+  x: number;
+  y: number; // positions at tileset (px)
+  w: number;
+  h: number; // dimensions (px)
+  image: HTMLImageElement;
 
   /**
    * Game sprite
@@ -18,12 +18,12 @@ export class Sprite {
    * @param height Sprite height
    */
   constructor(tilesetUrl: string, indexX: number, indexY: number, width: number, heigth: number) {
-    this._w = width;
-    this._h = heigth;
+    this.w = width;
+    this.h = heigth;
 
     // Calc the coordenates at the tileset
-    this._x = indexX * width;
-    this._y = indexY * heigth;
+    this.x = indexX * width;
+    this.y = indexY * heigth;
 
     this.image = new Image();
     this.image.src = tilesetUrl;
@@ -38,16 +38,15 @@ export class Sprite {
   draw(ctx: CanvasRenderingContext2D, posX: number, posY: number) {
     ctx.drawImage(
       this.image,
-      this._x,
-      this._y, // Coordinates inside tileset
-      this._w,
-      this._h, // Sprite sizes at the tileset
+      this.x,
+      this.y, // Coordinates inside tileset
+      this.w,
+      this.h, // Sprite sizes at the tileset
       posX,
       posY, // Positions where to be drawed at canvas
-      this._w,
-      this._h, // Sprite sizes at canvas
+      this.w,
+      this.h, // Sprite sizes at canvas
     );
   }
 
-  // TODO MD
 }
