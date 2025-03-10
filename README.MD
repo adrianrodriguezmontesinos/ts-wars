@@ -44,13 +44,25 @@ Author: Adrián Rodríguez
 - Event listener insides JS generated buttons
 - Regions to mantain clean code structure
 - Set elements attribtes and classes by JS
+- Resolve various promises at JS
+- JS Custom Events to handdle resources update
 - 
 
 ## TODOs
 
+- building cards
+- refactor add html element with name father class and attributes
+- refactor cards buildings with cards items
+- refactor modal methods ??
+- must only appear the building cards at colider terrains
+- comment methods at map and player
+- format code
+
 - avaliable terrain draw hexagons color
 - clicked terrain/building draw hexagon color
-- modal hover over a building card/item card
+- modal hover over a building card/item card (on mouse over?)
+
+- improve access to this._player[0] - the main player!!
 
 - Icon and message build at terrainbuilding modals
 - cursor hover terrains

@@ -1,6 +1,6 @@
 import { Building, buildingSprites, BuildingType } from '../buildings';
 import { Terrain, terrainSprites, TerrainType } from './terrains';
-import { Cost, Sprite, TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
+import { Cost, Sprite, SPRITE_16, TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
 import { Cell, CellType } from './cells';
 import { Coordinates } from './coordinates';
 import { bookSprites, BookType } from '../items';
@@ -14,7 +14,7 @@ export class GameMap {
   private _canvas: HTMLCanvasElement;
   private _ctx: CanvasRenderingContext2D | null;
   private _cells: Cell[][];
-  private _players: Player[];
+  private _player: Player;
 
   /**
    * Game map
@@ -32,6 +32,37 @@ export class GameMap {
   }
 
   //#region INIT
+
+  /**
+   * Load terrain and building sprites (Promise)
+   */
+  private async _loadSprites(): Promise<void> {
+    const promises: Promise<void>[] = [];
+
+    // Load buildingSprites
+    Object.values(buildingSprites).forEach((sprite) => {
+      if (!sprite.image.complete) {
+        promises.push(
+          new Promise<void>((resolve) => {
+            sprite.image.onload = () => resolve();
+          }),
+        );
+      }
+    });
+
+    // Load terrainSprites
+    Object.values(terrainSprites).forEach((sprite) => {
+      if (!sprite.image.complete) {
+        promises.push(
+          new Promise<void>((resolve) => {
+            sprite.image.onload = () => resolve();
+          }),
+        );
+      }
+    });
+
+    await Promise.all(promises);
+  }
 
   /**
    * Init the canvas HTML element and its context, to draw the map on it
@@ -58,7 +89,7 @@ export class GameMap {
   /**
    * Draw the map with terrains of different types using their rarity ratio
    */
-  private async _initTerrains() {
+  private _initTerrains() {
     const terrainTypes = Terrain.getTerrainTypes();
     const totalRarity = Terrain.getTotalRarity(terrainTypes);
 
@@ -78,7 +109,7 @@ export class GameMap {
         this._cells[i][j] = new Terrain(coords, { x: i, y: j }, chosenType);
 
         // Paint the sprite
-        await this.drawCell(chosenType, coords);
+        this._drawCell(chosenType, coords);
       }
     }
   }
@@ -87,51 +118,27 @@ export class GameMap {
   /**
    * Init game players and their castles
    */
-  private async _initPlayers() {
+  private _initPlayers() {
+    this._player = new Player('Player 1');
+
     // Player 1
-    let coords = Terrain.calculateCoordinates(1, 1);
-    await this.drawCell(BuildingType.CASTLE, coords, CellType.BUILDING);
-
-    let terrain: Terrain = this._cells[1][1] as Terrain;
-    const castle1 = new Building(
-      'Player 1',
-      coords,
-      { x: 1, y: 1 },
-      BuildingType.CASTLE,
-      terrain.terrainType,
-    );
-    const player1 = new Player('Player 1', [castle1]);
-    this._cells[1][1] = castle1;
-
-    const cost = Building.getCost(BuildingType.HOUSE, TerrainType.GRASS);
-    const cost2 = Building.getCost(BuildingType.FARM, TerrainType.GRASS);
+    const pos: Coordinates = {
+      x: 1,
+      y: 1,
+    };
+    this._build(this._player.name, BuildingType.CASTLE, pos);
+    this._setPlayerModal();
 
     // Player 2
     // At odd files the margin must be 1 more
     const margin = this._hexY % 2 === 0 ? 2 : 3;
-    coords = Terrain.calculateCoordinates(this._hexX - margin, this._hexY - 2);
-    await this.drawCell(BuildingType.CASTLE, coords, CellType.BUILDING);
-
-    terrain = this._cells[this._hexX - margin][this._hexY - 2] as Terrain;
-
-    const castle2 = new Building(
-      'Player 2',
-      coords,
-      { x: this._hexX - margin, y: this._hexY - 2 },
-      BuildingType.CASTLE,
-      terrain.terrainType,
-    );
-    const player2 = new Player('Player 2', [castle2]);
-    this._cells[1][1] = castle2;
-
-    this._players = [player1, player2];
+    pos.x = this._hexX - margin;
+    pos.y = this._hexY - 2;
+    // TODO IT IS HARDCODED BY THE MOMENT
+    this._build('Player 2', BuildingType.CASTLE, pos);
   }
 
   //#endregion INIT
-
-  //#region BUILD
-
-  //#endregion BUILD
 
   //#region MODALS
 
@@ -154,7 +161,7 @@ export class GameMap {
         const cell = this._cells[cellX][cellY];
 
         // Delete the last modal
-        document.querySelector('.modal')?.remove();
+        document.querySelector('#modal-cell')?.remove();
 
         if (cell.cellType === CellType.TERRAIN) {
           this._setTerrainModal(cell as Terrain);
@@ -216,9 +223,10 @@ export class GameMap {
   /**
    *
    * @param positions
+   * @param terrainType TerrainType
    * @returns
    */
-  private _getBuildingCards(positions: Coordinates): HTMLDivElement {
+  private _getBuildingCards(positions: Coordinates, terrainType: TerrainType): HTMLDivElement {
     const grid = document.createElement('div');
     grid.classList.add('modal__grid');
 
@@ -240,13 +248,22 @@ export class GameMap {
       const img = this._getItemImageContainer(building, buildingSprites[building]);
       card.appendChild(img);
 
-      // TODO SEPARAR
-      // Build click event
-      card.addEventListener('click', () => {
-        console.log(positions, );
-      });
+      // Build click event if we can pay it, if not we set the not allowed class
+      if (this._player.canIPay(building, terrainType)) {
+        card.addEventListener('click', () => {
+          const cost = Building.getCost(building, terrainType);
 
-      // li.innerText = `${e[0]}: ${e[1]}`;
+          // Pay and build
+          this._player.payCost(cost);
+          this._build(this._player.name, building, positions);
+          
+          // Update resources event (to player modal) after the payment
+          document.dispatchEvent(new CustomEvent('updateResources', { detail: this._player.resources }));
+        });
+      } else {
+        card.classList.add('modal__card--not-allowed');
+      }
+
       grid.appendChild(card);
     });
 
@@ -260,6 +277,7 @@ export class GameMap {
   private _setTerrainModal(terrainCell: Terrain) {
     const modal = document.createElement('div');
     modal.classList.add('modal');
+    modal.setAttribute('id', 'modal-cell');
 
     // Title
     const title = document.createElement('p');
@@ -272,7 +290,7 @@ export class GameMap {
     modal.appendChild(list);
 
     // Buildings
-    const buildings = this._getBuildingCards(terrainCell.positions);
+    const buildings = this._getBuildingCards(terrainCell.positions, terrainCell.terrainType);
     modal.appendChild(buildings);
 
     // Close button with its close event
@@ -297,6 +315,7 @@ export class GameMap {
   private _setBuildingModal(buildingCell: Building) {
     const modal = document.createElement('div');
     modal.classList.add('modal');
+    modal.setAttribute('id', 'modal-cell');
 
     // Title
     const title = document.createElement('p');
@@ -317,9 +336,49 @@ export class GameMap {
 
   //#endregion MODALS - BUILDINGS
 
+  //#region MODALS - PLAYER
+
+  private _setPlayerModal() {
+    const modal = document.createElement('div');
+    modal.classList.add('modal', 'modal--player');
+
+    // Title
+    const title = document.createElement('p');
+    title.innerText = this._player.name;
+    title.classList.add('modal__title');
+    modal.appendChild(title);
+
+    // List
+    const list = this._getModalResourcesList(this._player.resources);
+    modal.appendChild(list);
+
+    // Update resources listener
+    document.addEventListener('updateResources', (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const resourceList = modal.querySelector('.modal__list');
+
+      if (resourceList) {
+        resourceList.innerHTML = '';
+
+        // Update the list values from the updateResources' event ones
+        Object.entries(customEvent.detail).forEach(([key, value]) => {
+          const li = document.createElement('li');
+          li.innerText = `${key}: ${value}`;
+          resourceList.appendChild(li);
+        });
+      }
+    });
+
+    // TODO MINIMIZE BUTTON
+
+    document.body.appendChild(modal);
+  }
+
+  //#endregion MODALS - PLAYER
+
   //#endregion MODALS
 
-  //#region DRAW
+  //#region DRAW & BUILD
 
   // TODO TEST
   async testDraw(type: BookType, coords: Coordinates): Promise<void> {
@@ -340,36 +399,47 @@ export class GameMap {
     }
   }
 
+  // TODO
+  /**
+   *
+   * @param owner
+   * @param type
+   * @param pos
+   */
+  private _build(owner: string, type: BuildingType, pos: Coordinates) {
+    const coords = Terrain.calculateCoordinates(pos.x, pos.y);
+    const building = new Building(owner, coords, pos, type);
+
+    this._cells[pos.x][pos.y] = building;
+    if (this._player.name === owner) {
+      this._player.buildings.push(building);
+    }
+
+    this._drawCell(type, coords, CellType.BUILDING);
+
+    // Delete the last modal
+    document.querySelector('#modal-cell')?.remove();
+  }
+
   /**
    * Draw a cell into the canvas
    * @param type Type of building (BuildingType) or terrain (TerrainType)
    * @param coords Coordinates where to draw the cell
-   * @param cellType Cell type 'CellType.TERRAIN' or 'CellType.BUILDING'
+   * @param cellType Cell type 'CellType.TERRAIN' (default) or 'CellType.BUILDING'
    * @returns
    */
-  async drawCell(
+  private _drawCell(
     type: BuildingType | TerrainType,
     coords: Coordinates,
     cellType: CellType = CellType.TERRAIN,
-  ): Promise<void> {
+  ) {
     if (!this._ctx) return;
-    const sprite = cellType === CellType.BUILDING ? buildingSprites[type] : terrainSprites[type];
 
-    // If the image is already loaded we draw it
-    if (sprite.image.complete) {
-      sprite.draw(this._ctx, coords.x, coords.y);
-    } else {
-      // If the image is not loaded we wait till it is
-      await new Promise<void>((resolve) => {
-        sprite.image.onload = () => {
-          sprite.draw(this._ctx, coords.x, coords.y);
-          resolve();
-        };
-      });
-    }
+    const sprite = cellType === CellType.BUILDING ? buildingSprites[type] : terrainSprites[type];
+    sprite.draw(this._ctx, coords.x, coords.y);
   }
 
-  //#endregion DRAW
+  //#endregion DRAW & BUILD
 
   // TODO PLAYERS AS PARAMS
   /**
@@ -377,9 +447,10 @@ export class GameMap {
    * @param players
    */
   async createMap() {
-    await this._initTerrains();
-    await this._initPlayers();
-    await this.testDraw(BookType.BRONZE_PAPYRUS, { x: 0, y: 0 }); // TODO TEST
+    await this._loadSprites();
+    this._initTerrains();
+    this._initPlayers();
+    // await this.testDraw(BookType.BRONZE_PAPYRUS, { x: 0, y: 0 }); // TODO TEST
     this._addCellClickListener();
   }
 }
