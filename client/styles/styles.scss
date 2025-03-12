@@ -18,7 +18,7 @@ $m-xl: 1.6rem;
 
 $p-m: 0.6rem 1.2rem;
 
-$f-s: 0.8rem;
+$f-s: 0.7rem;
 $f-m: 0.9rem;
 $f-l: 1rem;
 $f-xl: 1.4rem;
@@ -87,6 +87,7 @@ ul {
   background-color: $primary-trans;
   padding: $m-l;
   border: $border;
+  font-size: $f-s;
   z-index: $z-modal-cell;
 
   &--player {
@@ -111,7 +112,7 @@ ul {
   }
 
   &__card {
-    width: 110px;
+    width: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -131,6 +132,16 @@ ul {
       &:hover {
         cursor: not-allowed;
         background-color: $grey;
+      }
+    }
+
+    &--active {
+      opacity: 0.5;
+      background-color: $primary;
+
+      &:hover {
+        cursor: none;
+        background-color: $primary;
       }
     }
   }

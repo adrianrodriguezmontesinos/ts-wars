@@ -4,9 +4,11 @@ import { Cost } from '../commons';
 import { BuildingType } from './building.types';
 import { buildingSprites } from './building.sprites';
 import { map__BuildingCosts } from './building.costs';
+import { Upgrade } from '../upgrades';
 
 export class Building extends Cell {
   buildingType: BuildingType;
+  upgrades: Upgrade[];
 
   /**
    * Building cell
@@ -18,11 +20,20 @@ export class Building extends Cell {
   constructor(owner: CellOwner, coords: Coordinates, pos: Coordinates, type: BuildingType) {
     super(CellType.BUILDING, owner, coords, pos, buildingSprites[type]);
     this.buildingType = type;
+    this.upgrades = [];
   }
 
   /**
-   * Get the building types keys as an array
-   * @returns Array of building types' keys
+   * Add an upgrade to the building
+   * @param upgrade Upgrade to be added
+   */
+  addUpgrade(upgrade: Upgrade) {
+    this.upgrades.push(upgrade);
+  }
+
+  /**
+   * Get the building types values as an array
+   * @returns Array of building types' values
    */
   static getBuildingTypes(): BuildingType[] {
     return Object.values(BuildingType) as BuildingType[];

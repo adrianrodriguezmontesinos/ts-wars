@@ -1,14 +1,13 @@
-import { Sprite } from '../commons';
-import { Cost } from '../costs';
+import { Cost, Sprite } from '../commons';
 import { ItemType } from './item.types';
 
 export class Item {
-  itemType: ItemType;
+  type: ItemType;
   cost: Cost;
   sprite: Sprite;
 
   constructor(type: ItemType, cost: Cost, sprite: Sprite) {
-    this.itemType = type;
+    this.type = type;
     this.cost = cost;
     this.sprite = sprite;
   }
