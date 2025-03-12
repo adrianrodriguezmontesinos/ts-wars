@@ -1,6 +1,6 @@
 # TS WARS
 
-A Client-Server TS and JS real time strategy game.
+A Client-Server TS and JS real time strategy game. The porpouse of this development is to learn TS techniques, client-server communication and how to manage a huge proyect within a Framework.
 
 Status: development.
 
@@ -42,6 +42,7 @@ Author: Adrián Rodríguez
 - (Bug) imports circular dependencies (at barrels)
 - DOM access JS
 - Static methods JS
+- Show an Sprite from a Tileset as an HTML img element (not showing the full image)
 - Generate and delete DOM modals dynamically with JS (various nodes)
 - SCSS modals positions & z-index (center a modal with transform)
 - Event listener insides JS generated buttons
@@ -54,22 +55,17 @@ Author: Adrián Rodríguez
 
 ## TODOs
 
-- update costs from table
-- tools types sprites and costs
-- MINE items
-- MINE get the resources from the terrain
-- MINE mine
+- MINE resources display and event update
 - MINE UPGRADE cards (set the active class)
-- MINE upgrade logic 
-
+- MINE upgrade logic (buy it and test it is working the multiplicator)
+- refactor modals at modal logic
 - refactor add html element with name father class and attributes
-- refactor cards buildings with cards items
-- refactor modal methods ??
-- must only appear the building cards at colider terrains (except castles)
 - comment methods at map and player
 - format code
 
+- must only appear the building cards at colider terrains (except castles)
 - avaliable terrain draw hexagons color
+- our terrain draw hexagons color
 - clicked terrain/building draw hexagon color
 - modal hover over a building card/item card (on mouse over?)
 

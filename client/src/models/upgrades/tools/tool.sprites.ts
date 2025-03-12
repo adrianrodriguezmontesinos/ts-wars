@@ -1,7 +1,7 @@
 import { SingleSprite, SPRITE_64 } from '../../commons';
 import { ToolType } from './tool.types';
 
-const toolFolder = '/public/items/tools/';
+const toolFolder = '/public/upgrades/tools/';
 
 const toolSpriteSrcs: Record<string, string> = {
   [ToolType.SMALL_SHOVE]: `${toolFolder}small-shove.png`,
@@ -12,7 +12,7 @@ const toolSpriteSrcs: Record<string, string> = {
   [ToolType.RAKE]: `${toolFolder}rake.png`,
   [ToolType.BIG_SHOVE]: `${toolFolder}big-shove.png`,
   [ToolType.GOLD_SACK]: `${toolFolder}gold-sack.png`,
-  [ToolType.TURQUOISE_SACK]: `${toolFolder}turqouise-sack.png`,
+  [ToolType.TURQUOISE_SACK]: `${toolFolder}turquoise-sack.png`,
   [ToolType.ZAPHIRE_SACK]: `${toolFolder}zaphire-sack.png`,
   [ToolType.EMERALD_SACK]: `${toolFolder}emerald-sack.png`,
   [ToolType.RUBI_SACK]: `${toolFolder}rubi-sack.png`,

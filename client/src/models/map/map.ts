@@ -1,9 +1,10 @@
-import { Building, buildingSprites, BuildingType, Mine } from '../buildings';
+import { Building, buildingSprites, BuildingType, Mine, MineType, mineTypes } from '../buildings';
 import { Terrain, terrainSprites, TerrainType } from './terrains';
-import { Cost, Sprite, TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
+import { Cost, SingleSprite, Sprite, TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
 import { Cell, CellType } from './cells';
 import { Coordinates } from './coordinates';
 import { Player } from '../players';
+import { map__ToolCosts, Tool, toolSprites, ToolType, UpgradeType, UpgradeTypeAndList } from '../upgrades';
 
 let COUNT_FAST = 1000;
 let COUNT_SLOW = 60000;
@@ -147,6 +148,8 @@ export class GameMap {
 
   //#region MODALS
 
+  //#region MODALS - COMMON
+
   /**
    * Click listener to the terrain cells
    */
@@ -182,10 +185,9 @@ export class GameMap {
    *
    * @param name
    * @param sprite
-   * @param isSingle If it is a single sprite (where the full tileset is an sprite)
    * @returns
    */
-  private _getSpriteImgContainer(name: string, sprite: Sprite, isSingle = false): HTMLDivElement {
+  private _getSpriteImgContainer(name: string, sprite: Sprite | SingleSprite): HTMLDivElement {
     const container = document.createElement('div');
     container.classList.add('modal__containerImg');
     container.style.width = `${sprite.w}px`;
@@ -196,7 +198,7 @@ export class GameMap {
     img.setAttribute('src', sprite.image.currentSrc);
     img.setAttribute('alt', name);
 
-    if (!isSingle) {
+    if (sprite instanceof Sprite) {
       img.style.left = `-${sprite.x}px`;
       img.style.top = `-${sprite.y}px`;
     }
@@ -204,6 +206,8 @@ export class GameMap {
     container.appendChild(img);
     return container;
   }
+
+  //#endregion MODALS - COMMON
 
   //#region MODALS - TERRAINS
 
@@ -317,20 +321,94 @@ export class GameMap {
 
   //#region MODALS - BUILDINGS
 
-  // TODO REFACROR
-  private _getUpgradeCards(name: string, sprite: Sprite): HTMLDivElement {
-    const container = document.createElement('div');
-    container.classList.add('modal__containerImg');
-    container.style.width = `${sprite.w}px`;
-    container.style.height = `${sprite.h}px`;
+  // TODO
+  /**
+   * 
+   * @param buildingType 
+   * @returns 
+   */
+  private _getUpgradeTypeAndList(buildingType: BuildingType): UpgradeTypeAndList {
+    const res: UpgradeTypeAndList = {} as UpgradeTypeAndList;
+    if (mineTypes.includes(buildingType)) {
+      res.list = Tool.getToolTypes();
+      res.type = UpgradeType.TOOL;
+    } 
 
-    const img = document.createElement('img');
-    img.classList.add('modal__containerImg__img');
-    img.setAttribute('src', sprite.image.currentSrc);
-    img.setAttribute('alt', name);
+    return res;
+  }
 
-    container.appendChild(img);
+  // TODO
+  /**
+   * 
+   * @param upgradeType 
+   * @param type 
+   * @returns 
+   */
+  private _getUpgradeImagContainer(upgradeType: UpgradeType, type: ToolType): HTMLDivElement {
+    let container = document.createElement('div');
+    
+    if(upgradeType === UpgradeType.TOOL) {
+      container = this._getSpriteImgContainer(type, toolSprites[type]);
+    }
+
     return container;
+  }
+
+  // TODO
+  /**
+   * 
+   * @param type 
+   * @returns 
+   */
+  private _getUpgradeCards(building: Building): HTMLDivElement {
+    const grid = document.createElement('div');
+    grid.classList.add('modal__grid');
+
+    // TODO REFACTOR WE ARE GONNA HAVE NOT JUST TOOL UPGRADES
+    // All upgrades
+    const upgradeTypesAndList = this._getUpgradeTypeAndList(building.buildingType);
+    const upgrades = upgradeTypesAndList.list;
+
+    // For each building we create a list item
+    Object.entries(upgrades).forEach(u => {
+      const card = document.createElement('div');
+      card.classList.add('modal__card');
+
+      // Building name
+      const p = document.createElement('p');
+      const upgrade = u[1];
+      p.innerText = upgrade;
+      card.appendChild(p);
+
+      // Building image
+      const img = this._getUpgradeImagContainer(upgradeTypesAndList.type, u[1]);
+      card.appendChild(img);
+
+      // Build click event if we can pay it, if not we set the not allowed class
+      const cost = map__ToolCosts[u[1]];
+      console.log(cost);
+
+      // if (this._player.canIPay(building, terrain.terrainType)) {
+      //   card.addEventListener('click', () => {
+      //     const cost = Building.getCost(building, terrain.terrainType);
+
+      //     // Pay and build
+      //     this._player.payCost(cost);
+      //     this._build(this._player.name, building, terrain);
+
+      //     // Update resources event (to player modal) after the payment
+      //     document.dispatchEvent(
+      //       new CustomEvent('updateResources', { detail: this._player.resources }),
+      //     );
+      //   });
+      // } else {
+      //   card.classList.add('modal__card--not-allowed');
+      // }
+
+      grid.appendChild(card);
+    });
+
+    return grid;
   }
 
   /**
@@ -347,6 +425,21 @@ export class GameMap {
     title.innerText = `${buildingCell.buildingType.toUpperCase()} - ${buildingCell.owner}`;
     title.classList.add('modal__title');
     modal.appendChild(title);
+
+
+    // Buildings
+    const upgrades = this._getUpgradeCards(buildingCell);
+    modal.appendChild(upgrades);
+
+    // TODO REFACTOR SEPARATE METHODS
+    if (
+      buildingCell.buildingType === BuildingType.MINE ||
+      BuildingType.MINE2 ||
+      BuildingType.MINE3
+    ) {
+      const mine = buildingCell as Mine;
+      console.log(mine);
+    }
 
     // Close btn with its close event
     const closeBtn = document.createElement('button');
@@ -419,6 +512,28 @@ export class GameMap {
   /**
    *
    * @param owner
+   * @param coords
+   * @param type
+   * @param terrain
+   * @returns
+   */
+  private _getBuildind(
+    owner: string,
+    coords: Coordinates,
+    type: BuildingType,
+    terrain: Terrain,
+  ): Building | Mine {
+    if (mineTypes.includes(type)) {
+      return new Mine(owner, coords, terrain.positions, terrain.resources, type as MineType) as Mine;
+    } else {
+      return new Building(owner, coords, terrain.positions, type);
+    }
+  }
+
+  // TODO
+  /**
+   *
+   * @param owner
    * @param type
    * @param terrain
    * @param isMine
@@ -426,12 +541,8 @@ export class GameMap {
   private _build(owner: string, type: BuildingType, terrain: Terrain) {
     const pos: Coordinates = terrain.positions;
     const coords: Coordinates = Terrain.calculateCoordinates(pos.x, pos.y);
-    // TODO IMPROVE THIS WE ARE GOING TO CREATE DIFFERENT KIND OF BUILDINGS
-    let building: Building = new Building(owner, coords, pos, type);
 
-    if (type === BuildingType.MINE || type === BuildingType.MINE2 || type === BuildingType.MINE3) {
-      building = new Mine(owner, coords, pos, terrain.resources, type);
-    }
+    let building = this._getBuildind(owner, coords, type, terrain);
 
     this._cells[pos.x][pos.y] = building;
     if (this._player.name === owner) {

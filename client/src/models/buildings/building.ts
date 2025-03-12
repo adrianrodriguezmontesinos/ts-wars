@@ -32,8 +32,8 @@ export class Building extends Cell {
   }
 
   /**
-   * Get the building types keys as an array
-   * @returns Array of building types' keys
+   * Get the building types values as an array
+   * @returns Array of building types' values
    */
   static getBuildingTypes(): BuildingType[] {
     return Object.values(BuildingType) as BuildingType[];

@@ -29,7 +29,7 @@ export class Player {
    * @param cost Cost to be paid
    * @returns True if I can pay. False otehrwise
    */
-  canIpay(cost: Cost): boolean {
+  canIPay(cost: Cost): boolean {
     return Resource.canBePaid(this.resources, cost);
   }
 
