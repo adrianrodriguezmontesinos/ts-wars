@@ -133,6 +133,16 @@ ul {
         background-color: $grey;
       }
     }
+
+    &--active {
+      opacity: 0.5;
+      background-color: $primary;
+
+      &:hover {
+        cursor: none;
+        background-color: $primary;
+      }
+    }
   }
 
   &__containerImg {

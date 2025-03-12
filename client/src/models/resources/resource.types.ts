@@ -3,7 +3,7 @@ export enum ResourceType {
   BRONZE = 'bronze',
   IRON = 'iron',
   GOLD = 'gold',
-  TURQUOISE = 'turquise',
+  TURQUOISE = 'turquoise',
   ZAPHIRE = 'zaphire',
   EMERALD = 'emerald',
   RUBI = 'rubi',

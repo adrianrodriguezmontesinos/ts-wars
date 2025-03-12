@@ -1,6 +1,7 @@
 export const TERRAIN_SPRITE_WIDTH = 61;
 export const TERRAIN_SPRITE_HEIGTH = 71;
 export const SPRITE_16 = 16;
+export const SPRITE_64 = 64;
 
 export class Sprite {
   x: number;

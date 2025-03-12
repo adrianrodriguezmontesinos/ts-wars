@@ -2,6 +2,8 @@
 
 A Client-Server TS and JS real time strategy game.
 
+Status: development.
+
 Author: Adrián Rodríguez
 
 ## TECHNOLOGIES
@@ -39,6 +41,7 @@ Author: Adrián Rodríguez
 - JS async, await and promises
 - (Bug) imports circular dependencies (at barrels)
 - DOM access JS
+- Static methods JS
 - Generate and delete DOM modals dynamically with JS (various nodes)
 - SCSS modals positions & z-index (center a modal with transform)
 - Event listener insides JS generated buttons
@@ -46,15 +49,23 @@ Author: Adrián Rodríguez
 - Set elements attribtes and classes by JS
 - Resolve various promises at JS
 - JS Custom Events to handdle resources update
+- TS Polymorphism
 - 
 
 ## TODOs
 
-- building cards
+- update costs from table
+- tools types sprites and costs
+- MINE items
+- MINE get the resources from the terrain
+- MINE mine
+- MINE UPGRADE cards (set the active class)
+- MINE upgrade logic 
+
 - refactor add html element with name father class and attributes
 - refactor cards buildings with cards items
 - refactor modal methods ??
-- must only appear the building cards at colider terrains
+- must only appear the building cards at colider terrains (except castles)
 - comment methods at map and player
 - format code
 

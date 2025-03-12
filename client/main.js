@@ -4,6 +4,7 @@ import { Player } from "./src/models";
 
 const gameMap = new GameMap(20, 20);
 await gameMap.createMap();
+gameMap.start();
 
 // TODO CLEAN GAME TASKS ONE BY ONE (INTI FUNCTIONS ??)
 

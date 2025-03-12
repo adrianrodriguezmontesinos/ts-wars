@@ -1,10 +1,12 @@
-import { Building, buildingSprites, BuildingType } from '../buildings';
+import { Building, buildingSprites, BuildingType, Mine } from '../buildings';
 import { Terrain, terrainSprites, TerrainType } from './terrains';
-import { Cost, Sprite, SPRITE_16, TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
+import { Cost, Sprite, TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
 import { Cell, CellType } from './cells';
 import { Coordinates } from './coordinates';
-import { bookSprites, BookType } from '../items';
 import { Player } from '../players';
+
+let COUNT_FAST = 1000;
+let COUNT_SLOW = 60000;
 
 export class GameMap {
   private _hexX: number;
@@ -126,7 +128,9 @@ export class GameMap {
       x: 1,
       y: 1,
     };
-    this._build(this._player.name, BuildingType.CASTLE, pos);
+
+    let terrain: Terrain = this._cells[pos.x][pos.y] as Terrain;
+    this._build(this._player.name, BuildingType.CASTLE, terrain);
     this._setPlayerModal();
 
     // Player 2
@@ -134,8 +138,9 @@ export class GameMap {
     const margin = this._hexY % 2 === 0 ? 2 : 3;
     pos.x = this._hexX - margin;
     pos.y = this._hexY - 2;
-    // TODO IT IS HARDCODED BY THE MOMENT
-    this._build('Player 2', BuildingType.CASTLE, pos);
+    terrain = this._cells[pos.x][pos.y] as Terrain;
+    // TODO PLAYER 2 IT IS HARDCODED BY THE MOMENT
+    this._build('Player 2', BuildingType.CASTLE, terrain);
   }
 
   //#endregion INIT
@@ -172,6 +177,34 @@ export class GameMap {
     });
   }
 
+  // TODO
+  /**
+   *
+   * @param name
+   * @param sprite
+   * @param isSingle If it is a single sprite (where the full tileset is an sprite)
+   * @returns
+   */
+  private _getSpriteImgContainer(name: string, sprite: Sprite, isSingle = false): HTMLDivElement {
+    const container = document.createElement('div');
+    container.classList.add('modal__containerImg');
+    container.style.width = `${sprite.w}px`;
+    container.style.height = `${sprite.h}px`;
+
+    const img = document.createElement('img');
+    img.classList.add('modal__containerImg__img');
+    img.setAttribute('src', sprite.image.currentSrc);
+    img.setAttribute('alt', name);
+
+    if (!isSingle) {
+      img.style.left = `-${sprite.x}px`;
+      img.style.top = `-${sprite.y}px`;
+    }
+
+    container.appendChild(img);
+    return container;
+  }
+
   //#region MODALS - TERRAINS
 
   /**
@@ -193,40 +226,14 @@ export class GameMap {
     return list;
   }
 
-  // TODO
-  /**
-   *
-   * @param sprite
-   * @param width
-   * @param heigth
-   * @returns
-   */
-  private _getItemImageContainer(name: string, sprite: Sprite): HTMLDivElement {
-    const container = document.createElement('div');
-    container.classList.add('modal__containerImg');
-    container.style.width = `${sprite.w}px`;
-    container.style.height = `${sprite.h}px`;
-
-    const img = document.createElement('img');
-    img.classList.add('modal__containerImg__img');
-    img.setAttribute('src', sprite.image.currentSrc);
-    img.setAttribute('alt', name);
-    img.style.left = `-${sprite.x}px`;
-    img.style.top = `-${sprite.y}px`;
-
-    container.appendChild(img);
-    return container;
-  }
-
   // TODO APPEND METHOD REFACTOR AT LOGIC
   // TODO
   /**
    *
-   * @param positions
-   * @param terrainType TerrainType
+   * @param terrain Terrain below construction
    * @returns
    */
-  private _getBuildingCards(positions: Coordinates, terrainType: TerrainType): HTMLDivElement {
+  private _getBuildingCards(terrain: Terrain): HTMLDivElement {
     const grid = document.createElement('div');
     grid.classList.add('modal__grid');
 
@@ -245,17 +252,17 @@ export class GameMap {
       card.appendChild(p);
 
       // Building image
-      const img = this._getItemImageContainer(building, buildingSprites[building]);
+      const img = this._getSpriteImgContainer(building, buildingSprites[building]);
       card.appendChild(img);
 
       // Build click event if we can pay it, if not we set the not allowed class
-      if (this._player.canIPay(building, terrainType)) {
+      if (this._player.canIBuild(building, terrain.terrainType)) {
         card.addEventListener('click', () => {
-          const cost = Building.getCost(building, terrainType);
+          const cost = Building.getCost(building, terrain.terrainType);
 
           // Pay and build
           this._player.payCost(cost);
-          this._build(this._player.name, building, positions);
+          this._build(this._player.name, building, terrain);
 
           // Update resources event (to player modal) after the payment
           document.dispatchEvent(
@@ -292,7 +299,7 @@ export class GameMap {
     modal.appendChild(list);
 
     // Buildings
-    const buildings = this._getBuildingCards(terrainCell.positions, terrainCell.terrainType);
+    const buildings = this._getBuildingCards(terrainCell);
     modal.appendChild(buildings);
 
     // Close button with its close event
@@ -309,6 +316,22 @@ export class GameMap {
   //#endregion MODALS - TERRAINS
 
   //#region MODALS - BUILDINGS
+
+  // TODO REFACROR
+  private _getUpgradeCards(name: string, sprite: Sprite): HTMLDivElement {
+    const container = document.createElement('div');
+    container.classList.add('modal__containerImg');
+    container.style.width = `${sprite.w}px`;
+    container.style.height = `${sprite.h}px`;
+
+    const img = document.createElement('img');
+    img.classList.add('modal__containerImg__img');
+    img.setAttribute('src', sprite.image.currentSrc);
+    img.setAttribute('alt', name);
+
+    container.appendChild(img);
+    return container;
+  }
 
   /**
    * Get a modal with building info
@@ -337,6 +360,16 @@ export class GameMap {
   }
 
   //#endregion MODALS - BUILDINGS
+
+  //#region MODALS - BUY
+
+  private _buy() {}
+
+  private _buyItem() {}
+
+  private _buyUpgrade() {}
+
+  //#endregion MODALS - BUY
 
   //#region MODALS - PLAYER
 
@@ -382,35 +415,23 @@ export class GameMap {
 
   //#region DRAW & BUILD
 
-  // TODO TEST
-  async testDraw(type: BookType, coords: Coordinates): Promise<void> {
-    const sprite = bookSprites[type];
-    if (!this._ctx) return;
-
-    if (sprite.image.complete) {
-      sprite.draw(this._ctx, coords.x, coords.y);
-    } else {
-      await new Promise<void>((resolve) => {
-        sprite.image.onload = () => {
-          // WHY IS IT NEEDED HERE
-          if (!this._ctx) return;
-          sprite.draw(this._ctx, coords.x, coords.y);
-          resolve();
-        };
-      });
-    }
-  }
-
   // TODO
   /**
    *
    * @param owner
    * @param type
-   * @param pos
+   * @param terrain
+   * @param isMine
    */
-  private _build(owner: string, type: BuildingType, pos: Coordinates) {
-    const coords = Terrain.calculateCoordinates(pos.x, pos.y);
-    const building = new Building(owner, coords, pos, type);
+  private _build(owner: string, type: BuildingType, terrain: Terrain) {
+    const pos: Coordinates = terrain.positions;
+    const coords: Coordinates = Terrain.calculateCoordinates(pos.x, pos.y);
+    // TODO IMPROVE THIS WE ARE GOING TO CREATE DIFFERENT KIND OF BUILDINGS
+    let building: Building = new Building(owner, coords, pos, type);
+
+    if (type === BuildingType.MINE || type === BuildingType.MINE2 || type === BuildingType.MINE3) {
+      building = new Mine(owner, coords, pos, terrain.resources, type);
+    }
 
     this._cells[pos.x][pos.y] = building;
     if (this._player.name === owner) {
@@ -443,6 +464,8 @@ export class GameMap {
 
   //#endregion DRAW & BUILD
 
+  //#region MAIN
+
   // TODO PLAYERS AS PARAMS
   /**
    * Create and draw the game map
@@ -452,7 +475,33 @@ export class GameMap {
     await this._loadSprites();
     this._initTerrains();
     this._initPlayers();
-    // await this.testDraw(BookType.BRONZE_PAPYRUS, { x: 0, y: 0 }); // TODO TEST
     this._addCellClickListener();
   }
+
+  /**
+   * Start the game (counters)
+   * @param speedMult Speed multiplicator. By default 1 (no multuplier)
+   */
+  start(speedMult: number = 1) {
+    COUNT_FAST /= speedMult;
+    COUNT_SLOW /= speedMult;
+
+    // fast counter (basic resources)
+    setInterval(() => {
+      this._player.mine();
+      document.dispatchEvent(
+        new CustomEvent('updateResources', { detail: this._player.resources }),
+      );
+    }, COUNT_FAST);
+
+    // slow counter (gem resources)
+    setInterval(() => {
+      this._player.mineGems();
+      document.dispatchEvent(
+        new CustomEvent('updateResources', { detail: this._player.resources }),
+      );
+    }, COUNT_SLOW);
+  }
+
+  //#endregion MAIN
 }
