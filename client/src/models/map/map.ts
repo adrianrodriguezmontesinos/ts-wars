@@ -1,10 +1,23 @@
 import { Building, buildingSprites, BuildingType, Mine, MineType, mineTypes } from '../buildings';
 import { Terrain, terrainSprites, TerrainType } from './terrains';
-import { Cost, SingleSprite, Sprite, TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
+import {
+  Cost,
+  SingleSprite,
+  Sprite,
+  TERRAIN_SPRITE_HEIGTH,
+  TERRAIN_SPRITE_WIDTH,
+} from '../commons';
 import { Cell, CellType } from './cells';
 import { Coordinates } from './coordinates';
 import { Player } from '../players';
-import { map__ToolCosts, Tool, toolSprites, ToolType, UpgradeType, UpgradeTypeAndList } from '../upgrades';
+import {
+  map__ToolCosts,
+  Tool,
+  toolSprites,
+  ToolType,
+  UpgradeType,
+  UpgradeTypeAndList,
+} from '../upgrades';
 
 let COUNT_FAST = 1000;
 let COUNT_SLOW = 60000;
@@ -323,31 +336,31 @@ export class GameMap {
 
   // TODO
   /**
-   * 
-   * @param buildingType 
-   * @returns 
+   *
+   * @param buildingType
+   * @returns
    */
   private _getUpgradeTypeAndList(buildingType: BuildingType): UpgradeTypeAndList {
     const res: UpgradeTypeAndList = {} as UpgradeTypeAndList;
     if (mineTypes.includes(buildingType)) {
       res.list = Tool.getToolTypes();
       res.type = UpgradeType.TOOL;
-    } 
+    }
 
     return res;
   }
 
   // TODO
   /**
-   * 
-   * @param upgradeType 
-   * @param type 
-   * @returns 
+   *
+   * @param upgradeType
+   * @param type
+   * @returns
    */
   private _getUpgradeImagContainer(upgradeType: UpgradeType, type: ToolType): HTMLDivElement {
     let container = document.createElement('div');
-    
-    if(upgradeType === UpgradeType.TOOL) {
+
+    if (upgradeType === UpgradeType.TOOL) {
       container = this._getSpriteImgContainer(type, toolSprites[type]);
     }
 
@@ -356,9 +369,9 @@ export class GameMap {
 
   // TODO
   /**
-   * 
-   * @param type 
-   * @returns 
+   *
+   * @param type
+   * @returns
    */
   private _getUpgradeCards(building: Building): HTMLDivElement {
     const grid = document.createElement('div');
@@ -370,7 +383,7 @@ export class GameMap {
     const upgrades = upgradeTypesAndList.list;
 
     // For each building we create a list item
-    Object.entries(upgrades).forEach(u => {
+    Object.entries(upgrades).forEach((u) => {
       const card = document.createElement('div');
       card.classList.add('modal__card');
 
@@ -425,7 +438,6 @@ export class GameMap {
     title.innerText = `${buildingCell.buildingType.toUpperCase()} - ${buildingCell.owner}`;
     title.classList.add('modal__title');
     modal.appendChild(title);
-
 
     // Buildings
     const upgrades = this._getUpgradeCards(buildingCell);
@@ -524,7 +536,13 @@ export class GameMap {
     terrain: Terrain,
   ): Building | Mine {
     if (mineTypes.includes(type)) {
-      return new Mine(owner, coords, terrain.positions, terrain.resources, type as MineType) as Mine;
+      return new Mine(
+        owner,
+        coords,
+        terrain.positions,
+        terrain.resources,
+        type as MineType,
+      ) as Mine;
     } else {
       return new Building(owner, coords, terrain.positions, type);
     }

@@ -1,5 +1,5 @@
-import { BookType } from "./books";
-import { ToolType } from "./tools";
+import { BookType } from './books';
+import { ToolType } from './tools';
 
 export enum UpgradeType {
   TOOL = 'tool',
@@ -7,6 +7,6 @@ export enum UpgradeType {
 }
 
 export interface UpgradeTypeAndList {
-  type: UpgradeType,
-  list: ToolType[] | BookType[],
+  type: UpgradeType;
+  list: ToolType[] | BookType[];
 }

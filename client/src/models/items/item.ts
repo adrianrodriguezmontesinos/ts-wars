@@ -11,5 +11,4 @@ export class Item {
     this.cost = cost;
     this.sprite = sprite;
   }
-
 }

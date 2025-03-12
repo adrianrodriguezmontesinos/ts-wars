@@ -1,14 +1,14 @@
-import { Cost } from "../../commons";
-import { ResourceType } from "../../resources";
-import { ToolType } from "./tool.types";
+import { Cost } from '../../commons';
+import { ResourceType } from '../../resources';
+import { ToolType } from './tool.types';
 
 /**
  * Multiplicators of production for each tool
  */
 export const map__ToolMultiplicator: Record<ToolType, Cost> = {
   [ToolType.SMALL_SHOVE]: {
-    [ResourceType.COAL]: .5,
-    [ResourceType.BRONZE]: .5,
+    [ResourceType.COAL]: 0.5,
+    [ResourceType.BRONZE]: 0.5,
     [ResourceType.IRON]: 0,
     [ResourceType.GOLD]: 0,
     [ResourceType.TURQUOISE]: 0,
@@ -20,8 +20,8 @@ export const map__ToolMultiplicator: Record<ToolType, Cost> = {
   [ToolType.SMALL_PICKAXE]: {
     [ResourceType.COAL]: 0,
     [ResourceType.BRONZE]: 0,
-    [ResourceType.IRON]: .5,
-    [ResourceType.GOLD]: .5,
+    [ResourceType.IRON]: 0.5,
+    [ResourceType.GOLD]: 0.5,
     [ResourceType.TURQUOISE]: 0,
     [ResourceType.ZAPHIRE]: 0,
     [ResourceType.EMERALD]: 0,

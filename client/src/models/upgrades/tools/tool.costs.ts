@@ -147,4 +147,3 @@ export const map__ToolCosts: Record<ToolType, Cost> = {
     [ResourceType.DIAMOND]: 4,
   },
 };
-

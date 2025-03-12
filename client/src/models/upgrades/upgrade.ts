@@ -1,5 +1,5 @@
-import { Cost, Sprite } from "../commons";
-import { UpgradeType } from "./upgrade.types";
+import { Cost, Sprite } from '../commons';
+import { UpgradeType } from './upgrade.types';
 
 export class Upgrade {
   upgradeType: UpgradeType;
@@ -11,5 +11,4 @@ export class Upgrade {
     this.cost = cost;
     this.sprite = sprite;
   }
-
 }
