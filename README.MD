@@ -4,7 +4,7 @@ A Client-Server TS and JS real time strategy game. The porpouse of this developm
 
 ![Status](https://img.shields.io/badge/status-development-yellow) 
 ![Version](https://img.shields.io/badge/version-0.0.1-blue) 
-![Author](https://img.shields.io/badge/author-Adrián_Rodríguez-white) 
+![Author](https://img.shields.io/badge/author-Adrián_Rodríguez-Montesinos-white) 
 
 ## INSTRUCTIONS
 
@@ -71,20 +71,38 @@ npm serve:client
 - TS Polymorphism
 - JS continue breaks at flow control if (early breaks)
 - Audio Manager implementing the singleton pattern with listeners
--
+- 
 
 ## TODOs
 
-- refactor menu
-- refactor modals
-- comment things
-- bug directions depending if its odd or even row
-- reset the resource mining values TOO HIGH!!
-
-- bug favicon
+v0.0.2
+- refactor map and modals
 - show resources at mines
+- show prices hover at upgrades
+- bug directions depending if its odd or even row
+- move map to logic 
+- castle upgrades (depending on the castle -> affect at production capacity per min (x1, x2, x3, ...) -> cheaper)
+- houses upgrades (depending on the house -> more storage)
+
+- comment things
+- bug decimals
+----------
+
+v0.0.3
+- weapons
+- warriors storage at houses and castles
+- warriors weapons
+- some warriors only can wear some kind of weapons
+
+----------
+
+
+
+- use namespaces for a better refactoring
+- bug opmize load index.html vite!!
+- bug favicon
 - show red/blue hexagons depending on player
-- castle updates
+- multiple player handling
 
 - CASTLE - BOOKS and HOUSE does not have updates
 - set resources view when its mine (update mine ones by custom events)
@@ -118,10 +136,14 @@ npm serve:client
 - effects apply effect -> temporal
 - modificar books para que queden mejor ???
 - Consumables
--
+
+v0.1.0
+- Battle mechanics
+- Battle effect
 
 # IMPROVEMENTS 
 
-- Game Play Type: Online, VS IA
+- Diferent weapons and types with efficient vs others
+- Game Play Type: P vs P, P VS IA, P vs P (more than 2p P), Online Worlds
 - Diferent Maps with diferent speeds (IA Speed and resources speed)
-- Set IA 
+- Set IA dificulty (speed)

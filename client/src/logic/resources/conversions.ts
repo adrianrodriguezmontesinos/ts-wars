@@ -1,5 +1,5 @@
 import { Cost } from '../../models';
-import { rndBool } from '../utils/commons';
+import { rndBool } from '../utils/utils';
 
 /**
  * Randomize a Cost using a percent

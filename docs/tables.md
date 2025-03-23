@@ -34,17 +34,17 @@
 
 | Type  | Coal | Bronze | Iron | Gold |
 | ----- | ---- | ------ | ---- | ---- |
-| mine  | 80   | 40     | 60   | 20   |
-| mine2 | 80   | 70     | 60   | 50   |
-| mine3 | 40   | 40     | 40   | 40   |
+| mine  | 40   | 20     | 30   | 10   |
+| mine2 | 40   | 35     | 30   | 25   |
+| mine3 | 20   | 20     | 20   | 20   |
 
 ### RESOURCES MINING AT MINES (EACH 1 MIN)
 
 | Type  | Turquoise | Zaphire | Emerald | Rubi | Diamond |
 | ----- | --------- | ------- | ------- | ---- | ------- |
 | mine  | 2         | 1       | 1       | 0    | 0       |
-| mine2 | 20        | 10      | 5       | 0    | 0       |
-| mine3 | 40        | 20      | 10      | 5    | 1       |
+| mine2 | 10        | 5       | 2       | 0    | 0       |
+| mine3 | 20        | 10      | 5       | 2    | 1       |
 
 ## COSTS - BUILDINGS
 
@@ -172,17 +172,17 @@
 
 | Upgrade        | Desc                                          |
 | -------------- | --------------------------------------------- |
-| small shove    | Increase coal and bronze producction at 50%   |
-| small pickaxe  | Increase iron and gold producction at 50%     |
-| shove          | Increase coal and bronze producction at 100%  |
-| axe            | Increase iron producction at 100%             |
-| pickaxe        | Increase gold producction at 100%             |
-| rake           | Increase iron production at 200%              |
-| big shove      | Increase coal and bronze producction at 200%  |
-| gold sack      | Increase gold producction at 200%             |
-| turquoise sack | Increase turquoise producction at 200%        |
-| zaphire sack   | Increase zaphire producction at 200%          |
-| emerald sack   | Increase emerald producction at 200%          |
-| rubi sack      | Increase rubi producction at 200%             |
-| cauldron       | Increase all producction at 500%              |
+| small shove    | Increase coal and bronze producction at 30%   |
+| small pickaxe  | Increase iron and gold producction at 30%     |
+| shove          | Increase coal and bronze producction at 60%   |
+| axe            | Increase iron producction at 60%              |
+| pickaxe        | Increase gold producction at 60%              |
+| rake           | Increase iron production at 100%              |
+| big shove      | Increase coal and bronze producction at 100%  |
+| gold sack      | Increase gold producction at 100%             |
+| turquoise sack | Increase turquoise producction at 100%        |
+| zaphire sack   | Increase zaphire producction at 100%          |
+| emerald sack   | Increase emerald producction at 100%          |
+| rubi sack      | Increase rubi producction at 100%             |
+| cauldron       | Increase all producction at 200%              |
 

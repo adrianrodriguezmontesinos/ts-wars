@@ -1,6 +1,7 @@
 import { Building, buildingSprites, BuildingType, Mine, MineType, mineTypes } from '../buildings';
 import {
   Cost,
+  EventType,
   SingleSprite,
   Sprite,
   TERRAIN_SPRITE_HEIGTH,
@@ -20,11 +21,11 @@ import { Terrain, terrainSprites, TerrainType } from './terrains';
 import { Cell, CellType } from './cells';
 import { adyacents, Coordinates } from './coordinates';
 import { Player } from '../players';
-import { AudioManager } from '../../logic';
+import { AudioManager, Menu } from '../../logic';
 import { AudioType } from '../audio';
 
-let COUNT_FAST = 5000;
-let COUNT_SLOW = 60000;
+let COUNT_FAST = 5000; // 5 sec (basic resources)
+let COUNT_SLOW = 60000; // 1 min (gem)
 
 export class GameMap {
   private _hexX: number;
@@ -33,8 +34,9 @@ export class GameMap {
   private _h: number; // with and height
   private _canvas: HTMLCanvasElement;
   private _ctx: CanvasRenderingContext2D | null; // canvas and canvas context
-  private _cells: Cell[][]; 
+  private _cells: Cell[][];
   private _audio: AudioManager;
+  private _menu: Menu;
   private _player: Player; // TODO MULTIPLE PLAYERS
 
   /**
@@ -48,9 +50,14 @@ export class GameMap {
     this._w = TERRAIN_SPRITE_WIDTH * hexagonsX;
     this._h = TERRAIN_SPRITE_WIDTH * hexagonsY;
 
-    this._initCanvas();
+    this._menu = new Menu();
+    this._menu.showMenu();
     this._audio = AudioManager.getInstance();
-    this._cells = [];
+
+    document.addEventListener(EventType.PLAY, async () => {
+      await this._createMap();
+      this._start(1);
+    });
   }
 
   //#region INIT
@@ -203,7 +210,7 @@ export class GameMap {
 
   // TODO
   /**
-   *
+   * 
    * @param name
    * @param sprite
    * @returns
@@ -301,7 +308,7 @@ export class GameMap {
 
           // Update resources event (to player modal) after the payment
           document.dispatchEvent(
-            new CustomEvent('updateResources', { detail: this._player.resources }),
+            new CustomEvent(EventType.UPDATE_RESOURCES, { detail: this._player.resources }),
           );
         });
       } else {
@@ -476,7 +483,7 @@ export class GameMap {
 
               // Update resources event (to player modal) after the payment
               document.dispatchEvent(
-                new CustomEvent('updateResources', { detail: this._player.resources }),
+                new CustomEvent(EventType.UPDATE_RESOURCES, { detail: this._player.resources }),
               );
             }
           }
@@ -550,7 +557,7 @@ export class GameMap {
     modal.appendChild(list);
 
     // Update resources listener
-    document.addEventListener('updateResources', (e: Event) => {
+    document.addEventListener(EventType.UPDATE_RESOURCES, (e: Event) => {
       const customEvent = e as CustomEvent;
       const resourceList = modal.querySelector('.modal__list');
 
@@ -721,7 +728,7 @@ export class GameMap {
    * @param type Audio type to play
    */
   private _playEffect(type: AudioType) {
-    document.dispatchEvent(new CustomEvent('playAudio', { detail: type }));
+    document.dispatchEvent(new CustomEvent(EventType.PLAY_AUDIO, { detail: type }));
   }
 
   //#endregion AUDIO
@@ -731,10 +738,13 @@ export class GameMap {
   // TODO PLAYERS AS PARAMS
   /**
    * Create and draw the game map
-   * @param players
    */
-  async createMap() {
+  private async _createMap() {
+    this._initCanvas();
+    this._cells = [];
+
     await this._loadSprites();
+
     this._initTerrains();
     this._initPlayers();
     this._addCellClickListener();
@@ -744,16 +754,18 @@ export class GameMap {
    * Start the game (counters)
    * @param speedMult Speed multiplicator. By default 1 (no multuplier)
    */
-  start(speedMult: number = 1) {
+  private _start(speedMult: number = 1) {
     COUNT_FAST /= speedMult;
     COUNT_SLOW /= speedMult;
-    this._audio.playdMusic();
+
+    this._menu.showMenu(false);
+    this._audio.playMusic();
 
     // fast counter (basic resources)
     setInterval(() => {
       this._player.mine();
       document.dispatchEvent(
-        new CustomEvent('updateResources', { detail: this._player.resources }),
+        new CustomEvent(EventType.UPDATE_RESOURCES, { detail: this._player.resources }),
       );
     }, COUNT_FAST);
 
@@ -761,7 +773,7 @@ export class GameMap {
     setInterval(() => {
       this._player.mineGems();
       document.dispatchEvent(
-        new CustomEvent('updateResources', { detail: this._player.resources }),
+        new CustomEvent(EventType.UPDATE_RESOURCES, { detail: this._player.resources }),
       );
     }, COUNT_SLOW);
   }

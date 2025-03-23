@@ -3,7 +3,8 @@ import { AudioType } from '../../models';
 export class AudioManager {
   private static instance: AudioManager;
   private _music: HTMLAudioElement;
-  private _effects: Map<string, HTMLAudioElement>;
+  private _battle: HTMLAudioElement;
+  private _effects: Map<AudioType, HTMLAudioElement>;
   private _isMuted: boolean;
 
   /**
@@ -31,15 +32,18 @@ export class AudioManager {
     return AudioManager.instance;
   }
 
-  /**
-   * Play the game music
+ /**
+   * Play the game music or the battle music
+   * @param isBattle True if we want to play the battle theme. False (by default) to play the main theme.
    */
-  public playdMusic() {
-    if (this._music) {
+  public playMusic(isBattle: boolean = false) {
+    if(isBattle) {
       this._music.pause();
+      this._battle.play();
+    } else {
+      this._battle.pause();
+      this._music.play();
     }
-
-    this._music.play();
   }
 
   /**
@@ -48,7 +52,10 @@ export class AudioManager {
    */
   public muteUnmuteAll(mute = true) {
     this._isMuted = mute;
+
     this._music.volume = mute ? 0 : 1;
+    this._battle.volume = mute ? 0 : 1;
+
     this._effects.forEach((effect: HTMLAudioElement) => (effect.volume = mute ? 0 : 1));
   }
 
@@ -88,11 +95,16 @@ export class AudioManager {
   }
 
   /**
-   * Init the game music
+   * Init the game music (main theme and battle)
    */
   private _initMusic() {
+    this._battle = new Audio('./../../../public/music/battle.mp3.mp3');
     this._music = new Audio('./../../../public/music/town.mp3');
+
+    this._battle.loop = true;
     this._music.loop = true;
+
+    this._battle.volume = this._isMuted ? 0 : 1;
     this._music.volume = this._isMuted ? 0 : 1;
   }
 }
