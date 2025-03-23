@@ -1,7 +1,7 @@
 import { Cost } from '../../commons';
 import { CellOwner, Coordinates } from '../../map';
 import { Resource } from '../../resources';
-import { map__ToolMultiplicator, Tool, ToolType } from '../../upgrades';
+import { map__ToolMultiplicator, Tool, ToolType, Upgrade } from '../../upgrades';
 import { Building } from '../building';
 import { BuildingType } from '../building.types';
 import {
@@ -78,6 +78,7 @@ export class Mine extends Building {
       this.mineBasic[resource] *= this.multiplicators[resource];
       this.mineGem[resource] *= this.multiplicators[resource];
     }
+
   }
 
   /**

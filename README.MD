@@ -1,10 +1,27 @@
 # TS WARS
 
-A Client-Server TS and JS real time strategy game. The porpouse of this development is to learn TS techniques, client-server communication and how to manage a huge proyect within a Framework.
+A Client-Server TS and JS real time strategy game. The porpouse of this development is to learn TS techniques, client-server communication and how to manage a huge proyect without a Framework.
 
-Status: development.
+![Status](https://img.shields.io/badge/status-development-yellow) 
+![Version](https://img.shields.io/badge/version-0.0.1-blue) 
+![Author](https://img.shields.io/badge/author-Adrián_Rodríguez-white) 
 
-Author: Adrián Rodríguez
+## INSTRUCTIONS
+
+1. Install dependencies (using pnpm):
+
+Node required: https://nodejs.org/es
+
+```bash
+npm i -g pnpm
+pnpm i
+```
+
+2. Run the client:
+
+```bash
+npm serve:client
+```
 
 ## TECHNOLOGIES
 
@@ -13,7 +30,7 @@ Author: Adrián Rodríguez
 
 - Frameworks: ![ExpressJS](https://img.shields.io/badge/ExpressJS-white)
 
-- Other technologies: ![NodeJS](https://img.shields.io/badge/NodeJS-green), ![Vite](https://img.shields.io/badge/Vite-purple), ![Pretttier](https://img.shields.io/badge/Pretttier-blue), ![pnpm](https://img.shields.io/badge/pnpm-orange)
+- Other technologies: ![NodeJS](https://img.shields.io/badge/NodeJS-dark_green), ![Vite](https://img.shields.io/badge/Vite-purple), ![Pretttier](https://img.shields.io/badge/Pretttier-blue), ![pnpm](https://img.shields.io/badge/pnpm-orange),  ![Socket.io](https://img.shields.io/badge/socket.io-dark_green)
 
 - IDE: ![VS Code](https://img.shields.io/badge/VS_Code-blue)
 
@@ -36,6 +53,7 @@ Author: Adrián Rodríguez
 - TS Record, and access to a propertie
 - Initialite an empty object from a type at TS
 - JS logical operator OR to return a default value
+- JS Arrow functions to manage arrays
 - OPP Inheritance
 - Bidimensional Arrays
 - JS async, await and promises
@@ -51,13 +69,25 @@ Author: Adrián Rodríguez
 - Resolve various promises at JS
 - JS Custom Events to handdle resources update
 - TS Polymorphism
-- 
+- JS continue breaks at flow control if (early breaks)
+- Audio Manager implementing the singleton pattern with listeners
+-
 
 ## TODOs
 
-- MINE resources display and event update
-- MINE UPGRADE cards (set the active class)
-- MINE upgrade logic (buy it and test it is working the multiplicator)
+- refactor menu
+- refactor modals
+- comment things
+- bug directions depending if its odd or even row
+- reset the resource mining values TOO HIGH!!
+
+- bug favicon
+- show resources at mines
+- show red/blue hexagons depending on player
+- castle updates
+
+- CASTLE - BOOKS and HOUSE does not have updates
+- set resources view when its mine (update mine ones by custom events)
 - refactor modals at modal logic
 - refactor add html element with name father class and attributes
 - comment methods at map and player
@@ -89,3 +119,9 @@ Author: Adrián Rodríguez
 - modificar books para que queden mejor ???
 - Consumables
 -
+
+# IMPROVEMENTS 
+
+- Game Play Type: Online, VS IA
+- Diferent Maps with diferent speeds (IA Speed and resources speed)
+- Set IA 
