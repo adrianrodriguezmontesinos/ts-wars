@@ -76,9 +76,8 @@ npm serve:client
 ## TODOs
 
 v0.0.2
-- events types
-- events build paycost state management
-- refactor map and modals
+- refactor building
+- refactor player modal
 
 - show resources at mines
 - show prices hover at upgrades

@@ -46,6 +46,12 @@
 | mine2 | 10        | 5       | 2       | 0    | 0       |
 | mine3 | 20        | 10      | 5       | 2    | 1       |
 
+### PLAYER INITIAL RESOURCES
+
+| Building    | Coal | Bronze | Iron | Gold | Turquoise | Zaphire | Emerald | Rubi | Diamond |
+| ----------- | ---- | ------ | ---- | ---- | --------- | ------- | ------- | ---- | ------- |
+| house       | 1000 | 1000   | 400  | 100  | 0         | 0       | 0       | 0    | 0       |
+
 ## COSTS - BUILDINGS
 
 ### BUILDING COSTS
