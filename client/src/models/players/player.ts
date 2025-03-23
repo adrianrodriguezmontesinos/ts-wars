@@ -88,10 +88,10 @@ export class Player {
    */
   private _getInitialResources(): Cost {
     return {
-      [ResourceType.COAL]: 500,
-      [ResourceType.BRONZE]: 500,
-      [ResourceType.IRON]: 200,
-      [ResourceType.GOLD]: 50,
+      [ResourceType.COAL]: 1500,
+      [ResourceType.BRONZE]: 1500,
+      [ResourceType.IRON]: 600,
+      [ResourceType.GOLD]: 150,
       [ResourceType.TURQUOISE]: 0,
       [ResourceType.ZAPHIRE]: 0,
       [ResourceType.EMERALD]: 0,

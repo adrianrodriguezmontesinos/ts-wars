@@ -6,3 +6,4 @@ export * from './items';
 export * from './upgrades';
 export * from './players';
 export * from './audio';
+export * from './events';

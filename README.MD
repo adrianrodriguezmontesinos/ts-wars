@@ -76,10 +76,12 @@ npm serve:client
 ## TODOs
 
 v0.0.2
+- events types
+- events build paycost state management
 - refactor map and modals
+
 - show resources at mines
 - show prices hover at upgrades
-- bug directions depending if its odd or even row
 - move map to logic 
 - castle upgrades (depending on the castle -> affect at production capacity per min (x1, x2, x3, ...) -> cheaper)
 - houses upgrades (depending on the house -> more storage)

@@ -16,7 +16,7 @@ export function genHTMLElem(
   content?: string,
   att?: KeyValue[],
 ): HTMLElement {
-  const elem: HTMLElement = _getHTMLElem(tag, classes, content, att);
+  const elem: HTMLElement = getHTMLElem(tag, classes, content, att);
 
   if (father) {
     father.appendChild(elem);
@@ -42,7 +42,7 @@ export function genHTMLBtn(
   content?: string,
   att?: KeyValue[],
 ): HTMLButtonElement {
-  const btn: HTMLButtonElement = _getHTMLElem('button', classes, content, att) as HTMLButtonElement;
+  const btn: HTMLButtonElement = getHTMLElem('button', classes, content, att) as HTMLButtonElement;
 
   btn.addEventListener('click', () => {
     document.dispatchEvent(
@@ -64,7 +64,7 @@ export function genHTMLBtn(
  * @param content Element text content
  * @param att Array of attributes (keys/names and values)
  */
-function _getHTMLElem(
+export function getHTMLElem(
   tag: string,
   classes?: string[],
   content?: string,

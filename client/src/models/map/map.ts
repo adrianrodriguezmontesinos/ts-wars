@@ -1,8 +1,6 @@
 import { Building, buildingSprites, BuildingType, Mine, MineType, mineTypes } from '../buildings';
 import {
   Cost,
-  EventType,
-  SingleSprite,
   Sprite,
   TERRAIN_SPRITE_HEIGTH,
   TERRAIN_SPRITE_WIDTH,
@@ -13,16 +11,17 @@ import {
   Tool,
   toolSprites,
   ToolType,
-  Upgrade,
   UpgradeType,
   UpgradeTypeAndList,
 } from '../upgrades';
 import { Terrain, terrainSprites, TerrainType } from './terrains';
 import { Cell, CellType } from './cells';
-import { adyacents, Coordinates } from './coordinates';
+import { adyacentsEven, adyacentsOdd, Coordinates } from './coordinates';
 import { Player } from '../players';
-import { AudioManager, Menu } from '../../logic';
+import { AudioManager, dispatchPlayEffect, dispatchUpdateResources, Menu } from '../../logic';
 import { AudioType } from '../audio';
+import { closeCellModal, getModalResourcesList, getSpriteImgContainer, setTerrainModal } from '../../logic/map/modals';
+import { EventType } from '../events';
 
 let COUNT_FAST = 5000; // 5 sec (basic resources)
 let COUNT_SLOW = 60000; // 1 min (gem)
@@ -54,10 +53,7 @@ export class GameMap {
     this._menu.showMenu();
     this._audio = AudioManager.getInstance();
 
-    document.addEventListener(EventType.PLAY, async () => {
-      await this._createMap();
-      this._start(1);
-    });
+    this._initListeners();
   }
 
   //#region INIT
@@ -171,6 +167,28 @@ export class GameMap {
     this._build('Player 2', BuildingType.CASTLE, terrain);
   }
 
+  /**
+   * Init game listeners
+   */
+  private _initListeners() {
+    document.addEventListener(EventType.PLAY, async () => {
+      await this._createMap();
+      this._start(1);
+    });
+
+    // TODO EL DE UPDATE RESOURCES EN EL PLAYER MODAL DEL MISMO MODO QUE ESTE
+    
+    document.addEventListener(EventType.PAY_COST, (e: Event) => {
+      const customEvent = e as CustomEvent;
+      this._player.payCost(customEvent.detail);
+    });
+
+    document.addEventListener(EventType.BUILD, (e: Event) => {
+      const customEvent = e as CustomEvent;
+      this._build(customEvent.detail.playerName, customEvent.detail.buildingType, customEvent.detail.terrain);
+    });
+  }
+
   //#endregion INIT
 
   //#region MODALS
@@ -196,11 +214,11 @@ export class GameMap {
         const cell = this._cells[cellX][cellY];
 
         // Close the last modal
-        this._closeCellModal();
-        this._playEffect(AudioType.CLICK);
+        closeCellModal();
+        dispatchPlayEffect(AudioType.CLICK);
 
         if (cell.cellType === CellType.TERRAIN) {
-          this._setTerrainModal(cell as Terrain, !this._isBuildableCell(cell));
+          setTerrainModal(cell as Terrain, !this._isBuildableCell(cell), this._player);
         } else if (cell.cellType === CellType.BUILDING) {
           this._setBuildingModal(cell as Building);
         }
@@ -209,154 +227,11 @@ export class GameMap {
   }
 
   // TODO
-  /**
-   * 
-   * @param name
-   * @param sprite
-   * @returns
-   */
-  private _getSpriteImgContainer(name: string, sprite: Sprite | SingleSprite): HTMLDivElement {
-    const container = document.createElement('div');
-    container.classList.add('modal__containerImg');
-    container.style.width = `${sprite.w}px`;
-    container.style.height = `${sprite.h}px`;
 
-    const img = document.createElement('img');
-    img.classList.add('modal__containerImg__img');
-    img.setAttribute('src', sprite.image.currentSrc);
-    img.setAttribute('alt', name);
 
-    if (sprite instanceof Sprite) {
-      img.style.left = `-${sprite.x}px`;
-      img.style.top = `-${sprite.y}px`;
-    }
 
-    container.appendChild(img);
-    return container;
-  }
-
-  /**
-   * Remove the HTML modal div from the HTML document
-   */
-  private _closeCellModal() {
-    document.querySelector('#modal-cell')?.remove();
-  }
 
   //#endregion MODALS - COMMON
-
-  //#region MODALS - TERRAINS
-
-  /**
-   * Get an HTML list of the resources
-   * @param resources Resources to be displayed at a list
-   * @returns
-   */
-  private _getModalResourcesList(resources: Cost): HTMLElement {
-    const list = document.createElement('ul');
-    list.classList.add('modal__list');
-
-    // For each resource we create a list item
-    Object.entries(resources).forEach((e: [string, number]) => {
-      const li = document.createElement('li');
-      li.innerText = `${e[0]}: ${e[1]}`;
-      list.appendChild(li);
-    });
-
-    return list;
-  }
-
-  // TODO APPEND METHOD REFACTOR AT LOGIC
-  // TODO
-  /**
-   *
-   * @param terrain Terrain below construction
-   * @param onlyCastle If only castle can be built
-   * @returns
-   */
-  private _getBuildingCards(terrain: Terrain, onlyCastle: boolean): HTMLDivElement {
-    const grid = document.createElement('div');
-    grid.classList.add('modal__grid');
-
-    // All buildings
-    const buildings = onlyCastle ? Building.getCastleTypes() : Building.getBuildingTypes();
-
-    // For each building we create a list item
-    Object.entries(buildings).forEach((b: [string, BuildingType]) => {
-      const card = document.createElement('div');
-      card.classList.add('modal__card');
-
-      // Building name
-      const p = document.createElement('p');
-      const building = b[1];
-      p.innerText = building;
-      card.appendChild(p);
-
-      // Building image
-      const img = this._getSpriteImgContainer(building, buildingSprites[building]);
-      card.appendChild(img);
-
-      // Build click event if we can pay it, if not we set the not allowed class
-      if (this._player.canIBuild(building, terrain.terrainType)) {
-        card.addEventListener('click', () => {
-          this._playEffect(AudioType.BUILD);
-
-          const cost = Building.getCost(building, terrain.terrainType);
-
-          // Pay and build
-          this._player.payCost(cost);
-          this._build(this._player.name, building, terrain);
-
-          // Update resources event (to player modal) after the payment
-          document.dispatchEvent(
-            new CustomEvent(EventType.UPDATE_RESOURCES, { detail: this._player.resources }),
-          );
-        });
-      } else {
-        card.classList.add('modal__card--not-allowed');
-      }
-
-      grid.appendChild(card);
-    });
-
-    return grid;
-  }
-
-  /**
-   * Draw a modal with terrain info
-   * @param terrainCell Terrain cell
-   * @param onlyCastle If only castle can be built
-   */
-  private _setTerrainModal(terrainCell: Terrain, onlyCastle: boolean) {
-    const modal = document.createElement('div');
-    modal.classList.add('modal');
-    modal.setAttribute('id', 'modal-cell');
-
-    // Title
-    const title = document.createElement('p');
-    title.innerText = terrainCell.terrainType.toUpperCase();
-    title.classList.add('modal__title');
-    modal.appendChild(title);
-
-    // List
-    const list = this._getModalResourcesList(terrainCell.resources);
-    modal.appendChild(list);
-
-    // Buildings
-    const buildings = this._getBuildingCards(terrainCell, onlyCastle);
-    modal.appendChild(buildings);
-
-    // Close button with its close event
-    const closeBtn = document.createElement('button');
-    closeBtn.classList.add('close');
-    closeBtn.addEventListener('click', () => {
-      document.body.removeChild(modal);
-    });
-    modal.appendChild(closeBtn);
-
-    document.body.appendChild(modal);
-  }
-
-  //#endregion MODALS - TERRAINS
 
   //#region MODALS - BUILDINGS
 
@@ -413,7 +288,7 @@ export class GameMap {
     let container = document.createElement('div');
 
     if (upgradeType === UpgradeType.TOOL) {
-      container = this._getSpriteImgContainer(type, toolSprites[type]);
+      container = getSpriteImgContainer(type, toolSprites[type]);
     }
 
     return container;
@@ -472,19 +347,16 @@ export class GameMap {
               this._player.payCost(cost);
               mine.addTool(tool);
 
-              // TODO AUDIO REFACTOR
-              this._playEffect(AudioType.UPGRADE);
+              dispatchPlayEffect(AudioType.UPGRADE);
 
               // Set the active
               card.classList.add('modal__card--active');
 
               // Close the modal
-              this._closeCellModal();
+              closeCellModal();
 
               // Update resources event (to player modal) after the payment
-              document.dispatchEvent(
-                new CustomEvent(EventType.UPDATE_RESOURCES, { detail: this._player.resources }),
-              );
+              dispatchUpdateResources(this._player.resources);
             }
           }
         });
@@ -553,7 +425,7 @@ export class GameMap {
     modal.appendChild(title);
 
     // List
-    const list = this._getModalResourcesList(this._player.resources);
+    const list = getModalResourcesList(this._player.resources);
     modal.appendChild(list);
 
     // Update resources listener
@@ -593,6 +465,7 @@ export class GameMap {
    */
   private _getAdjacetHousesOrCastles(pos: Coordinates, player?: string): Building[] {
     const buildings: Building[] = [];
+    const adyacents = pos.y % 2 ? adyacentsEven : adyacentsOdd;
 
     for (const [dx, dy] of adyacents) {
       const newX = pos.x + dx;
@@ -692,7 +565,7 @@ export class GameMap {
     this._drawCell(type, coords, CellType.BUILDING);
 
     // Close the last modal
-    this._closeCellModal();
+    closeCellModal();
   }
 
   //#endregion DRAW & BUILD - BUILD
@@ -720,18 +593,6 @@ export class GameMap {
   //#endregion DRAW & BUILD - DRAW
 
   //#endregion DRAW & BUILD
-
-  //#region ADIO
-
-  /**
-   * Play an audio effect. Send a custom event to play it
-   * @param type Audio type to play
-   */
-  private _playEffect(type: AudioType) {
-    document.dispatchEvent(new CustomEvent(EventType.PLAY_AUDIO, { detail: type }));
-  }
-
-  //#endregion AUDIO
 
   //#region MAIN
 
@@ -764,17 +625,13 @@ export class GameMap {
     // fast counter (basic resources)
     setInterval(() => {
       this._player.mine();
-      document.dispatchEvent(
-        new CustomEvent(EventType.UPDATE_RESOURCES, { detail: this._player.resources }),
-      );
+      dispatchUpdateResources(this._player.resources);
     }, COUNT_FAST);
 
     // slow counter (gem resources)
     setInterval(() => {
       this._player.mineGems();
-      document.dispatchEvent(
-        new CustomEvent(EventType.UPDATE_RESOURCES, { detail: this._player.resources }),
-      );
+      dispatchUpdateResources(this._player.resources);
     }, COUNT_SLOW);
   }
 

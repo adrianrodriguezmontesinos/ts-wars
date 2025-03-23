@@ -1,10 +1,10 @@
 import { ResourceType } from '../../resources';
 
 export const mineResources: Record<ResourceType, number> = {
-  [ResourceType.COAL]: 40,
-  [ResourceType.BRONZE]: 20,
-  [ResourceType.IRON]: 30,
-  [ResourceType.GOLD]: 10,
+  [ResourceType.COAL]: 20,
+  [ResourceType.BRONZE]: 10,
+  [ResourceType.IRON]: 15,
+  [ResourceType.GOLD]: 5,
   [ResourceType.TURQUOISE]: 0,
   [ResourceType.ZAPHIRE]: 0,
   [ResourceType.EMERALD]: 0,
@@ -13,10 +13,10 @@ export const mineResources: Record<ResourceType, number> = {
 };
 
 export const mineResources2: Record<ResourceType, number> = {
-  [ResourceType.COAL]: 40,
-  [ResourceType.BRONZE]: 35,
-  [ResourceType.IRON]: 30,
-  [ResourceType.GOLD]: 25,
+  [ResourceType.COAL]: 20,
+  [ResourceType.BRONZE]: 16,
+  [ResourceType.IRON]: 15,
+  [ResourceType.GOLD]: 12,
   [ResourceType.TURQUOISE]: 0,
   [ResourceType.ZAPHIRE]: 0,
   [ResourceType.EMERALD]: 0,
@@ -25,10 +25,10 @@ export const mineResources2: Record<ResourceType, number> = {
 };
 
 export const mineResources3: Record<ResourceType, number> = {
-  [ResourceType.COAL]: 20,
-  [ResourceType.BRONZE]: 20,
-  [ResourceType.IRON]: 20,
-  [ResourceType.GOLD]: 20,
+  [ResourceType.COAL]: 10,
+  [ResourceType.BRONZE]: 10,
+  [ResourceType.IRON]: 10,
+  [ResourceType.GOLD]: 10,
   [ResourceType.TURQUOISE]: 0,
   [ResourceType.ZAPHIRE]: 0,
   [ResourceType.EMERALD]: 0,

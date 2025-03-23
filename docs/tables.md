@@ -34,9 +34,9 @@
 
 | Type  | Coal | Bronze | Iron | Gold |
 | ----- | ---- | ------ | ---- | ---- |
-| mine  | 40   | 20     | 30   | 10   |
-| mine2 | 40   | 35     | 30   | 25   |
-| mine3 | 20   | 20     | 20   | 20   |
+| mine  | 20   | 10     | 15   | 5    |
+| mine2 | 20   | 16     | 15   | 12   |
+| mine3 | 10   | 10     | 10   | 10   |
 
 ### RESOURCES MINING AT MINES (EACH 1 MIN)
 

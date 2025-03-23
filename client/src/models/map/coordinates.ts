@@ -3,11 +3,20 @@ export interface Coordinates {
   y: number;
 }
 
-export const adyacents: number[][] = [
+export const adyacentsOdd: number[][] = [
   [-1, 0],  // left
   [1, 0],   // right
-  [-1, -1], // down right
+  [0, -1], // down right
+  [-1, -1], // down left
+  [0, 1], // up right
+  [-1, 1], // up left
+];
+
+export const adyacentsEven: number[][] = [
+  [-1, 0],  // left
+  [1, 0],   // right
+  [1, -1], // down right
   [0, -1], // down left
-  [-1, 1], // up right
+  [1, 1], // up right
   [0, 1], // up left
 ];

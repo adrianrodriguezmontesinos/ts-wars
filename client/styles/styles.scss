@@ -3,6 +3,7 @@ $primary-light: #ffa14f;
 $primary: #8a4306;
 $primary-dark: #4c2300;
 $primary-trans: #ffe6cfe0;
+$primary-trans-dark: #ffc28ae5;
 $danger: #d63333;
 $danger-dark: #a52121;
 
@@ -26,6 +27,7 @@ $f-xl: 1.4rem;
 $border: 8px solid $primary-light;
 $border-slim: 1px solid $primary-dark;
 
+$z-tooltip-cost: 3;
 $z-modal-cell: 2;
 $z-modal-resources: 1;
 
@@ -123,6 +125,11 @@ ul {
     max-width: 250px;
     transform: none;
     z-index: $z-modal-resources;
+  }
+
+  &--costs {
+    background-color: $primary-trans-dark;
+    color: $white;
   }
 
   &__title {
