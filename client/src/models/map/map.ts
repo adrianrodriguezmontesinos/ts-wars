@@ -1,10 +1,5 @@
 import { Building, buildingSprites, BuildingType, Mine, MineType, mineTypes } from '../buildings';
-import {
-  Cost,
-  Sprite,
-  TERRAIN_SPRITE_HEIGTH,
-  TERRAIN_SPRITE_WIDTH,
-} from '../commons';
+import { Cost, Sprite, TERRAIN_SPRITE_HEIGTH, TERRAIN_SPRITE_WIDTH } from '../commons';
 import {
   BookType,
   map__ToolCosts,
@@ -20,8 +15,13 @@ import { adyacentsEven, adyacentsOdd, Coordinates } from './coordinates';
 import { Player } from '../players';
 import { AudioManager, dispatchPlayEffect, dispatchUpdateResources, Menu } from '../../logic';
 import { AudioType } from '../audio';
-import { closeCellModal, getModalResourcesList, getSpriteImgContainer, setTerrainModal } from '../../logic/map/modals';
-import { EventType } from '../events';
+import {
+  closeCellModal,
+  getModalResourcesList,
+  getSpriteImgContainer,
+  setTerrainModal,
+} from '../../logic/map/modals';
+import { DataEvent__Build, EventType } from '../events';
 
 let COUNT_FAST = 5000; // 5 sec (basic resources)
 let COUNT_SLOW = 60000; // 1 min (gem)
@@ -173,19 +173,26 @@ export class GameMap {
   private _initListeners() {
     document.addEventListener(EventType.PLAY, async () => {
       await this._createMap();
+      
       this._start(1);
     });
 
     // TODO EL DE UPDATE RESOURCES EN EL PLAYER MODAL DEL MISMO MODO QUE ESTE
-    
+
     document.addEventListener(EventType.PAY_COST, (e: Event) => {
-      const customEvent = e as CustomEvent;
+      const customEvent = e as CustomEvent<Cost>;
+
       this._player.payCost(customEvent.detail);
     });
 
     document.addEventListener(EventType.BUILD, (e: Event) => {
-      const customEvent = e as CustomEvent;
-      this._build(customEvent.detail.playerName, customEvent.detail.buildingType, customEvent.detail.terrain);
+      const customEvent = e as CustomEvent<DataEvent__Build>;
+
+      this._build(
+        customEvent.detail.playerName,
+        customEvent.detail.buildingType,
+        customEvent.detail.terrain,
+      );
     });
   }
 
@@ -227,9 +234,6 @@ export class GameMap {
   }
 
   // TODO
-
-
-
 
   //#endregion MODALS - COMMON
 
