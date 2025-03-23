@@ -2,9 +2,23 @@ import "./styles/styles.scss";
 import { GameMap } from "./src/models/map/map";
 import { Player } from "./src/models";
 
-const gameMap = new GameMap(20, 20);
-await gameMap.createMap();
-gameMap.start();
+// TODO REFACTOR MENU!!
 
-// TODO CLEAN GAME TASKS ONE BY ONE (INTI FUNCTIONS ??)
+const menu = document.getElementById('menu');
+const playBtn = menu.querySelector('button');
+
+playBtn.addEventListener('click', play)
+
+/**
+ * 
+ */
+async function play() {
+    menu.style.display = 'none';
+    const gameMap = new GameMap(20, 20);
+    await gameMap.createMap();
+    gameMap.start(1);
+}
+
+
+
 

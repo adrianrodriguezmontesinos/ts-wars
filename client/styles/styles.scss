@@ -1,6 +1,6 @@
 $primary-lighter: #fff2e6;
 $primary-light: #ffa14f;
-$primary: #693405;
+$primary: #8a4306;
 $primary-dark: #4c2300;
 $primary-trans: #ffe6cfe0;
 $danger: #d63333;
@@ -73,6 +73,33 @@ ul {
   overflow: auto;
 }
 
+/* TODO REFACTOR */
+#menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding-top: 10px;
+  gap: 30px;
+  width: 500px;
+  height: 300px;
+  margin: auto;
+  background: url('./../public/gifs/war.gif');
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 16px #00000075;
+
+  color: $white;
+
+  h2 {
+    font-size: 3rem;
+  }
+
+  h2, p {
+    text-shadow: 2px 2px 4px $black;
+  }
+}
+
 .modal {
   position: fixed;
   top: 50%;
@@ -94,15 +121,15 @@ ul {
     top: 10px;
     right: 10px;
     left: auto;
-    min-width: 180px;
-    max-width: 180px;
+    min-width: 250px;
+    max-width: 250px;
     transform: none;
     z-index: $z-modal-resources;
   }
 
   &__title {
     font-size: $f-l;
-    color: $primary;
+    color: $primary-dark;
   }
 
   &__grid {
@@ -136,11 +163,11 @@ ul {
     }
 
     &--active {
-      opacity: 0.5;
+      color: $white;
       background-color: $primary;
 
       &:hover {
-        cursor: none;
+        cursor: not-allowed;
         background-color: $primary;
       }
     }

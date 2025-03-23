@@ -1,3 +1,3 @@
 export * from './utils';
 export * from './resources';
-export * from './map';
+export * from './audio';

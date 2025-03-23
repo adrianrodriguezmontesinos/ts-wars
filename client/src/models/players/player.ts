@@ -82,10 +82,9 @@ export class Player {
     return this.buildings.filter((b: Building) => farmTypes.includes(b.buildingType)) as Mine[];
   }
 
-  // TODO
   /**
-   *
-   * @returns
+   * Get initial resources for a player
+   * @returns Initial resources
    */
   private _getInitialResources(): Cost {
     return {

@@ -1,5 +1,4 @@
 import { Building, buildingSprites, BuildingType, Mine, MineType, mineTypes } from '../buildings';
-import { Terrain, terrainSprites, TerrainType } from './terrains';
 import {
   Cost,
   SingleSprite,
@@ -7,30 +6,36 @@ import {
   TERRAIN_SPRITE_HEIGTH,
   TERRAIN_SPRITE_WIDTH,
 } from '../commons';
-import { Cell, CellType } from './cells';
-import { Coordinates } from './coordinates';
-import { Player } from '../players';
 import {
+  BookType,
   map__ToolCosts,
   Tool,
   toolSprites,
   ToolType,
+  Upgrade,
   UpgradeType,
   UpgradeTypeAndList,
 } from '../upgrades';
+import { Terrain, terrainSprites, TerrainType } from './terrains';
+import { Cell, CellType } from './cells';
+import { adyacents, Coordinates } from './coordinates';
+import { Player } from '../players';
+import { AudioManager } from '../../logic';
+import { AudioType } from '../audio';
 
-let COUNT_FAST = 1000;
+let COUNT_FAST = 5000;
 let COUNT_SLOW = 60000;
 
 export class GameMap {
   private _hexX: number;
-  private _hexY: number;
+  private _hexY: number; // numebr of cells (x and y axis)
   private _w: number;
-  private _h: number;
+  private _h: number; // with and height
   private _canvas: HTMLCanvasElement;
-  private _ctx: CanvasRenderingContext2D | null;
-  private _cells: Cell[][];
-  private _player: Player;
+  private _ctx: CanvasRenderingContext2D | null; // canvas and canvas context
+  private _cells: Cell[][]; 
+  private _audio: AudioManager;
+  private _player: Player; // TODO MULTIPLE PLAYERS
 
   /**
    * Game map
@@ -44,6 +49,7 @@ export class GameMap {
     this._h = TERRAIN_SPRITE_WIDTH * hexagonsY;
 
     this._initCanvas();
+    this._audio = AudioManager.getInstance();
     this._cells = [];
   }
 
@@ -88,6 +94,7 @@ export class GameMap {
     this._canvas.id = 'map';
     this._canvas.width = this._w;
     this._canvas.height = this._h;
+
     document.body.appendChild(this._canvas);
     this._ctx = this._canvas.getContext('2d');
   }
@@ -181,11 +188,12 @@ export class GameMap {
       if (this._cells[cellX] && this._cells[cellX][cellY]) {
         const cell = this._cells[cellX][cellY];
 
-        // Delete the last modal
-        document.querySelector('#modal-cell')?.remove();
+        // Close the last modal
+        this._closeCellModal();
+        this._playEffect(AudioType.CLICK);
 
         if (cell.cellType === CellType.TERRAIN) {
-          this._setTerrainModal(cell as Terrain);
+          this._setTerrainModal(cell as Terrain, !this._isBuildableCell(cell));
         } else if (cell.cellType === CellType.BUILDING) {
           this._setBuildingModal(cell as Building);
         }
@@ -220,6 +228,13 @@ export class GameMap {
     return container;
   }
 
+  /**
+   * Remove the HTML modal div from the HTML document
+   */
+  private _closeCellModal() {
+    document.querySelector('#modal-cell')?.remove();
+  }
+
   //#endregion MODALS - COMMON
 
   //#region MODALS - TERRAINS
@@ -248,14 +263,15 @@ export class GameMap {
   /**
    *
    * @param terrain Terrain below construction
+   * @param onlyCastle If only castle can be built
    * @returns
    */
-  private _getBuildingCards(terrain: Terrain): HTMLDivElement {
+  private _getBuildingCards(terrain: Terrain, onlyCastle: boolean): HTMLDivElement {
     const grid = document.createElement('div');
     grid.classList.add('modal__grid');
 
     // All buildings
-    const buildings = Building.getBuildingTypes();
+    const buildings = onlyCastle ? Building.getCastleTypes() : Building.getBuildingTypes();
 
     // For each building we create a list item
     Object.entries(buildings).forEach((b: [string, BuildingType]) => {
@@ -275,6 +291,8 @@ export class GameMap {
       // Build click event if we can pay it, if not we set the not allowed class
       if (this._player.canIBuild(building, terrain.terrainType)) {
         card.addEventListener('click', () => {
+          this._playEffect(AudioType.BUILD);
+
           const cost = Building.getCost(building, terrain.terrainType);
 
           // Pay and build
@@ -299,8 +317,9 @@ export class GameMap {
   /**
    * Draw a modal with terrain info
    * @param terrainCell Terrain cell
+   * @param onlyCastle If only castle can be built
    */
-  private _setTerrainModal(terrainCell: Terrain) {
+  private _setTerrainModal(terrainCell: Terrain, onlyCastle: boolean) {
     const modal = document.createElement('div');
     modal.classList.add('modal');
     modal.setAttribute('id', 'modal-cell');
@@ -316,7 +335,7 @@ export class GameMap {
     modal.appendChild(list);
 
     // Buildings
-    const buildings = this._getBuildingCards(terrainCell);
+    const buildings = this._getBuildingCards(terrainCell, onlyCastle);
     modal.appendChild(buildings);
 
     // Close button with its close event
@@ -355,9 +374,35 @@ export class GameMap {
    *
    * @param upgradeType
    * @param type
+   * @param cost
+   * @param sprite
    * @returns
    */
-  private _getUpgradeImagContainer(upgradeType: UpgradeType, type: ToolType): HTMLDivElement {
+  private _getUpgrade(
+    upgradeType: UpgradeType,
+    type: ToolType | BookType,
+    cost: Cost,
+    sprite: Sprite,
+  ): Tool {
+    if (upgradeType === UpgradeType.TOOL) {
+      return new Tool(type as ToolType, cost, sprite);
+    } else {
+      // TODO USE BOOKS
+      return new Tool(type as ToolType, cost, sprite);
+    }
+  }
+
+  // TODO
+  /**
+   *
+   * @param upgradeType
+   * @param type
+   * @returns
+   */
+  private _getUpgradeImagContainer(
+    upgradeType: UpgradeType,
+    type: ToolType | BookType,
+  ): HTMLDivElement {
     let container = document.createElement('div');
 
     if (upgradeType === UpgradeType.TOOL) {
@@ -383,40 +428,62 @@ export class GameMap {
     const upgrades = upgradeTypesAndList.list;
 
     // For each building we create a list item
-    Object.entries(upgrades).forEach((u) => {
+    Object.entries(upgrades).forEach((u: [string, BookType | ToolType]) => {
       const card = document.createElement('div');
       card.classList.add('modal__card');
 
       // Building name
       const p = document.createElement('p');
-      const upgrade = u[1];
-      p.innerText = upgrade;
+      const upgradeSubType = u[1];
+      p.innerText = upgradeSubType;
       card.appendChild(p);
 
       // Building image
-      const img = this._getUpgradeImagContainer(upgradeTypesAndList.type, u[1]);
+      const img = this._getUpgradeImagContainer(upgradeTypesAndList.type, upgradeSubType);
       card.appendChild(img);
 
-      // Build click event if we can pay it, if not we set the not allowed class
       const cost = map__ToolCosts[u[1]];
-      console.log(cost);
+      const hasTool = building.hasTool(upgradeSubType);
 
-      // if (this._player.canIPay(building, terrain.terrainType)) {
-      //   card.addEventListener('click', () => {
-      //     const cost = Building.getCost(building, terrain.terrainType);
+      if (hasTool) {
+        card.classList.add('modal__card--active');
+        // Build click event if we can pay it and its not already been added
+      } else if (this._player.canIPay(cost) && !hasTool) {
+        card.addEventListener('click', () => {
+          // TODO REFACTOR (we are gonna use more different upgrades)
+          if (mineTypes.includes(building.buildingType)) {
+            const mine = building as Mine;
+            const tool = this._getUpgrade(
+              UpgradeType.TOOL,
+              upgradeSubType,
+              cost,
+              toolSprites[upgradeSubType],
+            );
 
-      //     // Pay and build
-      //     this._player.payCost(cost);
-      //     this._build(this._player.name, building, terrain);
+            if (!hasTool) {
+              // Pay and set the upgrade
+              this._player.payCost(cost);
+              mine.addTool(tool);
 
-      //     // Update resources event (to player modal) after the payment
-      //     document.dispatchEvent(
-      //       new CustomEvent('updateResources', { detail: this._player.resources }),
-      //     );
-      //   });
-      // } else {
-      //   card.classList.add('modal__card--not-allowed');
-      // }
+              // TODO AUDIO REFACTOR
+              this._playEffect(AudioType.UPGRADE);
+
+              // Set the active
+              card.classList.add('modal__card--active');
+
+              // Close the modal
+              this._closeCellModal();
+
+              // Update resources event (to player modal) after the payment
+              document.dispatchEvent(
+                new CustomEvent('updateResources', { detail: this._player.resources }),
+              );
+            }
+          }
+        });
+      } else {
+        card.classList.add('modal__card--not-allowed');
+      }
 
       grid.appendChild(card);
     });
@@ -442,16 +509,6 @@ export class GameMap {
     // Buildings
     const upgrades = this._getUpgradeCards(buildingCell);
     modal.appendChild(upgrades);
-
-    // TODO REFACTOR SEPARATE METHODS
-    if (
-      buildingCell.buildingType === BuildingType.MINE ||
-      BuildingType.MINE2 ||
-      BuildingType.MINE3
-    ) {
-      const mine = buildingCell as Mine;
-      console.log(mine);
-    }
 
     // Close btn with its close event
     const closeBtn = document.createElement('button');
@@ -520,6 +577,64 @@ export class GameMap {
 
   //#region DRAW & BUILD
 
+  //#region DRAW & BUILD - CAN BUILD
+
+  /**
+   *
+   * @param pos
+   * @returns
+   */
+  private _getAdjacetHousesOrCastles(pos: Coordinates, player?: string): Building[] {
+    const buildings: Building[] = [];
+
+    for (const [dx, dy] of adyacents) {
+      const newX = pos.x + dx;
+      const newY = pos.y + dy;
+
+      // Avoid positions out of range
+      if (newX < 0 || newX >= this._cells.length || newY < 0 || newY >= this._cells[newX].length) {
+        continue;
+      }
+
+      const cell = this._cells[newX][newY];
+
+      // Verify if its a castle or house
+      if (!Building.isHouseOrCastle(cell)) {
+        continue;
+      }
+
+      const building = cell as Building;
+
+      // If there's a player param check if its owned by him
+      if (player && building.owner !== player) {
+        continue;
+      }
+
+      buildings.push(building);
+    }
+
+    return buildings;
+  }
+
+  // TODO VERIFY THEY BELONG TO PLAYER ONE
+  /**
+   *
+   * @param cell
+   * @returns
+   */
+  private _isBuildableCell(cell: Cell): boolean {
+    const adjacentsHousesOrCastles = this._getAdjacetHousesOrCastles(
+      cell.positions,
+      this._player.name,
+    );
+
+    return adjacentsHousesOrCastles.length ? true : false;
+  }
+
+  //#endregion DRAW & BUILD - CAN BUILD
+
+  //#region DRAW & BUILD - BUILD
+
   // TODO
   /**
    *
@@ -569,9 +684,13 @@ export class GameMap {
 
     this._drawCell(type, coords, CellType.BUILDING);
 
-    // Delete the last modal
-    document.querySelector('#modal-cell')?.remove();
+    // Close the last modal
+    this._closeCellModal();
   }
+
+  //#endregion DRAW & BUILD - BUILD
+
+  //#region DRAW & BUILD - DRAW
 
   /**
    * Draw a cell into the canvas
@@ -591,7 +710,21 @@ export class GameMap {
     sprite.draw(this._ctx, coords.x, coords.y);
   }
 
+  //#endregion DRAW & BUILD - DRAW
+
   //#endregion DRAW & BUILD
+
+  //#region ADIO
+
+  /**
+   * Play an audio effect. Send a custom event to play it
+   * @param type Audio type to play
+   */
+  private _playEffect(type: AudioType) {
+    document.dispatchEvent(new CustomEvent('playAudio', { detail: type }));
+  }
+
+  //#endregion AUDIO
 
   //#region MAIN
 
@@ -614,6 +747,7 @@ export class GameMap {
   start(speedMult: number = 1) {
     COUNT_FAST /= speedMult;
     COUNT_SLOW /= speedMult;
+    this._audio.playdMusic();
 
     // fast counter (basic resources)
     setInterval(() => {

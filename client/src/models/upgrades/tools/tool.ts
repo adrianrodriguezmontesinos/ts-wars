@@ -1,4 +1,5 @@
 import { Cost, Sprite } from '../../commons';
+import { BookType } from '../books';
 import { Upgrade } from '../upgrade';
 import { UpgradeType } from '../upgrade.types';
 import { ToolType } from './tool.types';
@@ -17,5 +18,13 @@ export class Tool extends Upgrade {
    */
   static getToolTypes(): ToolType[] {
     return Object.values(ToolType) as ToolType[];
+  }
+
+  /**
+   * Get the book types values as an array
+   * @returns Array of book types' values
+   */
+  static getBookTypes(): BookType[] {
+    return Object.values(BookType) as BookType[];
   }
 }
